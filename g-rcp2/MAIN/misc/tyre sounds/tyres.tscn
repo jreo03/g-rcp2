@@ -1,0 +1,77 @@
+[gd_scene load_steps=10 format=2]
+
+[ext_resource path="res://MAIN/misc/tyre sounds/tyres.gd" type="Script" id=1]
+[ext_resource path="res://MAIN/misc/tyre sounds/vars.gd" type="Script" id=2]
+[ext_resource path="res://MAIN/misc/tyre sounds/offroad.ogg" type="AudioStream" id=3]
+[ext_resource path="res://MAIN/misc/tyre sounds/peel0.ogg" type="AudioStream" id=4]
+[ext_resource path="res://MAIN/misc/tyre sounds/roll0.ogg" type="AudioStream" id=5]
+[ext_resource path="res://MAIN/misc/tyre sounds/roll1.ogg" type="AudioStream" id=6]
+[ext_resource path="res://MAIN/misc/tyre sounds/peel1.ogg" type="AudioStream" id=7]
+[ext_resource path="res://MAIN/misc/tyre sounds/roll2.ogg" type="AudioStream" id=8]
+[ext_resource path="res://MAIN/misc/tyre sounds/peel2.ogg" type="AudioStream" id=9]
+
+[node name="tyre_sound" type="Spatial"]
+script = ExtResource( 1 )
+
+[node name="roll0" type="AudioStreamPlayer3D" parent="."]
+stream = ExtResource( 5 )
+unit_size = 50.0
+area_mask = 512
+attenuation_filter_db = 0.0
+script = ExtResource( 2 )
+volume = 1.0
+
+[node name="roll1" type="AudioStreamPlayer3D" parent="."]
+stream = ExtResource( 6 )
+unit_size = 50.0
+area_mask = 512
+attenuation_filter_db = 0.0
+script = ExtResource( 2 )
+length = 1.0
+volume = 1.0
+
+[node name="roll2" type="AudioStreamPlayer3D" parent="."]
+stream = ExtResource( 8 )
+unit_size = 50.0
+area_mask = 512
+attenuation_filter_db = 0.0
+script = ExtResource( 2 )
+length = 2.0
+volume = 1.0
+
+[node name="peel0" type="AudioStreamPlayer3D" parent="."]
+stream = ExtResource( 4 )
+unit_size = 50.0
+area_mask = 512
+attenuation_filter_db = 0.0
+script = ExtResource( 2 )
+width = 1.0
+volume = 0.9
+
+[node name="peel1" type="AudioStreamPlayer3D" parent="."]
+stream = ExtResource( 7 )
+unit_size = 50.0
+area_mask = 512
+attenuation_filter_db = 0.0
+script = ExtResource( 2 )
+length = 1.0
+width = 1.0
+volume = 0.9
+
+[node name="peel2" type="AudioStreamPlayer3D" parent="."]
+stream = ExtResource( 9 )
+unit_size = 50.0
+area_mask = 512
+attenuation_filter_db = 0.0
+script = ExtResource( 2 )
+length = 2.0
+width = 1.0
+volume = 0.9
+
+[node name="dirt" type="AudioStreamPlayer3D" parent="."]
+stream = ExtResource( 3 )
+unit_size = 50.0
+area_mask = 512
+attenuation_filter_db = 0.0
+script = ExtResource( 2 )
+volume = 1.0

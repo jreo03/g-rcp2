@@ -1,0 +1,15 @@
+[remap]
+
+importer="ogg_vorbis"
+type="AudioStreamOGGVorbis"
+path="res://.import/whine_low.ogg-36ab16966e9307bbbb6acaa689bf8dd1.oggstr"
+
+[deps]
+
+source_file="res://MAIN/misc/mechanical sounds/whine_low.ogg"
+dest_files=[ "res://.import/whine_low.ogg-36ab16966e9307bbbb6acaa689bf8dd1.oggstr" ]
+
+[params]
+
+loop=true
+loop_offset=0

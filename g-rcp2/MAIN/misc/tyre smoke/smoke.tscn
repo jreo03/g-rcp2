@@ -1,0 +1,323 @@
+[gd_scene load_steps=13 format=2]
+
+[ext_resource path="res://MAIN/misc/tyre smoke/tyre_smoke.gd" type="Script" id=1]
+[ext_resource path="res://MAIN/misc/tyre smoke/smoke.png" type="Texture" id=2]
+[ext_resource path="res://MAIN/misc/tyre smoke/sphere_normals.png" type="Texture" id=3]
+
+[sub_resource type="Shader" id=8]
+code = "// NOTE: Shader automatically converted from Godot Engine 3.5.1.stable's SpatialMaterial.
+
+shader_type spatial;
+render_mode async_visible,blend_mix,depth_draw_opaque,cull_back,diffuse_burley,specular_schlick_ggx;
+uniform vec4 albedo : hint_color;
+uniform sampler2D texture_albedo : hint_albedo;
+uniform int particles_anim_h_frames;
+uniform int particles_anim_v_frames;
+uniform bool particles_anim_loop;
+uniform sampler2D texture_normal : hint_normal;
+uniform float normal_scale : hint_range(-16,16);
+
+
+void vertex() {
+	mat4 mat_world = mat4(normalize(CAMERA_MATRIX[0])*length(WORLD_MATRIX[0]),normalize(CAMERA_MATRIX[1])*length(WORLD_MATRIX[0]),normalize(CAMERA_MATRIX[2])*length(WORLD_MATRIX[2]),WORLD_MATRIX[3]);
+	mat_world = mat_world * mat4( vec4(cos(INSTANCE_CUSTOM.x),-sin(INSTANCE_CUSTOM.x), 0.0, 0.0), vec4(sin(INSTANCE_CUSTOM.x), cos(INSTANCE_CUSTOM.x), 0.0, 0.0),vec4(0.0, 0.0, 1.0, 0.0),vec4(0.0, 0.0, 0.0, 1.0));
+	MODELVIEW_MATRIX = INV_CAMERA_MATRIX * mat_world;
+	float h_frames = float(particles_anim_h_frames);
+	float v_frames = float(particles_anim_v_frames);
+	float particle_total_frames = float(particles_anim_h_frames * particles_anim_v_frames);
+	float particle_frame = floor(INSTANCE_CUSTOM.z * float(particle_total_frames));
+	if (!particles_anim_loop) {
+		particle_frame = clamp(particle_frame, 0.0, particle_total_frames - 1.0);
+	} else {
+		particle_frame = mod(particle_frame, particle_total_frames);
+	}	UV /= vec2(h_frames, v_frames);
+	UV += vec2(mod(particle_frame, h_frames) / h_frames, floor((particle_frame + 0.5) / h_frames) / v_frames);
+}
+
+
+
+
+void fragment() {
+	vec2 base_uv = UV;
+	vec4 albedo_tex = texture(texture_albedo,base_uv)*COLOR;
+	ALBEDO = albedo.rgb * albedo_tex.rgb;
+	ALPHA = albedo_tex.a;
+	METALLIC = 0.0;
+	ROUGHNESS = 1.0;
+	SPECULAR = 0.0;
+	NORMALMAP = texture(texture_normal,base_uv).rgb;
+	NORMALMAP_DEPTH = normal_scale;
+}
+"
+
+[sub_resource type="ShaderMaterial" id=9]
+resource_name = "None"
+shader = SubResource( 8 )
+shader_param/albedo = Color( 0.8, 0.8, 0.8, 1 )
+shader_param/particles_anim_h_frames = 1
+shader_param/particles_anim_v_frames = 1
+shader_param/particles_anim_loop = false
+shader_param/normal_scale = 1.0
+shader_param/texture_albedo = ExtResource( 2 )
+shader_param/texture_normal = ExtResource( 3 )
+
+[sub_resource type="ArrayMesh" id=10]
+surfaces/0 = {
+"aabb": AABB( -1, -1, 0, 2, 2.00001, 1e-05 ),
+"array_data": PoolByteArray( 0, 0, 128, 191, 0, 0, 128, 63, 0, 0, 0, 0, 0, 0, 127, 63, 0, 0, 0, 0, 0, 0, 128, 63, 0, 0, 128, 191, 0, 0, 0, 0, 0, 0, 127, 63, 0, 60, 0, 60, 0, 0, 128, 191, 0, 0, 128, 191, 0, 0, 0, 0, 0, 0, 127, 63, 0, 0, 0, 60, 0, 0, 128, 63, 0, 0, 128, 63, 0, 0, 0, 0, 0, 0, 127, 63, 0, 60, 0, 0 ),
+"array_index_data": PoolByteArray( 0, 0, 1, 0, 2, 0, 3, 0, 1, 0, 0, 0 ),
+"blend_shape_data": [  ],
+"format": 2194711,
+"index_count": 6,
+"material": SubResource( 9 ),
+"name": "None",
+"primitive": 4,
+"skeleton_aabb": [  ],
+"vertex_count": 4
+}
+
+[sub_resource type="Curve" id=11]
+max_value = 10.0
+_data = [ Vector2( 0, 0 ), 0.0, 27.4182, 0, 0, Vector2( 1, 10 ), 0.0, 0.0, 0, 0 ]
+
+[sub_resource type="Gradient" id=12]
+offsets = PoolRealArray( 0, 0.1 )
+colors = PoolColorArray( 1, 1, 1, 1, 1, 1, 1, 0.05 )
+
+[sub_resource type="Curve" id=13]
+max_value = 25.0
+_data = [ Vector2( 0, 0 ), 0.0, 72.1424, 0, 0, Vector2( 1, 25 ), 0.0, 0.0, 0, 0 ]
+
+[sub_resource type="Curve" id=14]
+max_value = 50.0
+_data = [ Vector2( 0, 0 ), 0.0, 148.568, 0, 0, Vector2( 1, 50 ), 0.0, 0.0, 0, 0 ]
+
+[sub_resource type="Curve" id=16]
+_data = [ Vector2( 0, 0 ), 0.0, 2.8297, 0, 0, Vector2( 1, 1 ), 0.0, 0.0, 0, 0 ]
+
+[sub_resource type="Gradient" id=15]
+offsets = PoolRealArray( 0, 0.856187, 1 )
+colors = PoolColorArray( 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0 )
+
+[node name="smoke" type="Spatial"]
+script = ExtResource( 1 )
+
+[node name="static" type="Spatial" parent="."]
+
+[node name="lvl1" type="CPUParticles" parent="static"]
+emitting = false
+amount = 255
+lifetime = 15.0
+local_coords = false
+mesh = SubResource( 10 )
+direction = Vector3( 0, 0, -1 )
+spread = 0.0
+gravity = Vector3( 0, 0, 0 )
+initial_velocity = 20.0
+angular_velocity = 50.0
+angular_velocity_random = 1.0
+damping = 2.0
+angle = 720.0
+angle_random = 1.0
+scale_amount_curve = SubResource( 11 )
+color = Color( 1, 1, 1, 0.33 )
+color_ramp = SubResource( 12 )
+
+[node name="lvl2" type="CPUParticles" parent="static"]
+emitting = false
+amount = 255
+lifetime = 15.0
+local_coords = false
+mesh = SubResource( 10 )
+direction = Vector3( 0, 0, -1 )
+spread = 0.0
+gravity = Vector3( 0, 0, 0 )
+initial_velocity = 20.0
+angular_velocity = 50.0
+angular_velocity_random = 1.0
+damping = 2.0
+angle = 720.0
+angle_random = 1.0
+scale_amount_curve = SubResource( 13 )
+color = Color( 1, 1, 1, 0.7 )
+color_ramp = SubResource( 12 )
+
+[node name="lvl3" type="CPUParticles" parent="static"]
+emitting = false
+amount = 255
+lifetime = 15.0
+local_coords = false
+mesh = SubResource( 10 )
+direction = Vector3( 0, 0, -1 )
+spread = 0.0
+gravity = Vector3( 0, 0, 0 )
+initial_velocity = 20.0
+angular_velocity = 50.0
+angular_velocity_random = 1.0
+damping = 2.0
+angle = 720.0
+angle_random = 1.0
+scale_amount_curve = SubResource( 14 )
+color_ramp = SubResource( 12 )
+
+[node name="revolvel" type="Spatial" parent="."]
+
+[node name="lvl1" type="CPUParticles" parent="revolvel"]
+transform = Transform( -4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 0, 0, 0 )
+emitting = false
+amount = 16
+mesh = SubResource( 10 )
+emission_shape = 3
+emission_points = PoolVector3Array( 0, -1, 0 )
+emission_colors = PoolColorArray(  )
+flag_disable_z = true
+spread = 180.0
+flatness = 1.0
+gravity = Vector3( 0, 0, 0 )
+initial_velocity = 1.0
+initial_velocity_random = 1.0
+angular_velocity = 50.0
+angular_velocity_random = 1.0
+orbit_velocity = 1.0
+orbit_velocity_random = 0.5
+orbit_velocity_curve = null
+angle = 720.0
+angle_random = 1.0
+scale_amount = 0.5
+scale_amount_random = 1.0
+scale_amount_curve = SubResource( 16 )
+color = Color( 1, 1, 1, 0.25 )
+color_ramp = SubResource( 15 )
+
+[node name="lvl2" type="CPUParticles" parent="revolvel"]
+transform = Transform( -4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 0, 0, 0 )
+emitting = false
+amount = 32
+mesh = SubResource( 10 )
+emission_shape = 3
+emission_points = PoolVector3Array( 0, -1, 0 )
+emission_colors = PoolColorArray(  )
+flag_disable_z = true
+spread = 180.0
+flatness = 1.0
+gravity = Vector3( 0, 0, 0 )
+initial_velocity = 1.0
+initial_velocity_random = 1.0
+angular_velocity = 50.0
+angular_velocity_random = 1.0
+orbit_velocity = 1.0
+orbit_velocity_random = 0.5
+orbit_velocity_curve = null
+angle = 720.0
+angle_random = 1.0
+scale_amount_random = 1.0
+scale_amount_curve = SubResource( 16 )
+color = Color( 1, 1, 1, 0.25 )
+color_ramp = SubResource( 15 )
+
+[node name="lvl3" type="CPUParticles" parent="revolvel"]
+transform = Transform( -4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 0, 0, 0 )
+emitting = false
+amount = 64
+mesh = SubResource( 10 )
+emission_shape = 3
+emission_points = PoolVector3Array( 0, -1, 0 )
+emission_colors = PoolColorArray(  )
+flag_disable_z = true
+spread = 180.0
+flatness = 1.0
+gravity = Vector3( 0, 0, 0 )
+initial_velocity = 1.0
+initial_velocity_random = 1.0
+angular_velocity = 50.0
+angular_velocity_random = 1.0
+orbit_velocity = 1.0
+orbit_velocity_random = 0.5
+orbit_velocity_curve = null
+angle = 720.0
+angle_random = 1.0
+scale_amount_random = 1.0
+scale_amount_curve = SubResource( 16 )
+color = Color( 1, 1, 1, 0.25 )
+color_ramp = SubResource( 15 )
+
+[node name="revolver" type="Spatial" parent="."]
+
+[node name="lvl1" type="CPUParticles" parent="revolver"]
+transform = Transform( -4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 0, 0, 0 )
+emitting = false
+amount = 16
+mesh = SubResource( 10 )
+emission_shape = 3
+emission_points = PoolVector3Array( 0, -1, 0 )
+emission_colors = PoolColorArray(  )
+flag_disable_z = true
+spread = 180.0
+flatness = 1.0
+gravity = Vector3( 0, 0, 0 )
+initial_velocity = 1.0
+initial_velocity_random = 1.0
+angular_velocity = 50.0
+angular_velocity_random = 1.0
+orbit_velocity = 1.0
+orbit_velocity_random = 0.5
+orbit_velocity_curve = null
+angle = 720.0
+angle_random = 1.0
+scale_amount = 0.5
+scale_amount_random = 1.0
+scale_amount_curve = SubResource( 16 )
+color = Color( 1, 1, 1, 0.25 )
+color_ramp = SubResource( 15 )
+
+[node name="lvl2" type="CPUParticles" parent="revolver"]
+transform = Transform( -4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 0, 0, 0 )
+emitting = false
+amount = 32
+mesh = SubResource( 10 )
+emission_shape = 3
+emission_points = PoolVector3Array( 0, -1, 0 )
+emission_colors = PoolColorArray(  )
+flag_disable_z = true
+spread = 180.0
+flatness = 1.0
+gravity = Vector3( 0, 0, 0 )
+initial_velocity = 1.0
+initial_velocity_random = 1.0
+angular_velocity = 50.0
+angular_velocity_random = 1.0
+orbit_velocity = 1.0
+orbit_velocity_random = 0.5
+orbit_velocity_curve = null
+angle = 720.0
+angle_random = 1.0
+scale_amount_random = 1.0
+scale_amount_curve = SubResource( 16 )
+color = Color( 1, 1, 1, 0.25 )
+color_ramp = SubResource( 15 )
+
+[node name="lvl3" type="CPUParticles" parent="revolver"]
+transform = Transform( -4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 0, 0, 0 )
+emitting = false
+amount = 64
+mesh = SubResource( 10 )
+emission_shape = 3
+emission_points = PoolVector3Array( 0, -1, 0 )
+emission_colors = PoolColorArray(  )
+flag_disable_z = true
+spread = 180.0
+flatness = 1.0
+gravity = Vector3( 0, 0, 0 )
+initial_velocity = 1.0
+initial_velocity_random = 1.0
+angular_velocity = 50.0
+angular_velocity_random = 1.0
+orbit_velocity = 1.0
+orbit_velocity_random = 0.5
+orbit_velocity_curve = null
+angle = 720.0
+angle_random = 1.0
+scale_amount_random = 1.0
+scale_amount_curve = SubResource( 16 )
+color = Color( 1, 1, 1, 0.25 )
+color_ramp = SubResource( 15 )

@@ -1,0 +1,15 @@
+[remap]
+
+importer="ogg_vorbis"
+type="AudioStreamOGGVorbis"
+path="res://.import/roll0.ogg-415154c3e388691d7b6618ee9e79f1b7.oggstr"
+
+[deps]
+
+source_file="res://MAIN/misc/tyre sounds/roll0.ogg"
+dest_files=[ "res://.import/roll0.ogg-415154c3e388691d7b6618ee9e79f1b7.oggstr" ]
+
+[params]
+
+loop=true
+loop_offset=0
