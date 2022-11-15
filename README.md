@@ -8,7 +8,8 @@ This is a raycast-based car simulator that simulates slip algorithm. This is the
 Help can be found in the VitaVehicle Interface once you've opened the project file via Godot editor.
 
 # Tip
-This project isn't novice-friendly.
+* Unit Scale: 0.30592 (1 meter = 3.268828 in translation)
+* This project isn't novice-friendly.
 
 ### Credits
 * Eclipse SRC by shotman_16
