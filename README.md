@@ -11,7 +11,7 @@ Help can be found in the VitaVehicle Interface once you've opened the project fi
 This project isn't novice-friendly.
 
 ### Credits
-* Red car model by shotman_16
+* Eclipse SRC by shotman_16
 
 ### Current Acknowledged Issues
 * Not very stable with Bullet physics.
