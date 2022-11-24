@@ -8,7 +8,7 @@ VitaVehicle is a raycast-based car simulator that simulates engine, transmission
 Help can be found in the VitaVehicle Interface once you've opened the project file via Godot editor.
 
 # Tip
-* Unit Scale: 0.30592 (1 meter = 3.268828 in translation)
+* Unit Scale: 0.30592 (1 metre = 3.268828 in translation)
 * This project isn't novice-friendly.
 
 ### Credits
