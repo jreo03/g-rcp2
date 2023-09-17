@@ -14,7 +14,7 @@ Help can be found in the VitaVehicle Interface once you've opened the project fi
 
 ### Credits
 * Eclipse SRC by shotman_16
-* @r0401
+* [r0401](https://github.com/r0401)
 
 ### Current Acknowledged Issues
 * idk
