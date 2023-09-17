@@ -1,5 +1,5 @@
 # VitaVehicle - "Realistic" Car Physics (g-rcp2/RCP4)
-# ![image](https://github.com/jreo03/g-rcp2/assets/88580430/7bc9ad0f-bc1e-4500-8712-d5b1b93193d5)
+# ![image](https://github.com/jreo03/g-rcp2/assets/88580430/7bc9ad0f-bc1e-4500-8712-d5b1b93193d5) (gles3 renderer was used)
  (Beta - Godot 4.0.3 Port)
 
 # About
