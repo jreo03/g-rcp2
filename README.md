@@ -1,6 +1,6 @@
 # VitaVehicle - "Realistic" Car Physics (g-rcp2/RCP4)
-# ![image](https://github.com/jreo03/g-rcp2/assets/88580430/7bc9ad0f-bc1e-4500-8712-d5b1b93193d5) (gles3 renderer was used)
- (Beta - Godot 4.0.3 Port)
+# ![image](https://github.com/jreo03/g-rcp2/assets/88580430/7bc9ad0f-bc1e-4500-8712-d5b1b93193d5) (Beta - Godot 4.0.3 Port)
+(gles3 renderer was used in screenshot)
 
 # About
 VitaVehicle is a raycast-based car simulator that simulates engine, transmission, and slip algorithm. This is the second iteration of g-rcp, and it's the fourth generation of my own vehicle dynamics since 2017, as well as the usage of the Blender game engine. This was also ported from BGE despite that it isn't even published for that software yet at this time.
