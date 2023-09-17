@@ -1,5 +1,5 @@
 # VitaVehicle - "Realistic" Car Physics (g-rcp2/RCP4)
-# ![image](https://github.com/jreo03/g-rcp2/assets/88580430/7bc9ad0f-bc1e-4500-8712-d5b1b93193d5) (Beta - Godot 4.0.3 Port)
+# ![image](https://github.com/jreo03/g-rcp2/assets/88580430/7bc9ad0f-bc1e-4500-8712-d5b1b93193d5) (Beta - Godot 4.0.3 Fix)
 (gles3 renderer was used in screenshot)
 
 # About
@@ -14,7 +14,7 @@ Help can be found in the VitaVehicle Interface once you've opened the project fi
 
 ### Credits
 * Eclipse SRC by shotman_16
-* Godot 4 Conversion - [r0401](https://github.com/r0401)
+* Godot 4 Conversion & Fix - [r0401](https://github.com/r0401)
 
 ### Current Acknowledged Issues
 * idk
