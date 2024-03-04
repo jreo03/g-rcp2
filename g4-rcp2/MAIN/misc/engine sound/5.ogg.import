@@ -1,0 +1,19 @@
+[remap]
+
+importer="oggvorbisstr"
+type="AudioStreamOggVorbis"
+uid="uid://bdig1v76vwarp"
+path="res://.godot/imported/5.ogg-ae89c0571bbd1a030000cd6d2335fa22.oggvorbisstr"
+
+[deps]
+
+source_file="res://MAIN/misc/engine sound/5.ogg"
+dest_files=["res://.godot/imported/5.ogg-ae89c0571bbd1a030000cd6d2335fa22.oggvorbisstr"]
+
+[params]
+
+loop=true
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

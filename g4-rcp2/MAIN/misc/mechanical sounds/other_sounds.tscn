@@ -1,0 +1,74 @@
+[gd_scene load_steps=7 format=2]
+
+[ext_resource path="res://MAIN/misc/mechanical sounds/whine_low.ogg" type="AudioStream" id=1]
+[ext_resource path="res://MAIN/misc/mechanical sounds/blow.ogg" type="AudioStream" id=2]
+[ext_resource path="res://MAIN/misc/mechanical sounds/whine_high.ogg" type="AudioStream" id=3]
+[ext_resource path="res://MAIN/misc/mechanical sounds/spool.ogg" type="AudioStream" id=4]
+[ext_resource path="res://MAIN/misc/mechanical sounds/other_sounds.gd" type="Script" id=5]
+[ext_resource path="res://MAIN/misc/mechanical sounds/backfire.ogg" type="AudioStream" id=6]
+
+[node name="other_sounds" type="Spatial"]
+script = ExtResource( 5 )
+
+[node name="scwhine" type="AudioStreamPlayer3D" parent="."]
+stream = ExtResource( 1 )
+unit_db = -80.0
+unit_size = 50.0
+max_db = -24.0
+pitch_scale = 0.01
+area_mask = 512
+attenuation_filter_db = 0.0
+
+[node name="whistle" type="AudioStreamPlayer3D" parent="."]
+stream = ExtResource( 1 )
+unit_db = -80.0
+unit_size = 50.0
+max_db = -24.0
+pitch_scale = 0.01
+area_mask = 512
+attenuation_filter_db = 0.0
+
+[node name="blow" type="AudioStreamPlayer3D" parent="."]
+stream = ExtResource( 2 )
+unit_db = -80.0
+unit_size = 50.0
+max_db = -24.0
+pitch_scale = 0.01
+area_mask = 512
+attenuation_filter_db = 0.0
+
+[node name="backfire" type="AudioStreamPlayer3D" parent="."]
+stream = ExtResource( 6 )
+unit_db = -80.0
+unit_size = 50.0
+max_db = -24.0
+pitch_scale = 0.01
+area_mask = 512
+attenuation_filter_db = 0.0
+
+[node name="spool" type="AudioStreamPlayer3D" parent="."]
+stream = ExtResource( 4 )
+unit_db = -80.0
+unit_size = 50.0
+max_db = -24.0
+pitch_scale = 0.01
+area_mask = 512
+attenuation_filter_db = 0.0
+
+[node name="whigh" type="AudioStreamPlayer3D" parent="."]
+stream = ExtResource( 3 )
+unit_db = -80.0
+unit_size = 50.0
+max_db = -24.0
+pitch_scale = 0.01
+area_mask = 512
+attenuation_filter_db = 0.0
+
+[node name="wlow" type="AudioStreamPlayer3D" parent="."]
+stream = ExtResource( 1 )
+unit_db = -80.0
+unit_size = 50.0
+max_db = -24.0
+pitch_scale = 0.01
+area_mask = 512
+attenuation_filter_db = 0.0

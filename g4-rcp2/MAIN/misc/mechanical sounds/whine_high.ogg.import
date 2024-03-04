@@ -1,0 +1,19 @@
+[remap]
+
+importer="oggvorbisstr"
+type="AudioStreamOggVorbis"
+uid="uid://cjye8dqjyudob"
+path="res://.godot/imported/whine_high.ogg-2da403f3836c660407d88d67a6b387bf.oggvorbisstr"
+
+[deps]
+
+source_file="res://MAIN/misc/mechanical sounds/whine_high.ogg"
+dest_files=["res://.godot/imported/whine_high.ogg-2da403f3836c660407d88d67a6b387bf.oggvorbisstr"]
+
+[params]
+
+loop=true
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

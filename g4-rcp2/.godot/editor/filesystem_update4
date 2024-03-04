@@ -1,0 +1,18 @@
+res://default_env.tres
+res://world.tscn
+res://MAIN/wheel.gd
+res://MAIN/car.gd
+res://MAIN/misc/mechanical sounds/other_sounds.gd
+res://MAIN/misc/tyre sounds/tyres.gd
+res://MAIN/vitavehicle.gd
+res://MISC/visual gravity system/vgs.gd
+res://MISC/vertical progress bar/bar.gd
+res://MISC/tachometre/tacho.gd
+res://base car.tscn
+res://MAIN/misc/forces debug/forces.gd
+res://MAIN/misc/engine sound/crossfade.gd
+res://MISC/autoload/graphics.gd
+res://MISC/debugger.tscn
+res://MISC/misc scripts/debug.gd
+res://MISC/mobile controls/mobile_ctrls.gd
+res://MAIN/misc/camera.gd

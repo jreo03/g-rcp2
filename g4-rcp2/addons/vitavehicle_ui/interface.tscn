@@ -1,0 +1,1323 @@
+[gd_scene load_steps=9 format=3 uid="uid://b4j8prwa2veg8"]
+
+[ext_resource type="Texture2D" uid="uid://b315i7ikjj32c" path="res://logo.png" id="2"]
+[ext_resource type="Script" path="res://addons/vitavehicle_ui/graph.gd" id="3"]
+[ext_resource type="Script" path="res://addons/vitavehicle_ui/handler.gd" id="4"]
+[ext_resource type="Script" path="res://addons/vitavehicle_ui/tune_vars.gd" id="5"]
+[ext_resource type="FontFile" uid="uid://btyvoi7jkhec0" path="res://FONT/DroidSans.ttf" id="5_f53yw"]
+[ext_resource type="FontFile" uid="uid://luy46vxwmlu4" path="res://FONT/DroidSans-Bold.ttf" id="5_lt6mm"]
+[ext_resource type="Script" path="res://addons/vitavehicle_ui/api_references.gd" id="6"]
+[ext_resource type="Script" path="res://addons/vitavehicle_ui/folds.gd" id="7"]
+
+[node name="Control" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+script = ExtResource("4")
+
+[node name="Engine_Tuner" type="Control" parent="."]
+visible = false
+anchors_preset = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+
+[node name="power_graph" type="Control" parent="Engine_Tuner"]
+anchors_preset = 0
+anchor_left = 0.0478516
+anchor_top = 0.0866667
+anchor_right = 0.601563
+anchor_bottom = 0.591667
+script = ExtResource("3")
+BuildUpTorque = 0.004
+OffsetTorque = 110.0
+VVT_OffsetTorque = 70.0
+MaxPSI = 8.0
+TurboAmount = 1.0
+
+[node name="torque" type="Line2D" parent="Engine_Tuner/power_graph"]
+points = PackedVector2Array(64.8811, 173.589, 72.9811, 170.753, 81.0811, 168.609, 89.1811, 166.946, 97.2811, 165.604, 105.381, 164.502, 113.481, 163.578, 121.581, 162.791, 129.681, 162.105, 137.781, 161.495, 145.881, 160.941, 153.981, 160.427, 162.081, 159.942, 170.181, 159.474, 178.281, 159.017, 186.381, 158.564, 194.481, 158.109, 202.581, 157.649, 210.681, 157.18, 218.781, 156.7, 226.881, 156.207, 234.981, 155.698, 243.081, 155.174, 251.181, 154.632, 259.281, 154.073, 267.381, 153.495, 275.481, 152.9, 283.581, 152.286, 291.681, 151.947, 299.781, 152.167, 307.881, 152.943, 315.981, 154.264, 324.081, 156.108, 332.181, 158.446, 340.281, 161.244, 348.381, 164.461, 356.481, 168.053, 364.581, 169.136, 372.681, 165.944, 380.781, 162.699, 388.881, 159.404, 396.981, 156.061, 405.081, 152.674, 413.181, 149.664, 421.281, 147.459, 429.381, 146.085, 437.481, 145.544, 445.581, 145.821, 453.681, 146.884, 461.781, 148.686, 469.881, 151.168, 477.981, 154.261, 486.081, 157.894, 494.181, 161.992, 502.281, 166.481, 510.381, 171.289, 518.481, 176.352, 526.581, 181.605, 534.681, 186.995, 542.781, 192.471, 550.881, 197.992, 558.981, 203.52)
+width = 5.0
+default_color = Color(0, 0.5, 1, 1)
+
+[node name="peak" type="Polygon2D" parent="Engine_Tuner/power_graph/torque"]
+position = Vector2(438.777, 145.534)
+color = Color(0, 0.5, 1, 1)
+polygon = PackedVector2Array(-10, 10, 10, 10, 10, -10, -10, -10)
+
+[node name="power" type="Line2D" parent="Engine_Tuner/power_graph"]
+points = PackedVector2Array(64.8811, 283.263, 72.9811, 280.313, 81.0811, 277.386, 89.1811, 274.479, 97.2811, 271.581, 105.381, 268.692, 113.481, 265.809, 121.581, 262.929, 129.681, 260.05, 137.781, 257.17, 145.881, 254.286, 153.981, 251.395, 162.081, 248.495, 170.181, 245.584, 178.281, 242.66, 186.381, 239.72, 194.481, 236.762, 202.581, 233.784, 210.681, 230.784, 218.781, 227.761, 226.881, 224.712, 234.981, 221.636, 243.081, 218.532, 251.181, 215.397, 259.281, 212.232, 267.381, 209.033, 275.481, 205.801, 283.581, 202.534, 291.681, 199.431, 299.781, 196.71, 307.881, 194.4, 315.981, 192.524, 324.081, 191.097, 332.181, 190.126, 340.281, 189.612, 348.381, 189.547, 356.481, 189.919, 364.581, 188.278, 372.681, 182.933, 380.781, 177.418, 388.881, 171.735, 396.981, 165.881, 405.081, 159.858, 413.181, 154.072, 421.281, 148.97, 429.381, 144.621, 437.481, 141.076, 445.581, 138.369, 453.681, 136.51, 461.781, 135.494, 469.881, 135.296, 477.981, 135.881, 486.081, 137.2, 494.181, 139.197, 502.281, 141.812, 510.381, 144.982, 518.481, 148.644, 526.581, 152.736, 534.681, 157.198, 542.781, 161.977, 550.881, 167.021, 558.981, 172.285)
+width = 5.0
+default_color = Color(1, 0, 0, 1)
+
+[node name="peak" type="Polygon2D" parent="Engine_Tuner/power_graph/power"]
+position = Vector2(467.856, 135.271)
+color = Color(1, 0, 0, 1)
+polygon = PackedVector2Array(-10, 10, 10, 10, 10, -10, -10, -10)
+
+[node name="ColorRect" type="ColorRect" parent="Engine_Tuner/power_graph"]
+show_behind_parent = true
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+color = Color(0, 0, 0, 0.184314)
+
+[node name="tq" type="Label" parent="Engine_Tuner"]
+layout_mode = 0
+anchor_left = 0.0498047
+anchor_top = 0.603333
+anchor_right = 0.601563
+anchor_bottom = 0.636667
+theme_override_colors/font_color = Color(0.501961, 0.501961, 1, 1)
+theme_override_fonts/font = ExtResource("5_f53yw")
+text = "Torque: 0000 unit @ 00000 RPM"
+
+[node name="hp" type="Label" parent="Engine_Tuner"]
+layout_mode = 0
+anchor_left = 0.0498047
+anchor_top = 0.645
+anchor_right = 0.601563
+anchor_bottom = 0.678333
+theme_override_colors/font_color = Color(1, 0.501961, 0.501961, 1)
+theme_override_fonts/font = ExtResource("5_f53yw")
+text = "Power: 0000 unit @ 00000 RPM"
+
+[node name="label2" type="Label" parent="Engine_Tuner"]
+layout_mode = 0
+anchor_left = 0.0136719
+anchor_top = 0.763333
+anchor_right = 0.588867
+anchor_bottom = 0.873333
+theme_override_colors/font_color = Color(1, 0.270588, 0.270588, 1)
+theme_override_fonts/font = ExtResource("5_f53yw")
+text = "Warning: Currently no undo steps will be created when applying. Use with caution.
+I suggest that you backup your vehicle."
+vertical_alignment = 2
+
+[node name="ColorRect" type="ColorRect" parent="Engine_Tuner"]
+show_behind_parent = true
+layout_mode = 0
+anchor_left = 0.634766
+anchor_top = 0.103333
+anchor_right = 0.974609
+anchor_bottom = 0.946667
+color = Color(0, 0, 0, 0.184314)
+
+[node name="tune" type="ScrollContainer" parent="Engine_Tuner"]
+layout_mode = 0
+anchor_left = 0.634766
+anchor_top = 0.103333
+anchor_right = 0.974609
+anchor_bottom = 0.946667
+
+[node name="container" type="VBoxContainer" parent="Engine_Tuner/tune"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="SpinBox" type="SpinBox" parent="Engine_Tuner/tune/container"]
+custom_minimum_size = Vector2(355, 60)
+layout_mode = 2
+max_value = 1e+08
+step = 0.001
+allow_greater = true
+allow_lesser = true
+alignment = 1
+script = ExtResource("5")
+var_name = "EngineFriction"
+
+[node name="varname" type="Label" parent="Engine_Tuner/tune/container/SpinBox"]
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+
+[node name="SpinBox5" type="SpinBox" parent="Engine_Tuner/tune/container"]
+custom_minimum_size = Vector2(355, 60)
+layout_mode = 2
+max_value = 1e+08
+step = 0.001
+allow_greater = true
+allow_lesser = true
+alignment = 1
+script = ExtResource("5")
+var_name = "EngineDrag"
+
+[node name="varname" type="Label" parent="Engine_Tuner/tune/container/SpinBox5"]
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+
+[node name="SpinBox6" type="SpinBox" parent="Engine_Tuner/tune/container"]
+custom_minimum_size = Vector2(355, 60)
+layout_mode = 2
+max_value = 1e+08
+allow_greater = true
+allow_lesser = true
+alignment = 1
+script = ExtResource("5")
+var_name = "IdleRPM"
+
+[node name="varname" type="Label" parent="Engine_Tuner/tune/container/SpinBox6"]
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+
+[node name="SpinBox7" type="SpinBox" parent="Engine_Tuner/tune/container"]
+custom_minimum_size = Vector2(355, 60)
+layout_mode = 2
+max_value = 1e+08
+allow_greater = true
+allow_lesser = true
+alignment = 1
+script = ExtResource("5")
+var_name = "RPMLimit"
+
+[node name="varname" type="Label" parent="Engine_Tuner/tune/container/SpinBox7"]
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+
+[node name="SpinBox8" type="SpinBox" parent="Engine_Tuner/tune/container"]
+custom_minimum_size = Vector2(355, 60)
+layout_mode = 2
+max_value = 1e+08
+allow_greater = true
+allow_lesser = true
+alignment = 1
+script = ExtResource("5")
+var_name = "VVTRPM"
+
+[node name="varname" type="Label" parent="Engine_Tuner/tune/container/SpinBox8"]
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+
+[node name="SpinBox9" type="SpinBox" parent="Engine_Tuner/tune/container"]
+custom_minimum_size = Vector2(355, 60)
+layout_mode = 2
+max_value = 1e+08
+step = 0.001
+allow_greater = true
+allow_lesser = true
+alignment = 1
+script = ExtResource("5")
+var_name = "BuildUpTorque"
+
+[node name="varname" type="Label" parent="Engine_Tuner/tune/container/SpinBox9"]
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+
+[node name="SpinBox10" type="SpinBox" parent="Engine_Tuner/tune/container"]
+custom_minimum_size = Vector2(355, 60)
+layout_mode = 2
+max_value = 1e+08
+step = 0.001
+allow_greater = true
+allow_lesser = true
+alignment = 1
+script = ExtResource("5")
+var_name = "TorqueRise"
+
+[node name="varname" type="Label" parent="Engine_Tuner/tune/container/SpinBox10"]
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+
+[node name="SpinBox11" type="SpinBox" parent="Engine_Tuner/tune/container"]
+custom_minimum_size = Vector2(355, 60)
+layout_mode = 2
+max_value = 1e+08
+allow_greater = true
+allow_lesser = true
+alignment = 1
+script = ExtResource("5")
+var_name = "RiseRPM"
+
+[node name="varname" type="Label" parent="Engine_Tuner/tune/container/SpinBox11"]
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+
+[node name="SpinBox4" type="SpinBox" parent="Engine_Tuner/tune/container"]
+custom_minimum_size = Vector2(355, 60)
+layout_mode = 2
+max_value = 1e+08
+step = 0.001
+allow_greater = true
+allow_lesser = true
+alignment = 1
+script = ExtResource("5")
+var_name = "OffsetTorque"
+
+[node name="varname" type="Label" parent="Engine_Tuner/tune/container/SpinBox4"]
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+
+[node name="SpinBox12" type="SpinBox" parent="Engine_Tuner/tune/container"]
+custom_minimum_size = Vector2(355, 60)
+layout_mode = 2
+max_value = 1e+08
+step = 0.001
+allow_greater = true
+allow_lesser = true
+alignment = 1
+script = ExtResource("5")
+var_name = "FloatRate"
+
+[node name="varname" type="Label" parent="Engine_Tuner/tune/container/SpinBox12"]
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+
+[node name="SpinBox23" type="SpinBox" parent="Engine_Tuner/tune/container"]
+custom_minimum_size = Vector2(355, 60)
+layout_mode = 2
+max_value = 1e+08
+step = 0.001
+allow_greater = true
+allow_lesser = true
+alignment = 1
+script = ExtResource("5")
+var_name = "DeclineRate"
+
+[node name="varname" type="Label" parent="Engine_Tuner/tune/container/SpinBox23"]
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+
+[node name="SpinBox13" type="SpinBox" parent="Engine_Tuner/tune/container"]
+custom_minimum_size = Vector2(355, 60)
+layout_mode = 2
+max_value = 1e+08
+allow_greater = true
+allow_lesser = true
+alignment = 1
+script = ExtResource("5")
+var_name = "DeclineRPM"
+
+[node name="varname" type="Label" parent="Engine_Tuner/tune/container/SpinBox13"]
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+
+[node name="SpinBox14" type="SpinBox" parent="Engine_Tuner/tune/container"]
+custom_minimum_size = Vector2(355, 60)
+layout_mode = 2
+max_value = 1e+08
+step = 0.001
+allow_greater = true
+allow_lesser = true
+alignment = 1
+script = ExtResource("5")
+var_name = "DeclineSharpness"
+
+[node name="varname" type="Label" parent="Engine_Tuner/tune/container/SpinBox14"]
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+
+[node name="SpinBox15" type="SpinBox" parent="Engine_Tuner/tune/container"]
+custom_minimum_size = Vector2(355, 60)
+layout_mode = 2
+max_value = 1e+08
+step = 0.001
+allow_greater = true
+allow_lesser = true
+alignment = 1
+script = ExtResource("5")
+var_name = "VVT_BuildUpTorque"
+
+[node name="varname" type="Label" parent="Engine_Tuner/tune/container/SpinBox15"]
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+
+[node name="SpinBox16" type="SpinBox" parent="Engine_Tuner/tune/container"]
+custom_minimum_size = Vector2(355, 60)
+layout_mode = 2
+max_value = 1e+08
+step = 0.001
+allow_greater = true
+allow_lesser = true
+alignment = 1
+script = ExtResource("5")
+var_name = "VVT_TorqueRise"
+
+[node name="varname" type="Label" parent="Engine_Tuner/tune/container/SpinBox16"]
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+
+[node name="SpinBox17" type="SpinBox" parent="Engine_Tuner/tune/container"]
+custom_minimum_size = Vector2(355, 60)
+layout_mode = 2
+max_value = 1e+08
+allow_greater = true
+allow_lesser = true
+alignment = 1
+script = ExtResource("5")
+var_name = "VVT_RiseRPM"
+
+[node name="varname" type="Label" parent="Engine_Tuner/tune/container/SpinBox17"]
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+
+[node name="SpinBox18" type="SpinBox" parent="Engine_Tuner/tune/container"]
+custom_minimum_size = Vector2(355, 60)
+layout_mode = 2
+max_value = 1e+08
+step = 0.001
+allow_greater = true
+allow_lesser = true
+alignment = 1
+script = ExtResource("5")
+var_name = "VVT_OffsetTorque"
+
+[node name="varname" type="Label" parent="Engine_Tuner/tune/container/SpinBox18"]
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+
+[node name="SpinBox19" type="SpinBox" parent="Engine_Tuner/tune/container"]
+custom_minimum_size = Vector2(355, 60)
+layout_mode = 2
+max_value = 1e+08
+step = 0.001
+allow_greater = true
+allow_lesser = true
+alignment = 1
+script = ExtResource("5")
+var_name = "VVT_FloatRate"
+
+[node name="varname" type="Label" parent="Engine_Tuner/tune/container/SpinBox19"]
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+
+[node name="SpinBox24" type="SpinBox" parent="Engine_Tuner/tune/container"]
+custom_minimum_size = Vector2(355, 60)
+layout_mode = 2
+max_value = 1e+08
+step = 0.001
+allow_greater = true
+allow_lesser = true
+alignment = 1
+script = ExtResource("5")
+var_name = "VVT_DeclineRate"
+
+[node name="varname" type="Label" parent="Engine_Tuner/tune/container/SpinBox24"]
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+
+[node name="SpinBox20" type="SpinBox" parent="Engine_Tuner/tune/container"]
+custom_minimum_size = Vector2(355, 60)
+layout_mode = 2
+max_value = 1e+08
+allow_greater = true
+allow_lesser = true
+alignment = 1
+script = ExtResource("5")
+var_name = "VVT_DeclineRPM"
+
+[node name="varname" type="Label" parent="Engine_Tuner/tune/container/SpinBox20"]
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+
+[node name="SpinBox21" type="SpinBox" parent="Engine_Tuner/tune/container"]
+custom_minimum_size = Vector2(355, 60)
+layout_mode = 2
+max_value = 1e+08
+step = 0.001
+allow_greater = true
+allow_lesser = true
+alignment = 1
+script = ExtResource("5")
+var_name = "VVT_DeclineSharpness"
+
+[node name="varname" type="Label" parent="Engine_Tuner/tune/container/SpinBox21"]
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+
+[node name="CheckBox" type="CheckBox" parent="Engine_Tuner/tune/container"]
+custom_minimum_size = Vector2(0, 60)
+layout_mode = 2
+script = ExtResource("5")
+var_name = "TurboEnabled"
+
+[node name="varname" type="Label" parent="Engine_Tuner/tune/container/CheckBox"]
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+
+[node name="SpinBox2" type="SpinBox" parent="Engine_Tuner/tune/container"]
+custom_minimum_size = Vector2(355, 60)
+layout_mode = 2
+max_value = 1e+08
+step = 0.001
+allow_greater = true
+allow_lesser = true
+alignment = 1
+script = ExtResource("5")
+var_name = "MaxPSI"
+
+[node name="varname" type="Label" parent="Engine_Tuner/tune/container/SpinBox2"]
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+
+[node name="SpinBox22" type="SpinBox" parent="Engine_Tuner/tune/container"]
+custom_minimum_size = Vector2(355, 60)
+layout_mode = 2
+max_value = 1e+08
+step = 0.001
+allow_greater = true
+allow_lesser = true
+alignment = 1
+script = ExtResource("5")
+var_name = "EngineCompressionRatio"
+
+[node name="varname" type="Label" parent="Engine_Tuner/tune/container/SpinBox22"]
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+
+[node name="SpinBox3" type="SpinBox" parent="Engine_Tuner/tune/container"]
+custom_minimum_size = Vector2(355, 60)
+layout_mode = 2
+max_value = 1e+08
+allow_greater = true
+allow_lesser = true
+alignment = 1
+script = ExtResource("5")
+var_name = "TurboAmount"
+
+[node name="varname" type="Label" parent="Engine_Tuner/tune/container/SpinBox3"]
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+
+[node name="back" type="Button" parent="Engine_Tuner"]
+layout_mode = 0
+anchor_left = 0.0136719
+anchor_top = 0.886667
+anchor_right = 0.142579
+anchor_bottom = 0.966667
+theme_override_fonts/font = ExtResource("5_f53yw")
+theme_override_font_sizes/font_size = 20
+text = "Back"
+
+[node name="apply" type="Button" parent="Engine_Tuner"]
+layout_mode = 0
+anchor_left = 0.163086
+anchor_top = 0.886667
+anchor_right = 0.291993
+anchor_bottom = 0.966667
+theme_override_fonts/font = ExtResource("5_f53yw")
+theme_override_font_sizes/font_size = 20
+text = "Apply"
+
+[node name="unitq" type="Button" parent="Engine_Tuner"]
+layout_mode = 0
+anchor_left = 0.373047
+anchor_top = 0.6
+anchor_right = 0.600586
+anchor_bottom = 0.643333
+theme_override_fonts/font = ExtResource("5_f53yw")
+text = "change torque unit"
+flat = true
+alignment = 2
+
+[node name="unihp" type="Button" parent="Engine_Tuner"]
+layout_mode = 0
+anchor_left = 0.373047
+anchor_top = 0.65
+anchor_right = 0.600586
+anchor_bottom = 0.693333
+theme_override_fonts/font = ExtResource("5_f53yw")
+text = "change horsepower unit"
+flat = true
+alignment = 2
+
+[node name="append" type="Button" parent="Engine_Tuner"]
+layout_mode = 0
+anchor_left = 0.311523
+anchor_top = 0.886667
+anchor_right = 0.440431
+anchor_bottom = 0.966667
+theme_override_fonts/font = ExtResource("5_f53yw")
+theme_override_font_sizes/font_size = 20
+text = "Import"
+
+[node name="label" type="Label" parent="Engine_Tuner"]
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 0.065
+theme_override_fonts/font = ExtResource("5_f53yw")
+text = "Torque Curve Editor"
+horizontal_alignment = 1
+vertical_alignment = 2
+
+[node name="confirm" type="ConfirmationDialog" parent="Engine_Tuner"]
+initial_position = 2
+
+[node name="confirm_append" type="ConfirmationDialog" parent="Engine_Tuner"]
+initial_position = 2
+
+[node name="alert" type="AcceptDialog" parent="Engine_Tuner"]
+initial_position = 2
+
+[node name="Collision" type="Control" parent="."]
+visible = false
+anchors_preset = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+
+[node name="back" type="Button" parent="Collision"]
+layout_mode = 0
+anchor_left = 0.0136719
+anchor_top = 0.886667
+anchor_right = 0.142579
+anchor_bottom = 0.966667
+theme_override_fonts/font = ExtResource("5_f53yw")
+theme_override_font_sizes/font_size = 20
+text = "Back"
+
+[node name="apply" type="Button" parent="Collision"]
+layout_mode = 0
+anchor_left = 0.163086
+anchor_top = 0.886667
+anchor_right = 0.291993
+anchor_bottom = 0.966667
+theme_override_fonts/font = ExtResource("5_f53yw")
+theme_override_font_sizes/font_size = 20
+text = "Apply"
+
+[node name="label" type="Label" parent="Collision"]
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 0.065
+text = "CollisionShape Editor"
+horizontal_alignment = 1
+vertical_alignment = 2
+
+[node name="label3" type="Label" parent="Collision"]
+layout_mode = 0
+anchor_left = 0.0410156
+anchor_top = 0.305
+anchor_right = 0.263672
+anchor_bottom = 0.37
+text = "Offset"
+horizontal_alignment = 1
+vertical_alignment = 2
+
+[node name="label4" type="Label" parent="Collision"]
+layout_mode = 0
+anchor_left = 0.0410156
+anchor_top = 0.536667
+anchor_right = 0.263672
+anchor_bottom = 0.601667
+text = "Scale"
+horizontal_alignment = 1
+vertical_alignment = 2
+
+[node name="confirm" type="ConfirmationDialog" parent="Collision"]
+initial_position = 2
+
+[node name="nothing" type="AcceptDialog" parent="Collision"]
+initial_position = 2
+dialog_text = "Nothing is selected."
+
+[node name="applied" type="AcceptDialog" parent="Collision"]
+initial_position = 2
+dialog_text = "Applied. Check your collision bounds."
+
+[node name="alert" type="AcceptDialog" parent="Collision"]
+initial_position = 2
+dialog_text = "An error occured."
+
+[node name="label2" type="Label" parent="Collision"]
+layout_mode = 0
+anchor_left = 0.0136719
+anchor_top = 0.701667
+anchor_right = 0.988281
+anchor_bottom = 0.811667
+theme_override_colors/font_color = Color(1, 0.270588, 0.270588, 1)
+text = "Warning: Currently no undo steps will be created when applying. Use with caution.
+I suggest that you duplicate the CollisionShape for backup and making its shape unique."
+vertical_alignment = 2
+autowrap_mode = 2
+
+[node name="axis_x" type="SpinBox" parent="Collision"]
+layout_mode = 0
+anchor_left = 0.0410156
+anchor_top = 0.39
+anchor_right = 0.113281
+anchor_bottom = 0.49
+min_value = -10.0
+max_value = 10.0
+step = 0.001
+allow_greater = true
+allow_lesser = true
+alignment = 1
+
+[node name="varname" type="Label" parent="Collision/axis_x"]
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+text = "X"
+
+[node name="axis_y" type="SpinBox" parent="Collision"]
+layout_mode = 0
+anchor_left = 0.116211
+anchor_top = 0.39
+anchor_right = 0.188477
+anchor_bottom = 0.49
+min_value = -10.0
+max_value = 10.0
+step = 0.001
+allow_greater = true
+allow_lesser = true
+alignment = 1
+
+[node name="varname" type="Label" parent="Collision/axis_y"]
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+text = "X"
+
+[node name="axis_z" type="SpinBox" parent="Collision"]
+layout_mode = 0
+anchor_left = 0.191406
+anchor_top = 0.39
+anchor_right = 0.263672
+anchor_bottom = 0.49
+min_value = -10.0
+max_value = 10.0
+step = 0.001
+allow_greater = true
+allow_lesser = true
+alignment = 1
+
+[node name="varname" type="Label" parent="Collision/axis_z"]
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+text = "Z"
+
+[node name="axis_x2" type="SpinBox" parent="Collision"]
+layout_mode = 0
+anchor_left = 0.0410156
+anchor_top = 0.625
+anchor_right = 0.113281
+anchor_bottom = 0.725
+min_value = -10.0
+max_value = 10.0
+step = 0.001
+value = 1.0
+allow_greater = true
+allow_lesser = true
+alignment = 1
+
+[node name="varname" type="Label" parent="Collision/axis_x2"]
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+text = "X"
+
+[node name="axis_y2" type="SpinBox" parent="Collision"]
+layout_mode = 0
+anchor_left = 0.116211
+anchor_top = 0.625
+anchor_right = 0.188477
+anchor_bottom = 0.725
+min_value = -10.0
+max_value = 10.0
+step = 0.001
+value = 1.0
+allow_greater = true
+allow_lesser = true
+alignment = 1
+
+[node name="varname" type="Label" parent="Collision/axis_y2"]
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+text = "X"
+
+[node name="axis_z2" type="SpinBox" parent="Collision"]
+layout_mode = 0
+anchor_left = 0.191406
+anchor_top = 0.625
+anchor_right = 0.263672
+anchor_bottom = 0.725
+min_value = -10.0
+max_value = 10.0
+step = 0.001
+value = 1.0
+allow_greater = true
+allow_lesser = true
+alignment = 1
+
+[node name="varname" type="Label" parent="Collision/axis_z2"]
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+text = "Z"
+
+[node name="tutors" type="Control" parent="."]
+visible = false
+anchors_preset = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+
+[node name="ColorRect" type="ColorRect" parent="tutors"]
+show_behind_parent = true
+layout_mode = 0
+anchor_left = 0.0292969
+anchor_top = 0.103333
+anchor_right = 0.833008
+anchor_bottom = 0.946667
+color = Color(0, 0, 0, 0.184314)
+
+[node name="yes" type="ScrollContainer" parent="tutors"]
+layout_mode = 0
+anchor_left = 0.0292969
+anchor_top = 0.103333
+anchor_right = 0.833008
+anchor_bottom = 0.946667
+scroll_vertical = 100
+
+[node name="container" type="VBoxContainer" parent="tutors/yes"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="start" type="Label" parent="tutors/yes/container"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("5_lt6mm")
+theme_override_font_sizes/font_size = 32
+text = "Starting"
+autowrap_mode = 2
+
+[node name="text" type="Label" parent="tutors/yes/container"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("5_f53yw")
+text = "The main playable scene is world.tscn, provided with a sample car (base car.tscn) and a map from one of the assets from the MISC directory. The \"debug\" Control node is used for monitoring and showcasing examples of pre-tuned cars from the MISC directory.
+
+"
+autowrap_mode = 2
+
+[node name="misc" type="Label" parent="tutors/yes/container"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("5_lt6mm")
+theme_override_font_sizes/font_size = 22
+text = "Directories"
+autowrap_mode = 2
+
+[node name="text2" type="Label" parent="tutors/yes/container"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("5_f53yw")
+text = "The MAIN folder is located just at the bare surface of the project. It's the core of this physics engine, whereas MISC is just additional content that can be reused and edited. Deleting anything in the core folder (MAIN) may cause the physics engine to not work, while MISC itself will just break the project on reload.
+
+The \"misc\" (uncapitalised) folder located within MAIN are also additional content which I find useful. You can also modify or delete/replace them too.
+
+"
+autowrap_mode = 2
+
+[node name="disc" type="Label" parent="tutors/yes/container"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("5_lt6mm")
+theme_override_font_sizes/font_size = 22
+text = "Note"
+autowrap_mode = 2
+
+[node name="text7" type="Label" parent="tutors/yes/container"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("5_f53yw")
+text = "Knowing both the basics of Godot's functionality and an intermediate knowledge on cars are recommended. If you need help - ask questions on the itch.io page.
+"
+autowrap_mode = 2
+
+[node name="button4" type="Button" parent="tutors/yes/container"]
+modulate = Color(0, 0.635294, 1, 1)
+layout_mode = 2
+size_flags_horizontal = 0
+theme_override_fonts/font = ExtResource("5_f53yw")
+text = "https://jreo.itch.io/rcp4/community"
+flat = true
+
+[node name="text13" type="Label" parent="tutors/yes/container"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("5_f53yw")
+text = "For live chatting, join the Discord server."
+autowrap_mode = 2
+
+[node name="button5" type="Button" parent="tutors/yes/container"]
+modulate = Color(0, 0.635294, 1, 1)
+layout_mode = 2
+size_flags_horizontal = 0
+theme_override_fonts/font = ExtResource("5_f53yw")
+text = "https://discord.gg/kCvNBujcfR"
+flat = true
+
+[node name="text12" type="Label" parent="tutors/yes/container"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("5_f53yw")
+text = "
+
+"
+autowrap_mode = 2
+
+[node name="migrate" type="Label" parent="tutors/yes/container"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("5_lt6mm")
+theme_override_font_sizes/font_size = 32
+text = "Migrating and implementing"
+autowrap_mode = 2
+
+[node name="text3" type="Label" parent="tutors/yes/container"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("5_f53yw")
+text = "When you want to add VitaVehicle's car simulator to an existing Godot game, you only need to copy MAIN to make your cars move.
+
+Also you would want to include the vitavehicle_ui addon for the use of it's tools as necessary, along with the fonts. You then have to go to Project>Project Settings>AutoLoad, open vitavehicle.gd from MAIN, name it \"VitaVehicleSimulation\", and click \"Add\".
+
+"
+autowrap_mode = 2
+
+[node name="setup" type="Label" parent="tutors/yes/container"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("5_lt6mm")
+theme_override_font_sizes/font_size = 22
+text = "Creating a new vehicle"
+autowrap_mode = 2
+
+[node name="text4" type="Label" parent="tutors/yes/container"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("5_f53yw")
+text = "Now you've got the required files, here are steps and procedures you may have to take:
+
+1. Add a RigidBody node and attach car.gd from MAIN
+
+2. Add a CollisionShape and mesh to your liking. Using 1 CollisionShape is recommended as of now.
+
+3. Add a Position3D and name it \"DRAG_CENTRE\" and position it near the centre of mass of the RigidBody. Typically if you have a single CollisionShape (which is recommended), copy its translation coords and paste it on the Position3D.
+
+4. Drag wheel.tscn off the FileSystem panel and parent under said RigidBody node and position it as you'd wish. Make sure to enable Editable Children in order to parent wheel meshes and stuff within the animation node. Repeat this step according to how many wheels you need.
+
+5. Drag the tscn's from engine sound, mechanical sounds, and/or tyre sounds folders which you have copied, and parent them under your RigidBody.
+
+
+"
+autowrap_mode = 2
+
+[node name="tune" type="Label" parent="tutors/yes/container"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("5_lt6mm")
+theme_override_font_sizes/font_size = 32
+text = "Tuning"
+autowrap_mode = 2
+
+[node name="ctrl" type="Label" parent="tutors/yes/container"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("5_lt6mm")
+theme_override_font_sizes/font_size = 22
+text = "Controls"
+autowrap_mode = 2
+
+[node name="text10" type="Label" parent="tutors/yes/container"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("5_f53yw")
+text = "Your vehicle has variables on steering, throttle response, braking, etc, which you can adjust to your liking. If you want every car to have the same control setups, open vitavehicle.gd and adjust the identical variables there, check  \"Use Global Control Settings\" on all cars you have and they will have the same control settings.
+
+"
+autowrap_mode = 2
+
+[node name="drivetrain" type="Label" parent="tutors/yes/container"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("5_lt6mm")
+theme_override_font_sizes/font_size = 22
+text = "Drivetrain"
+autowrap_mode = 2
+
+[node name="text5" type="Label" parent="tutors/yes/container"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("5_f53yw")
+text = "Your car has a variable called \"Powered Wheels\". It delivers torque to the wheels that are listed in the array by their names. You can increase or decrease the number of driven wheels by adjusting the size of the array, but invalid names would break the code.
+
+There are variables provided on each wheels that needed to communicate with another wheel too. For example: Differentials and swaybars - Set these variables to the name of another wheel, typically the opposing ones in order to connect a swaybar and/or limited-slip differentials.
+Tip: Don't connect differentials to any undriven wheels.
+
+"
+autowrap_mode = 2
+
+[node name="susp" type="Label" parent="tutors/yes/container"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("5_lt6mm")
+theme_override_font_sizes/font_size = 22
+text = "Suspensions and tyres"
+autowrap_mode = 2
+
+[node name="text8" type="Label" parent="tutors/yes/container"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("5_f53yw")
+text = "On each wheel nodes - suspension, axle geometry, and tyre pressure are variables which you could adjust in accordance to how heavy your vehicle is, combined with your liking. Increase \"A_Geometry1\" when too much negative camber is applied upon compression. You will want to increase tyre pressure depending how heavy your car is, or increase \"B Saturation\" and tyre stiffness in the compound settings if you have a heavy duty vehicle; a truck for example. A value of 2 could work for >5000kg vehicles. However vehicles of this class are still unstable on VitaVehicle.
+
+"
+autowrap_mode = 2
+
+[node name="engine" type="Label" parent="tutors/yes/container"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("5_lt6mm")
+theme_override_font_sizes/font_size = 22
+text = "Engine"
+autowrap_mode = 2
+
+[node name="text6" type="Label" parent="tutors/yes/container"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("5_f53yw")
+text = "On the RigidBody, there are variables which you could adjust engine power, especially ones that has something to do with \"torque\" or \"rpm\", typically you'd want to increase Clutch Grip if the engine is too powerful, otherwise torque wont have anywhere to go. To increase max speed on a gear - final drive, gear ratios, and reverse ratios are the ways to tweak it. It's also the case that higher engine redlines gives more speed.
+
+Check out the Torque Curve Editor to know how an engine will perform on a set of variables. To know how your current car performs - select the car's RigidBody itself, go back to the VitaVehicle Interface, and click \"Import\". You can also fine-tune the variables on the right panel, and click \"Apply\" to save settings to the car you selected. The torque and power graph tells how torque is delivered on specific RPMs. The small up and down buttons next to the number boxes can be dragged likewise or clicked for precise tuning of the torque curvature.
+
+"
+autowrap_mode = 2
+
+[node name="final" type="Label" parent="tutors/yes/container"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("5_lt6mm")
+theme_override_font_sizes/font_size = 22
+text = "Finalising"
+autowrap_mode = 2
+
+[node name="text9" type="Label" parent="tutors/yes/container"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("5_f53yw")
+text = "Test driving your vehicle is recommended to know whether or not it handles like how you want it to.
+I suggest doing this almost everytime you tweak a variable.
+
+
+"
+autowrap_mode = 2
+
+[node name="start2" type="Label" parent="tutors/yes/container"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("5_lt6mm")
+theme_override_font_sizes/font_size = 32
+text = "Extra"
+autowrap_mode = 2
+
+[node name="text11" type="Label" parent="tutors/yes/container"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("5_f53yw")
+text = "This page is subject to change in the future and may provide more ways to help you with your use of VitaVehicle."
+autowrap_mode = 2
+
+[node name="back" type="Button" parent="tutors"]
+layout_mode = 0
+anchor_left = 0.859375
+anchor_top = 0.886667
+anchor_right = 0.988282
+anchor_bottom = 0.966667
+theme_override_fonts/font = ExtResource("5_f53yw")
+theme_override_font_sizes/font_size = 20
+text = "Back"
+
+[node name="refer" type="Control" parent="."]
+visible = false
+anchors_preset = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+
+[node name="ColorRect" type="ColorRect" parent="refer"]
+show_behind_parent = true
+layout_mode = 0
+anchor_left = 0.0292969
+anchor_top = 0.103333
+anchor_right = 0.833008
+anchor_bottom = 0.946667
+color = Color(0, 0, 0, 0.184314)
+
+[node name="yes" type="ScrollContainer" parent="refer"]
+layout_mode = 0
+anchor_left = 0.0292969
+anchor_top = 0.103333
+anchor_right = 0.833008
+anchor_bottom = 0.946667
+
+[node name="container" type="VBoxContainer" parent="refer/yes"]
+layout_mode = 2
+size_flags_horizontal = 3
+script = ExtResource("6")
+
+[node name="category1" type="Button" parent="refer/yes/container"]
+custom_minimum_size = Vector2(0, 82)
+layout_mode = 2
+theme_override_fonts/font = ExtResource("5_f53yw")
+theme_override_font_sizes/font_size = 64
+text = "Text"
+alignment = 0
+clip_text = true
+script = ExtResource("7")
+
+[node name="category2" type="Button" parent="refer/yes/container"]
+custom_minimum_size = Vector2(0, 44)
+layout_mode = 2
+theme_override_fonts/font = ExtResource("5_f53yw")
+theme_override_font_sizes/font_size = 32
+text = "Text"
+alignment = 0
+clip_text = true
+script = ExtResource("7")
+
+[node name="vari" type="Button" parent="refer/yes/container"]
+custom_minimum_size = Vector2(0, 25)
+layout_mode = 2
+theme_override_fonts/font = ExtResource("5_f53yw")
+text = "Text"
+alignment = 0
+clip_text = true
+script = ExtResource("7")
+
+[node name="desc" type="Label" parent="refer/yes/container"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("5_f53yw")
+text = "
+Text
+"
+
+[node name="type" type="Label" parent="refer/yes/container"]
+custom_minimum_size = Vector2(0, 41)
+layout_mode = 2
+theme_override_fonts/font = ExtResource("5_f53yw")
+text = "Text
+"
+
+[node name="back" type="Button" parent="refer"]
+layout_mode = 0
+anchor_left = 0.859375
+anchor_top = 0.886667
+anchor_right = 0.988282
+anchor_bottom = 0.966667
+theme_override_fonts/font = ExtResource("5_f53yw")
+theme_override_font_sizes/font_size = 20
+text = "Back"
+
+[node name="menu" type="Control" parent="."]
+anchors_preset = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+
+[node name="tune_engine" type="Button" parent="menu"]
+layout_mode = 0
+anchor_left = 0.0205078
+anchor_top = 0.475
+anchor_right = 0.452148
+anchor_bottom = 0.526667
+theme_override_fonts/font = ExtResource("5_f53yw")
+text = "Torque Curve Editor"
+alignment = 0
+clip_text = true
+
+[node name="dist" type="Button" parent="menu"]
+layout_mode = 0
+anchor_left = 0.0205078
+anchor_top = 0.541667
+anchor_right = 0.452148
+anchor_bottom = 0.593334
+theme_override_fonts/font = ExtResource("5_f53yw")
+text = "CollisionShape Editor"
+alignment = 0
+clip_text = true
+
+[node name="watermark" type="TextureRect" parent="menu"]
+layout_mode = 0
+anchor_left = 0.299805
+anchor_top = 0.015
+anchor_right = 0.700195
+anchor_bottom = 0.38
+texture = ExtResource("2")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="label" type="Label" parent="menu"]
+layout_mode = 0
+anchor_left = 0.0312498
+anchor_top = 0.38
+anchor_right = 0.441406
+anchor_bottom = 0.445
+theme_override_fonts/font = ExtResource("5_f53yw")
+theme_override_font_sizes/font_size = 20
+text = "Tools Menu"
+horizontal_alignment = 1
+vertical_alignment = 2
+
+[node name="button" type="Button" parent="menu"]
+layout_mode = 0
+anchor_left = 0.545898
+anchor_top = 0.475
+anchor_right = 0.977538
+anchor_bottom = 0.526667
+theme_override_fonts/font = ExtResource("5_f53yw")
+text = "API References"
+alignment = 0
+clip_text = true
+
+[node name="button2" type="Button" parent="menu"]
+layout_mode = 0
+anchor_left = 0.545898
+anchor_top = 0.541666
+anchor_right = 0.977538
+anchor_bottom = 0.593333
+theme_override_fonts/font = ExtResource("5_f53yw")
+text = "Help"
+alignment = 0
+clip_text = true
+
+[node name="button3" type="Button" parent="menu"]
+layout_mode = 0
+anchor_left = 0.545898
+anchor_top = 0.608333
+anchor_right = 0.977538
+anchor_bottom = 0.66
+theme_override_fonts/font = ExtResource("5_f53yw")
+disabled = true
+text = "Unnecessary history (WIP)"
+alignment = 0
+clip_text = true
+
+[node name="button4" type="Button" parent="menu"]
+layout_mode = 0
+anchor_left = 0.545898
+anchor_top = 0.675
+anchor_right = 0.977538
+anchor_bottom = 0.726667
+theme_override_fonts/font = ExtResource("5_f53yw")
+text = "Information"
+alignment = 0
+clip_text = true
+
+[node name="label2" type="Label" parent="menu"]
+layout_mode = 0
+anchor_left = 0.55664
+anchor_top = 0.38
+anchor_right = 0.966796
+anchor_bottom = 0.445
+theme_override_fonts/font = ExtResource("5_f53yw")
+theme_override_font_sizes/font_size = 20
+text = "Misc"
+horizontal_alignment = 1
+vertical_alignment = 2
+
+[node name="label3" type="Label" parent="menu"]
+layout_mode = 0
+anchor_top = 0.763333
+anchor_right = 0.214844
+anchor_bottom = 1.0
+theme_override_fonts/font = ExtResource("5_f53yw")
+text = "Made by: Jreo"
+vertical_alignment = 2
+
+[node name="inform" type="Control" parent="."]
+visible = false
+anchors_preset = 0
+anchor_left = 0.102539
+anchor_top = 0.12
+anchor_right = 0.897461
+anchor_bottom = 0.881667
+
+[node name="background" type="ColorRect" parent="inform"]
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+color = Color(0, 0, 0, 0.5)
+
+[node name="scroll" type="ScrollContainer" parent="inform"]
+layout_mode = 0
+anchor_left = 0.41769
+anchor_top = 0.0525164
+anchor_right = 0.974202
+anchor_bottom = 0.947484
+
+[node name="container" type="VBoxContainer" parent="inform/scroll"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="credlabel" type="Label" parent="inform/scroll/container"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("5_f53yw")
+text = "--------------------------------------------------
+Credits/Sources:
+--------------------------------------------------"
+horizontal_alignment = 1
+
+[node name="cred" type="Label" parent="inform/scroll/container"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("5_f53yw")
+text = "Contributors:
+devHrytsan
+r0401 (aka raghid) - Godot 4 Port"
+
+[node name="watermark" type="TextureRect" parent="inform"]
+layout_mode = 0
+anchor_left = 0.02457
+anchor_top = 0.02407
+anchor_right = 0.398
+anchor_bottom = 0.319
+texture = ExtResource("2")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="clabel" type="Label" parent="inform"]
+layout_mode = 0
+anchor_left = 0.0651106
+anchor_top = 0.319475
+anchor_right = 0.379607
+anchor_bottom = 0.363238
+mouse_filter = 1
+theme_override_fonts/font = ExtResource("5_f53yw")
+text = "Powered by Godot"
+horizontal_alignment = 1
+
+[node name="back" type="Button" parent="inform"]
+layout_mode = 0
+anchor_left = 0.968059
+anchor_top = 1.02845
+anchor_right = 1.09697
+anchor_bottom = 1.10845
+theme_override_fonts/font = ExtResource("5_f53yw")
+theme_override_font_sizes/font_size = 20
+text = "Back"
+
+[connection signal="pressed" from="Engine_Tuner/back" to="." method="press" binds= ["back"]]
+[connection signal="pressed" from="Engine_Tuner/apply" to="." method="press" binds= ["engine_apply"]]
+[connection signal="pressed" from="Engine_Tuner/unitq" to="." method="press" binds= ["unit_tq"]]
+[connection signal="pressed" from="Engine_Tuner/unihp" to="." method="press" binds= ["unit_hp"]]
+[connection signal="pressed" from="Engine_Tuner/append" to="." method="press" binds= ["engine_append"]]
+[connection signal="confirmed" from="Engine_Tuner/confirm" to="." method="confirm" binds= ["engine_apply"]]
+[connection signal="confirmed" from="Engine_Tuner/confirm_append" to="." method="confirm" binds= ["engine_append"]]
+[connection signal="pressed" from="Collision/back" to="." method="press" binds= ["back"]]
+[connection signal="pressed" from="Collision/apply" to="." method="press" binds= ["collide_apply"]]
+[connection signal="confirmed" from="Collision/confirm" to="." method="confirm" binds= ["engine_apply"]]
+[connection signal="pressed" from="tutors/yes/container/button4" to="." method="press" binds= ["itch.io"]]
+[connection signal="pressed" from="tutors/yes/container/button5" to="." method="press" binds= ["discord"]]
+[connection signal="pressed" from="tutors/back" to="." method="press" binds= ["back"]]
+[connection signal="pressed" from="refer/yes/container/category1" to="refer/yes/container/category1" method="_on_vari_pressed"]
+[connection signal="pressed" from="refer/yes/container/category2" to="refer/yes/container/category2" method="_on_vari_pressed"]
+[connection signal="pressed" from="refer/yes/container/vari" to="refer/yes/container/vari" method="_on_vari_pressed"]
+[connection signal="pressed" from="refer/back" to="." method="press" binds= ["back"]]
+[connection signal="pressed" from="menu/tune_engine" to="." method="press" binds= ["engine"]]
+[connection signal="pressed" from="menu/dist" to="." method="press" binds= ["weight_dist"]]
+[connection signal="pressed" from="menu/button" to="." method="press" binds= ["api"]]
+[connection signal="pressed" from="menu/button2" to="." method="press" binds= ["help"]]
+[connection signal="pressed" from="menu/button3" to="." method="press" binds= ["engine"]]
+[connection signal="pressed" from="menu/button4" to="." method="press" binds= ["info"]]
+[connection signal="pressed" from="inform/back" to="." method="press" binds= ["back"]]

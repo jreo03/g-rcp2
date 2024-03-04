@@ -1,0 +1,1158 @@
+[gd_scene load_steps=17 format=3 uid="uid://b77dj0608nvq0"]
+
+[ext_resource type="Texture2D" uid="uid://b315i7ikjj32c" path="res://logo.png" id="2"]
+[ext_resource type="Script" path="res://MISC/misc scripts/debug.gd" id="3"]
+[ext_resource type="Script" path="res://MISC/scene swapper/scene swapper.gd" id="4"]
+[ext_resource type="Script" path="res://MISC/graphics_config/graphics config.gd" id="5"]
+[ext_resource type="Script" path="res://MISC/misc scripts/show_info.gd" id="6"]
+[ext_resource type="Script" path="res://MISC/controls config/slider_variables.gd" id="7"]
+[ext_resource type="FontFile" uid="uid://btyvoi7jkhec0" path="res://FONT/DroidSans.ttf" id="7_coiix"]
+[ext_resource type="Script" path="res://MISC/controls config/run.gd" id="8"]
+[ext_resource type="Script" path="res://MISC/controls config/check_variables.gd" id="9"]
+[ext_resource type="Script" path="res://MISC/car swapper/car swapper.gd" id="10"]
+[ext_resource type="Texture2D" uid="uid://cr5l3r8wqkyn6" path="res://MAIN/misc/textures/sw.png" id="11"]
+[ext_resource type="Texture2D" uid="uid://b7tkt12prqch8" path="res://MAIN/misc/textures/sw_desired.png" id="12"]
+[ext_resource type="PackedScene" uid="uid://b1vo60v1pjs6w" path="res://MISC/tachometre/tacho.tscn" id="13"]
+[ext_resource type="PackedScene" path="res://MISC/vertical progress bar/bar.tscn" id="14"]
+[ext_resource type="PackedScene" uid="uid://cnjbclsh2lklc" path="res://MISC/visual gravity system/vgs.tscn" id="15"]
+[ext_resource type="PackedScene" uid="uid://2ojbutsqhnh4" path="res://MISC/graph/display.tscn" id="16"]
+
+[node name="debug" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("3")
+
+[node name="throttle" parent="." instance=ExtResource("14")]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.979
+anchor_top = 1.0
+anchor_right = 0.979
+anchor_bottom = 1.0
+offset_left = -269.496
+offset_top = -168.0
+offset_right = -261.496
+offset_bottom = -44.0
+
+[node name="ColorRect" parent="throttle" index="0"]
+layout_mode = 1
+anchors_preset = 15
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0.501961, 1, 1)
+
+[node name="brake" parent="." instance=ExtResource("14")]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.979
+anchor_top = 1.0
+anchor_right = 0.979
+anchor_bottom = 1.0
+offset_left = -284.496
+offset_top = -168.0
+offset_right = -276.496
+offset_bottom = -44.0
+
+[node name="ColorRect" parent="brake" index="0"]
+layout_mode = 1
+anchors_preset = 15
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(1, 0, 0, 1)
+
+[node name="handbrake" parent="." instance=ExtResource("14")]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.979
+anchor_top = 1.0
+anchor_right = 0.979
+anchor_bottom = 1.0
+offset_left = -299.496
+offset_top = -168.0
+offset_right = -291.496
+offset_bottom = -44.0
+
+[node name="ColorRect" parent="handbrake" index="0"]
+layout_mode = 1
+anchors_preset = 15
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.5, 0, 1, 1)
+
+[node name="clutch" parent="." instance=ExtResource("14")]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.979
+anchor_top = 1.0
+anchor_right = 0.979
+anchor_bottom = 1.0
+offset_left = -314.496
+offset_top = -168.0
+offset_right = -306.496
+offset_bottom = -44.0
+
+[node name="ColorRect" parent="clutch" index="0"]
+layout_mode = 1
+anchors_preset = 15
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="container" type="VBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="fps" type="Label" parent="container"]
+layout_mode = 2
+text = "debug"
+
+[node name="weight_dist" type="Label" parent="container"]
+layout_mode = 2
+text = "debug"
+
+[node name="sw" type="TextureRect" parent="."]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -64.0
+offset_top = -152.0
+offset_right = 64.0
+offset_bottom = -24.0
+grow_horizontal = 2
+grow_vertical = 0
+pivot_offset = Vector2(64, 64)
+texture = ExtResource("11")
+expand_mode = 1
+
+[node name="sw_desired" type="TextureRect" parent="."]
+custom_minimum_size = Vector2(128, 128)
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -64.0
+offset_top = -152.0
+offset_right = 64.0
+offset_bottom = -24.0
+grow_horizontal = 2
+grow_vertical = 0
+pivot_offset = Vector2(64, 64)
+texture = ExtResource("12")
+expand_mode = 1
+
+[node name="power_graph" parent="." instance=ExtResource("16")]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.0166016
+anchor_top = 0.19
+anchor_right = 0.203125
+anchor_bottom = 0.368333
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="ColorRect" type="ColorRect" parent="power_graph"]
+show_behind_parent = true
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+color = Color(0, 0, 0, 0.184314)
+
+[node name="rpm" type="ColorRect" parent="power_graph"]
+show_behind_parent = true
+custom_minimum_size = Vector2(2, 107)
+layout_mode = 1
+anchors_preset = 9
+anchor_bottom = 1.0
+grow_vertical = 2
+
+[node name="redline" type="ColorRect" parent="power_graph"]
+show_behind_parent = true
+custom_minimum_size = Vector2(2, 107)
+layout_mode = 0
+anchor_bottom = 1.0
+color = Color(1, 0, 0, 1)
+
+[node name="tacho" parent="." instance=ExtResource("13")]
+layout_mode = 1
+anchor_left = 0.979
+anchor_top = 1.0
+anchor_right = 0.979
+anchor_bottom = 1.0
+offset_left = -256.0
+offset_top = -253.0
+offset_right = -0.495972
+Turbo_Visible = true
+Max_PSI = 32.0
+
+[node name="abs" type="Label" parent="tacho"]
+self_modulate = Color(1, 1, 0, 1)
+layout_mode = 1
+anchors_preset = 9
+anchor_bottom = 1.0
+offset_left = 61.0
+offset_top = 82.0
+offset_right = 96.0
+offset_bottom = -144.0
+grow_vertical = 2
+theme_override_fonts/font = ExtResource("7_coiix")
+theme_override_font_sizes/font_size = 20
+text = "ABS"
+
+[node name="tcs" type="Label" parent="tacho"]
+self_modulate = Color(1, 1, 0, 1)
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.23828
+anchor_top = 0.425781
+anchor_right = 0.374999
+anchor_bottom = 0.53125
+offset_left = 0.1185
+offset_top = 1.2774
+offset_right = -1.81375
+offset_bottom = 1.59375
+theme_override_fonts/font = ExtResource("7_coiix")
+theme_override_font_sizes/font_size = 20
+text = "TCS"
+
+[node name="esp" type="Label" parent="tacho"]
+self_modulate = Color(1, 1, 0, 1)
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.23828
+anchor_top = 0.519531
+anchor_right = 0.374999
+anchor_bottom = 0.625
+offset_left = 0.1185
+offset_top = 1.55865
+offset_right = -1.81375
+offset_bottom = 1.875
+theme_override_fonts/font = ExtResource("7_coiix")
+theme_override_font_sizes/font_size = 20
+text = "ESP"
+
+[node name="rpm" type="Label" parent="tacho"]
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 0.191406
+anchor_right = 1.0
+anchor_bottom = 0.363281
+theme_override_fonts/font = ExtResource("7_coiix")
+theme_override_font_sizes/font_size = 36
+text = "0"
+horizontal_alignment = 1
+
+[node name="speedm" type="Label" parent="tacho"]
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 0.617188
+anchor_right = 1.0
+anchor_bottom = 0.789063
+theme_override_fonts/font = ExtResource("7_coiix")
+theme_override_font_sizes/font_size = 20
+text = "MPH: 888"
+horizontal_alignment = 1
+
+[node name="speedk" type="Label" parent="tacho"]
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 0.719
+anchor_right = 1.0
+anchor_bottom = 0.891
+offset_top = 2.093
+offset_right = 0.495972
+offset_bottom = 2.57701
+theme_override_fonts/font = ExtResource("7_coiix")
+theme_override_font_sizes/font_size = 20
+text = "KM/PH: 888"
+horizontal_alignment = 1
+
+[node name="gear" type="Label" parent="tacho"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.176
+anchor_top = 0.422
+anchor_right = 1.176
+anchor_bottom = 0.594
+theme_override_fonts/font = ExtResource("7_coiix")
+theme_override_font_sizes/font_size = 36
+text = "N"
+horizontal_alignment = 1
+
+[node name="tq" type="Label" parent="."]
+layout_mode = 0
+anchor_left = 0.0126953
+anchor_top = 0.375
+anchor_right = 0.382813
+anchor_bottom = 0.416666
+theme_override_colors/font_color = Color(0.501961, 0.501961, 1, 1)
+text = "Torque: 000.0 UNIT @ 00000 RPM"
+
+[node name="hp" type="Label" parent="."]
+layout_mode = 0
+anchor_left = 0.0126953
+anchor_top = 0.411666
+anchor_right = 0.382813
+anchor_bottom = 0.453333
+theme_override_colors/font_color = Color(1, 0.501961, 0.501961, 1)
+text = "Power: 000.0 UNIT @ 00000 RPM"
+
+[node name="g" type="Label" parent="."]
+layout_mode = 0
+anchor_left = 0.0126953
+anchor_top = 0.658333
+anchor_right = 0.382813
+anchor_bottom = 0.806666
+text = "GS
+7
+7
+7"
+
+[node name="vgs" parent="." instance=ExtResource("15")]
+custom_minimum_size = Vector2(128, 128)
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.07
+anchor_top = 0.665
+anchor_right = 0.07
+anchor_bottom = 0.665
+offset_left = -63.64
+offset_top = -127.92
+offset_right = 64.36
+offset_bottom = 0.0799561
+
+[node name="controls manipulator" type="Control" parent="."]
+visible = false
+anchors_preset = 0
+anchor_left = 0.334961
+anchor_top = 0.1975
+anchor_right = 0.665039
+anchor_bottom = 0.8025
+script = ExtResource("8")
+
+[node name="background" type="ColorRect" parent="controls manipulator"]
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+color = Color(0, 0, 0, 0.5)
+
+[node name="scroll" type="ScrollContainer" parent="controls manipulator"]
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+
+[node name="container" type="VBoxContainer" parent="controls manipulator/scroll"]
+layout_mode = 2
+
+[node name="HSlider7" type="HSlider" parent="controls manipulator/scroll/container"]
+custom_minimum_size = Vector2(240, 60)
+layout_mode = 2
+max_value = 2.0
+script = ExtResource("7")
+var_name = "GEAR_ASSIST"
+
+[node name="text" type="Label" parent="controls manipulator/scroll/container/HSlider7"]
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+text = "Shift Assist Level"
+
+[node name="amount" type="Label" parent="controls manipulator/scroll/container/HSlider7"]
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+text = "0.0"
+vertical_alignment = 2
+
+[node name="HSlider16" type="HSlider" parent="controls manipulator/scroll/container"]
+custom_minimum_size = Vector2(240, 60)
+layout_mode = 2
+min_value = 1.0
+max_value = 2.0
+step = 0.001
+value = 1.0
+script = ExtResource("7")
+var_name = "SteerSensitivity"
+
+[node name="text" type="Label" parent="controls manipulator/scroll/container/HSlider16"]
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+text = "Steering Sensitivity"
+
+[node name="amount" type="Label" parent="controls manipulator/scroll/container/HSlider16"]
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+text = "0.0"
+vertical_alignment = 2
+
+[node name="CheckBox" type="CheckBox" parent="controls manipulator/scroll/container"]
+custom_minimum_size = Vector2(240, 60)
+layout_mode = 2
+script = ExtResource("9")
+var_name = "UseMouseSteering"
+
+[node name="text" type="Label" parent="controls manipulator/scroll/container/CheckBox"]
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+text = "Use Mouse Steering"
+
+[node name="amount" type="Label" parent="controls manipulator/scroll/container/CheckBox"]
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+text = "false"
+vertical_alignment = 2
+
+[node name="CheckBox2" type="CheckBox" parent="controls manipulator/scroll/container"]
+custom_minimum_size = Vector2(240, 60)
+layout_mode = 2
+script = ExtResource("9")
+var_name = "UseAccelerometreSteering"
+
+[node name="text" type="Label" parent="controls manipulator/scroll/container/CheckBox2"]
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+text = "Use Accelerometre Steering"
+
+[node name="amount" type="Label" parent="controls manipulator/scroll/container/CheckBox2"]
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+text = "false"
+vertical_alignment = 2
+
+[node name="HSlider4" type="HSlider" parent="controls manipulator/scroll/container"]
+custom_minimum_size = Vector2(240, 60)
+layout_mode = 2
+max_value = 0.2
+step = 0.001
+script = ExtResource("7")
+var_name = "SteerAmountDecay"
+
+[node name="text" type="Label" parent="controls manipulator/scroll/container/HSlider4"]
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+text = "Steer Amount Decay"
+
+[node name="amount" type="Label" parent="controls manipulator/scroll/container/HSlider4"]
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+text = "0.0"
+vertical_alignment = 2
+
+[node name="HSlider5" type="HSlider" parent="controls manipulator/scroll/container"]
+custom_minimum_size = Vector2(240, 60)
+layout_mode = 2
+max_value = 2.0
+step = 0.001
+script = ExtResource("7")
+var_name = "SteeringAssistance"
+
+[node name="text" type="Label" parent="controls manipulator/scroll/container/HSlider5"]
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+text = "Steering Assistance"
+
+[node name="amount" type="Label" parent="controls manipulator/scroll/container/HSlider5"]
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+text = "0.0"
+vertical_alignment = 2
+
+[node name="HSlider6" type="HSlider" parent="controls manipulator/scroll/container"]
+custom_minimum_size = Vector2(240, 60)
+layout_mode = 2
+max_value = 1.0
+step = 0.001
+script = ExtResource("7")
+var_name = "SteeringAssistanceAngular"
+
+[node name="text" type="Label" parent="controls manipulator/scroll/container/HSlider6"]
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+text = "Steering Assistance Angular"
+
+[node name="amount" type="Label" parent="controls manipulator/scroll/container/HSlider6"]
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+text = "0.0"
+vertical_alignment = 2
+
+[node name="HSlider8" type="HSlider" parent="controls manipulator/scroll/container"]
+custom_minimum_size = Vector2(240, 60)
+layout_mode = 2
+max_value = 1.0
+step = 0.001
+script = ExtResource("7")
+var_name = "OnThrottleRate"
+
+[node name="text" type="Label" parent="controls manipulator/scroll/container/HSlider8"]
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+text = "On Throttle Rate"
+
+[node name="amount" type="Label" parent="controls manipulator/scroll/container/HSlider8"]
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+text = "0.0"
+vertical_alignment = 2
+
+[node name="HSlider9" type="HSlider" parent="controls manipulator/scroll/container"]
+custom_minimum_size = Vector2(240, 60)
+layout_mode = 2
+max_value = 1.0
+step = 0.001
+script = ExtResource("7")
+var_name = "OffThrottleRate"
+
+[node name="text" type="Label" parent="controls manipulator/scroll/container/HSlider9"]
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+text = "Off Throttle Rate"
+
+[node name="amount" type="Label" parent="controls manipulator/scroll/container/HSlider9"]
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+text = "0.0"
+vertical_alignment = 2
+
+[node name="HSlider10" type="HSlider" parent="controls manipulator/scroll/container"]
+custom_minimum_size = Vector2(240, 60)
+layout_mode = 2
+max_value = 1.0
+step = 0.001
+script = ExtResource("7")
+var_name = "OnBrakeRate"
+
+[node name="text" type="Label" parent="controls manipulator/scroll/container/HSlider10"]
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+text = "On Brake Rate"
+
+[node name="amount" type="Label" parent="controls manipulator/scroll/container/HSlider10"]
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+text = "0.0"
+vertical_alignment = 2
+
+[node name="HSlider11" type="HSlider" parent="controls manipulator/scroll/container"]
+custom_minimum_size = Vector2(240, 60)
+layout_mode = 2
+max_value = 1.0
+step = 0.001
+script = ExtResource("7")
+var_name = "OffBrakeRate"
+
+[node name="text" type="Label" parent="controls manipulator/scroll/container/HSlider11"]
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+text = "Off Brake Rate"
+
+[node name="amount" type="Label" parent="controls manipulator/scroll/container/HSlider11"]
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+text = "0.0"
+vertical_alignment = 2
+
+[node name="HSlider12" type="HSlider" parent="controls manipulator/scroll/container"]
+custom_minimum_size = Vector2(240, 60)
+layout_mode = 2
+max_value = 1.0
+step = 0.001
+script = ExtResource("7")
+var_name = "OnHandbrakeRate"
+
+[node name="text" type="Label" parent="controls manipulator/scroll/container/HSlider12"]
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+text = "On Handbrake Rate"
+
+[node name="amount" type="Label" parent="controls manipulator/scroll/container/HSlider12"]
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+text = "0.0"
+vertical_alignment = 2
+
+[node name="HSlider13" type="HSlider" parent="controls manipulator/scroll/container"]
+custom_minimum_size = Vector2(240, 60)
+layout_mode = 2
+max_value = 1.0
+step = 0.001
+script = ExtResource("7")
+var_name = "OffHandbrakeRate"
+
+[node name="text" type="Label" parent="controls manipulator/scroll/container/HSlider13"]
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+text = "Off Handbrake Rate"
+
+[node name="amount" type="Label" parent="controls manipulator/scroll/container/HSlider13"]
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+text = "0.0"
+vertical_alignment = 2
+
+[node name="HSlider14" type="HSlider" parent="controls manipulator/scroll/container"]
+custom_minimum_size = Vector2(240, 60)
+layout_mode = 2
+max_value = 1.0
+step = 0.001
+script = ExtResource("7")
+var_name = "OnClutchRate"
+
+[node name="text" type="Label" parent="controls manipulator/scroll/container/HSlider14"]
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+text = "On Clutch Rate"
+
+[node name="amount" type="Label" parent="controls manipulator/scroll/container/HSlider14"]
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+text = "0.0"
+vertical_alignment = 2
+
+[node name="HSlider15" type="HSlider" parent="controls manipulator/scroll/container"]
+custom_minimum_size = Vector2(240, 60)
+layout_mode = 2
+max_value = 1.0
+step = 0.001
+script = ExtResource("7")
+var_name = "OffClutchRate"
+
+[node name="text" type="Label" parent="controls manipulator/scroll/container/HSlider15"]
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+text = "Off Clutch Rate"
+
+[node name="amount" type="Label" parent="controls manipulator/scroll/container/HSlider15"]
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+text = "0.0"
+vertical_alignment = 2
+
+[node name="HSlider17" type="HSlider" parent="controls manipulator/scroll/container"]
+custom_minimum_size = Vector2(240, 60)
+layout_mode = 2
+max_value = 1.0
+step = 0.001
+script = ExtResource("7")
+var_name = "MaxThrottle"
+
+[node name="text" type="Label" parent="controls manipulator/scroll/container/HSlider17"]
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+text = "Max Throttle"
+
+[node name="amount" type="Label" parent="controls manipulator/scroll/container/HSlider17"]
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+text = "0.0"
+vertical_alignment = 2
+
+[node name="HSlider18" type="HSlider" parent="controls manipulator/scroll/container"]
+custom_minimum_size = Vector2(240, 60)
+layout_mode = 2
+max_value = 1.0
+step = 0.001
+script = ExtResource("7")
+var_name = "MaxBrake"
+
+[node name="text" type="Label" parent="controls manipulator/scroll/container/HSlider18"]
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+text = "Max Brake"
+
+[node name="amount" type="Label" parent="controls manipulator/scroll/container/HSlider18"]
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+text = "0.0"
+vertical_alignment = 2
+
+[node name="HSlider19" type="HSlider" parent="controls manipulator/scroll/container"]
+custom_minimum_size = Vector2(240, 60)
+layout_mode = 2
+max_value = 1.0
+step = 0.001
+script = ExtResource("7")
+var_name = "MaxHandbrake"
+
+[node name="text" type="Label" parent="controls manipulator/scroll/container/HSlider19"]
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+text = "Max Handbrake"
+
+[node name="amount" type="Label" parent="controls manipulator/scroll/container/HSlider19"]
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+text = "0.0"
+vertical_alignment = 2
+
+[node name="HSlider20" type="HSlider" parent="controls manipulator/scroll/container"]
+custom_minimum_size = Vector2(240, 60)
+layout_mode = 2
+max_value = 1.0
+step = 0.001
+script = ExtResource("7")
+var_name = "MaxClutch"
+
+[node name="text" type="Label" parent="controls manipulator/scroll/container/HSlider20"]
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+text = "Max Clutch"
+
+[node name="amount" type="Label" parent="controls manipulator/scroll/container/HSlider20"]
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+text = "0.0"
+vertical_alignment = 2
+
+[node name="HSlider" type="HSlider" parent="controls manipulator/scroll/container"]
+custom_minimum_size = Vector2(240, 60)
+layout_mode = 2
+max_value = 1.0
+step = 0.001
+script = ExtResource("7")
+var_name = "KeyboardSteerSpeed"
+
+[node name="text" type="Label" parent="controls manipulator/scroll/container/HSlider"]
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+text = "Keyboard Steer Speed"
+
+[node name="amount" type="Label" parent="controls manipulator/scroll/container/HSlider"]
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+text = "0.0"
+vertical_alignment = 2
+
+[node name="HSlider2" type="HSlider" parent="controls manipulator/scroll/container"]
+custom_minimum_size = Vector2(240, 60)
+layout_mode = 2
+max_value = 1.0
+step = 0.001
+script = ExtResource("7")
+var_name = "KeyboardReturnSpeed"
+
+[node name="text" type="Label" parent="controls manipulator/scroll/container/HSlider2"]
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+text = "Keyboard Return Speed"
+
+[node name="amount" type="Label" parent="controls manipulator/scroll/container/HSlider2"]
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+text = "0.0"
+vertical_alignment = 2
+
+[node name="HSlider3" type="HSlider" parent="controls manipulator/scroll/container"]
+custom_minimum_size = Vector2(240, 60)
+layout_mode = 2
+max_value = 1.0
+step = 0.001
+script = ExtResource("7")
+var_name = "KeyboardCompensateSpeed"
+
+[node name="text" type="Label" parent="controls manipulator/scroll/container/HSlider3"]
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+text = "Keyboard Compensate Speed"
+
+[node name="amount" type="Label" parent="controls manipulator/scroll/container/HSlider3"]
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+text = "0.0"
+vertical_alignment = 2
+
+[node name="inform" type="Control" parent="."]
+visible = false
+anchors_preset = 0
+anchor_left = 0.102539
+anchor_top = 0.12
+anchor_right = 0.897461
+anchor_bottom = 0.881667
+script = ExtResource("6")
+
+[node name="background" type="ColorRect" parent="inform"]
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+color = Color(0, 0, 0, 0.5)
+
+[node name="scroll" type="ScrollContainer" parent="inform"]
+layout_mode = 0
+anchor_left = 0.41769
+anchor_top = 0.0525164
+anchor_right = 0.974202
+anchor_bottom = 0.947484
+
+[node name="container" type="VBoxContainer" parent="inform/scroll"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="clabel" type="Label" parent="inform/scroll/container"]
+layout_mode = 2
+mouse_filter = 1
+text = "--------------------------------------------------
+(?) Car Controls:
+--------------------------------------------------"
+horizontal_alignment = 1
+clip_text = true
+
+[node name="c" type="Label" parent="inform/scroll/container"]
+layout_mode = 2
+text = "Keyboard Steering:
+W/Up = Accelerator
+S/Down = Brake
+A/Left = Steer Left
+D/Right = Steer Right
+K/Shift = Clutch
+E/P = Shift Up
+Q/L = Shift Down
+Space/Ctrl = Handbrake
+
+Mouse Steering:
+LMB = Accelerator
+RMB = Brake
+Cursor (Horizontal Axis Only) = Steer
+W = Clutch
+E = Shift Up
+Q = Shift Down
+Shift = Handbrake
+
+Gamepad:
+NOT CONFIGURED
+
+Joystick:
+NOT CONFIGURED
+
+Steering Wheel:
+UNSUPPORTED BY GODOT"
+clip_text = true
+
+[node name="clabel2" type="Label" parent="inform/scroll/container"]
+layout_mode = 2
+mouse_filter = 1
+text = "--------------------------------------------------
+(?) Misc Controls:
+--------------------------------------------------"
+horizontal_alignment = 1
+clip_text = true
+
+[node name="c2" type="Label" parent="inform/scroll/container"]
+layout_mode = 2
+text = "F11 = Toggle Fullscreen
+Esc = Close All Panels
+, = Pan Camera Left
+. = Pan Camera Right
+I = Zoom In
+O = Zoom Out
+/ = Reset Camera
+F = Toggle Forces Visualisation"
+clip_text = true
+
+[node name="credlabel" type="Label" parent="inform/scroll/container"]
+layout_mode = 2
+text = "--------------------------------------------------
+Credits/Sources:
+--------------------------------------------------"
+horizontal_alignment = 1
+clip_text = true
+
+[node name="cred" type="Label" parent="inform/scroll/container"]
+custom_minimum_size = Vector2(55, 371)
+layout_mode = 2
+text = "Contributors:
+devHrytsan
+r0401 (aka raghid) - Godot 4 Port
+
+Car Designers:
+shotman_16 - Eclipse SRC
+
+All vehicles are fictional. Any resemblance to existing counterparts and names are purely coincidental."
+autowrap_mode = 2
+clip_text = true
+
+[node name="watermark" type="TextureRect" parent="inform"]
+layout_mode = 0
+anchor_left = 0.02457
+anchor_top = 0.02407
+anchor_right = 0.398
+anchor_bottom = 0.319
+texture = ExtResource("2")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="clabel" type="Label" parent="inform"]
+layout_mode = 0
+anchor_left = 0.0651106
+anchor_top = 0.319475
+anchor_right = 0.379607
+anchor_bottom = 0.363238
+mouse_filter = 1
+text = "Powered by Godot"
+horizontal_alignment = 1
+
+[node name="graphics config" type="Control" parent="."]
+visible = false
+anchors_preset = 0
+anchor_left = 0.334961
+anchor_top = 0.1975
+anchor_right = 0.665039
+anchor_bottom = 0.8025
+script = ExtResource("5")
+
+[node name="background" type="ColorRect" parent="graphics config"]
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+color = Color(0, 0, 0, 0.5)
+
+[node name="scroll" type="ScrollContainer" parent="graphics config"]
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+
+[node name="container" type="VBoxContainer" parent="graphics config/scroll"]
+layout_mode = 2
+
+[node name="CheckBox3" type="CheckBox" parent="graphics config/scroll/container"]
+custom_minimum_size = Vector2(240, 60)
+layout_mode = 2
+script = ExtResource("9")
+var_name = "smoke"
+
+[node name="text" type="Label" parent="graphics config/scroll/container/CheckBox3"]
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+text = "Tyre Smoke"
+
+[node name="amount" type="Label" parent="graphics config/scroll/container/CheckBox3"]
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+text = "false"
+vertical_alignment = 2
+
+[node name="_FULLSCREEN" type="CheckBox" parent="graphics config/scroll/container"]
+custom_minimum_size = Vector2(240, 60)
+layout_mode = 2
+script = ExtResource("9")
+var_name = "fs"
+
+[node name="text" type="Label" parent="graphics config/scroll/container/_FULLSCREEN"]
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+text = "Fullscreen"
+
+[node name="amount" type="Label" parent="graphics config/scroll/container/_FULLSCREEN"]
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+text = "false"
+vertical_alignment = 2
+
+[node name="car swapper" type="Control" parent="."]
+visible = false
+anchors_preset = 0
+anchor_left = 0.183594
+anchor_top = 0.1975
+anchor_right = 0.816406
+anchor_bottom = 0.8025
+script = ExtResource("10")
+
+[node name="background" type="ColorRect" parent="car swapper"]
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+color = Color(0, 0, 0, 0.5)
+
+[node name="scroll" type="ScrollContainer" parent="car swapper"]
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+
+[node name="container" type="GridContainer" parent="car swapper/scroll"]
+layout_mode = 2
+columns = 3
+
+[node name="_DEFAULT" type="Button" parent="car swapper/scroll/container"]
+custom_minimum_size = Vector2(213, 128)
+layout_mode = 2
+expand_icon = true
+
+[node name="carname" type="Label" parent="car swapper/scroll/container/_DEFAULT"]
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+text = "base car"
+horizontal_alignment = 1
+vertical_alignment = 2
+
+[node name="icon" type="TextureRect" parent="car swapper/scroll/container/_DEFAULT"]
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_bottom = -18.0
+texture = ExtResource("2")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="scene swapper" type="Control" parent="."]
+visible = false
+anchors_preset = 0
+anchor_left = 0.183594
+anchor_top = 0.1975
+anchor_right = 0.816406
+anchor_bottom = 0.8025
+script = ExtResource("4")
+current_map = NodePath("../../test scene")
+
+[node name="background" type="ColorRect" parent="scene swapper"]
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+color = Color(0, 0, 0, 0.5)
+
+[node name="scroll" type="ScrollContainer" parent="scene swapper"]
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+
+[node name="container" type="GridContainer" parent="scene swapper/scroll"]
+layout_mode = 2
+columns = 3
+
+[node name="_DEFAULT" type="Button" parent="scene swapper/scroll/container"]
+custom_minimum_size = Vector2(213, 128)
+layout_mode = 2
+icon_alignment = 1
+expand_icon = true
+
+[node name="mapname" type="Label" parent="scene swapper/scroll/container/_DEFAULT"]
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+text = "mofn"
+horizontal_alignment = 1
+vertical_alignment = 2
+
+[node name="icon" type="TextureRect" parent="scene swapper/scroll/container/_DEFAULT"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_bottom = -18.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("2")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="open controls" type="Button" parent="."]
+layout_mode = 0
+anchor_left = 0.849609
+anchor_right = 0.998047
+anchor_bottom = 0.08
+text = "control config"
+
+[node name="fix engine" type="Button" parent="."]
+layout_mode = 0
+anchor_left = 0.852539
+anchor_top = 0.1
+anchor_right = 0.995117
+anchor_bottom = 0.19
+text = "fix engine"
+
+[node name="open graphics" type="Button" parent="."]
+layout_mode = 0
+anchor_left = 0.451172
+anchor_right = 0.609375
+anchor_bottom = 0.08
+text = "graphics config"
+
+[node name="info" type="Button" parent="."]
+layout_mode = 0
+anchor_left = 0.325195
+anchor_right = 0.444336
+anchor_bottom = 0.08
+text = "information"
+
+[node name="swap car" type="Button" parent="."]
+layout_mode = 0
+anchor_left = 0.74707
+anchor_right = 0.844727
+anchor_bottom = 0.08
+text = "swap car"
+
+[node name="swap map" type="Button" parent="."]
+layout_mode = 0
+anchor_left = 0.613281
+anchor_right = 0.742188
+anchor_bottom = 0.08
+text = "change scene"
+
+[connection signal="pressed" from="open controls" to="controls manipulator" method="_on_Button_pressed"]
+[connection signal="pressed" from="fix engine" to="." method="engine_restart"]
+[connection signal="pressed" from="open graphics" to="graphics config" method="_on_Button_pressed"]
+[connection signal="pressed" from="info" to="inform" method="_on_info_pressed"]
+[connection signal="pressed" from="swap car" to="car swapper" method="_on_swap_car_pressed"]
+[connection signal="pressed" from="swap map" to="scene swapper" method="_on_swap_map_pressed"]
+
+[editable path="throttle"]
+[editable path="brake"]
+[editable path="handbrake"]
+[editable path="clutch"]

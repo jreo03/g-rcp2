@@ -1,0 +1,99 @@
+[gd_scene load_steps=8 format=3 uid="uid://df2i30irlljkl"]
+
+[ext_resource type="Script" path="res://MAIN/wheel.gd" id="1"]
+[ext_resource type="PackedScene" uid="uid://q8oxthp1fyj5" path="res://MAIN/misc/tyre smoke/smoke.tscn" id="2"]
+[ext_resource type="Script" path="res://MAIN/misc/forces debug/forces.gd" id="3"]
+[ext_resource type="PackedScene" uid="uid://bg3o1u5r81wfs" path="res://MAIN/misc/tyre marks/tyremark.tscn" id="4_11cem"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_pj25r"]
+shading_mode = 0
+diffuse_mode = 1
+disable_ambient_light = true
+
+[sub_resource type="PointMesh" id="1"]
+
+[sub_resource type="BoxMesh" id="2"]
+
+[node name="wheel" type="RayCast3D"]
+script = ExtResource("1")
+
+[node name="geometry" type="MeshInstance3D" parent="."]
+visible = false
+material_override = SubResource("StandardMaterial3D_pj25r")
+mesh = SubResource("1")
+script = ExtResource("3")
+
+[node name="compress" type="MeshInstance3D" parent="geometry"]
+material_override = SubResource("StandardMaterial3D_pj25r")
+mesh = SubResource("2")
+
+[node name="lateral" type="MeshInstance3D" parent="geometry"]
+material_override = SubResource("StandardMaterial3D_pj25r")
+mesh = SubResource("2")
+
+[node name="longi" type="MeshInstance3D" parent="geometry"]
+material_override = SubResource("StandardMaterial3D_pj25r")
+mesh = SubResource("2")
+
+[node name="animation" type="Marker3D" parent="."]
+
+[node name="camber" type="Marker3D" parent="animation"]
+
+[node name="wheel" type="Marker3D" parent="animation/camber"]
+
+[node name="smoke_dirt" parent="animation/camber" instance=ExtResource("2")]
+dirt_type = true
+
+[node name="lvl1" parent="animation/camber/smoke_dirt/static" index="0"]
+color = Color(0.352941, 0.313726, 0.223529, 0.329412)
+
+[node name="lvl2" parent="animation/camber/smoke_dirt/static" index="1"]
+color = Color(0.352941, 0.313726, 0.223529, 0.701961)
+
+[node name="lvl3" parent="animation/camber/smoke_dirt/static" index="2"]
+color = Color(0.352941, 0.313726, 0.223529, 1)
+
+[node name="lvl1" parent="animation/camber/smoke_dirt/revolvel" index="0"]
+color = Color(0.352941, 0.313726, 0.223529, 0.329412)
+
+[node name="lvl2" parent="animation/camber/smoke_dirt/revolvel" index="1"]
+color = Color(0.352941, 0.313726, 0.223529, 0.701961)
+
+[node name="lvl3" parent="animation/camber/smoke_dirt/revolvel" index="2"]
+color = Color(0.352941, 0.313726, 0.223529, 1)
+
+[node name="lvl1" parent="animation/camber/smoke_dirt/revolver" index="0"]
+color = Color(0.352941, 0.313726, 0.223529, 0.329412)
+
+[node name="lvl2" parent="animation/camber/smoke_dirt/revolver" index="1"]
+color = Color(0.352941, 0.313726, 0.223529, 0.701961)
+
+[node name="lvl3" parent="animation/camber/smoke_dirt/revolver" index="2"]
+color = Color(0.352941, 0.313726, 0.223529, 1)
+
+[node name="smoke" parent="animation/camber" instance=ExtResource("2")]
+
+[node name="fixed" type="Marker3D" parent="animation"]
+
+[node name="fixed_steer" type="Marker3D" parent="animation"]
+
+[node name="fixed_steercamber" type="Marker3D" parent="animation"]
+
+[node name="fixed_camber" type="Marker3D" parent="animation"]
+
+[node name="fixed_axle" type="Marker3D" parent="animation"]
+
+[node name="tyremark" parent="animation" instance=ExtResource("4_11cem")]
+
+[node name="DirectionalLight" type="DirectionalLight3D" parent="."]
+editor_only = true
+
+[node name="velocity" type="Marker3D" parent="."]
+
+[node name="step" type="Marker3D" parent="velocity"]
+
+[node name="velocity2" type="Marker3D" parent="."]
+
+[node name="step" type="Marker3D" parent="velocity2"]
+
+[editable path="animation/camber/smoke_dirt"]
