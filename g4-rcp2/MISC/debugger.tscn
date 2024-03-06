@@ -13,7 +13,7 @@
 [ext_resource type="Texture2D" uid="uid://cr5l3r8wqkyn6" path="res://MAIN/misc/textures/sw.png" id="11"]
 [ext_resource type="Texture2D" uid="uid://b7tkt12prqch8" path="res://MAIN/misc/textures/sw_desired.png" id="12"]
 [ext_resource type="PackedScene" uid="uid://b1vo60v1pjs6w" path="res://MISC/tachometre/tacho.tscn" id="13"]
-[ext_resource type="PackedScene" path="res://MISC/vertical progress bar/bar.tscn" id="14"]
+[ext_resource type="PackedScene" uid="uid://cbskusbekrb4l" path="res://MISC/vertical progress bar/bar.tscn" id="14"]
 [ext_resource type="PackedScene" uid="uid://cnjbclsh2lklc" path="res://MISC/visual gravity system/vgs.tscn" id="15"]
 [ext_resource type="PackedScene" uid="uid://2ojbutsqhnh4" path="res://MISC/graph/display.tscn" id="16"]
 

@@ -23,7 +23,7 @@ func _process(delta:float) -> void:
 		fs2 = fs
 		fs_toggle()
 
-func fs_toggle():
+func fs_toggle() -> void:
 	if not fs:
 		DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_WINDOWED)
 		DisplayServer.window_set_size(Vector2i(ProjectSettings.get("display/window/size/viewport_width"),ProjectSettings.get("display/window/size/viewport_height")))

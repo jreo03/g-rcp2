@@ -1,10 +1,10 @@
 extends Control
 
-func _input(event):
+func _input(_event:InputEvent) -> void:
 	if Input.is_action_just_pressed("ui_cancel"):
 		visible = false
 
-func _on_info_pressed():
+func _on_info_pressed() -> void:
 	get_parent().get_node("info").release_focus()
 	if visible:
 		visible = false

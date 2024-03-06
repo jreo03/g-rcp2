@@ -1,18 +1,25 @@
 res://default_env.tres
-res://world.tscn
-res://MAIN/wheel.gd
-res://MAIN/car.gd
-res://MAIN/misc/mechanical sounds/other_sounds.gd
-res://MAIN/misc/tyre sounds/tyres.gd
-res://MAIN/vitavehicle.gd
-res://MISC/visual gravity system/vgs.gd
-res://MISC/vertical progress bar/bar.gd
-res://MISC/tachometre/tacho.gd
-res://base car.tscn
-res://MAIN/misc/forces debug/forces.gd
-res://MAIN/misc/engine sound/crossfade.gd
-res://MISC/autoload/graphics.gd
 res://MISC/debugger.tscn
 res://MISC/misc scripts/debug.gd
-res://MISC/mobile controls/mobile_ctrls.gd
-res://MAIN/misc/camera.gd
+res://world.tscn
+res://MISC/visual gravity system/vgs.tscn
+res://MAIN/vitavehicle.gd
+res://MAIN/misc/engine sound/crossfade.gd
+res://MAIN/misc/tyre marks/trail_sm.gd
+res://MAIN/misc/tyre sounds/tyres.gd
+res://MISC/visual gravity system/vgs.gd
+res://MISC/scene swapper/scene swapper.gd
+res://MISC/mobile controls/positioning.gd
+res://MISC/tachometre/tacho.gd
+res://MISC/car swapper/car swapper.gd
+res://MISC/controls config/run.gd
+res://MISC/misc scripts/show_info.gd
+res://MISC/graphics_config/graphics config.gd
+res://MAIN/misc/mechanical sounds/other_sounds.gd
+res://MAIN/misc/tyre sounds/vars.gd
+res://MAIN/misc/tyre smoke/tyre_smoke.gd
+res://MISC/autoload/graphics.gd
+res://MAIN/car.gd
+res://MAIN/wheel.gd
+res://MAIN/car_stats/car_stats.gd
+res://base car.tscn

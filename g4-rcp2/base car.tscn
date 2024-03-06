@@ -5,7 +5,7 @@
 [ext_resource type="PackedScene" uid="uid://c7m04qiimdydw" path="res://MAIN/misc/engine sound/engine.tscn" id="3"]
 [ext_resource type="Texture2D" uid="uid://del2h14nydk3g" path="res://MAIN/misc/textures/rim.jpg" id="4"]
 [ext_resource type="PackedScene" uid="uid://d1vmrvs3aj84o" path="res://MAIN/misc/tyre sounds/tyres.tscn" id="5"]
-[ext_resource type="PackedScene" path="res://MAIN/misc/mechanical sounds/other_sounds.tscn" id="6"]
+[ext_resource type="PackedScene" uid="uid://bvqp2v3vmlgcn" path="res://MAIN/misc/mechanical sounds/other_sounds.tscn" id="6"]
 [ext_resource type="PackedScene" uid="uid://kb7hq7qvuul3" path="res://MAIN/misc/backfire_particles/fire.tscn" id="7"]
 [ext_resource type="Texture2D" uid="uid://1a0k3s3amej8" path="res://MAIN/misc/backfire_particles/backfire.png" id="8_tk2wk"]
 
@@ -250,7 +250,6 @@ mesh = SubResource("10")
 [node name="fr" parent="." instance=ExtResource("1")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.2, 0.2, 3.8)
 target_position = Vector3(0, -2.7, 0)
-Differed_Wheel = "fl"
 SwayBarConnection = "fl"
 Caster = 2.0
 S_Stiffness = 55.0
@@ -267,7 +266,6 @@ skeleton = NodePath("../../../../..")
 [node name="fl" parent="." instance=ExtResource("1")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.2, 0.2, 3.8)
 target_position = Vector3(0, -2.7, 0)
-Differed_Wheel = "fr"
 SwayBarConnection = "fr"
 Caster = 2.0
 S_Stiffness = 55.0

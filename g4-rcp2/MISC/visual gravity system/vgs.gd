@@ -6,7 +6,7 @@ class_name ViVeVGS
 
 @export var gforce:Vector2 = Vector2(0,0)
 
-@onready var wheel = $wheel.duplicate()
+@onready var wheel:Polygon2D = $wheel.duplicate()
 
 var glength:float = 0.0
 
@@ -20,27 +20,27 @@ func clear() -> void:
 	for i in appended:
 		i.queue_free()
 	appended = []
-	
+
 
 func append_wheel(position,settings,node):
-	var w_size = ((abs(int(settings["Width (mm)"]))*((abs(int(settings["Aspect Ratio"]))*2.0)/100.0) + abs(int(settings["Rim Size (in)"]))*25.4)*0.003269)/2.0
-	var width = (abs(int(settings["Width (mm)"]))*0.003269)/2.0
+	var w_size:float = ((abs(int(settings["Width (mm)"])) * ((abs(int(settings["Aspect Ratio"])) * 2.0) / 100.0) + abs(int(settings["Rim Size (in)"])) * 25.4) * 0.003269) / 2.0
+	var width:float = (abs(int(settings["Width (mm)"])) * 0.003269) / 2.0
 	
-	var w = wheel.duplicate()
+	var w:Polygon2D = wheel.duplicate()
 	add_child(w)
-	w.pos = -Vector2(position.x,position.z)*2.0
+	w.pos = -Vector2(position.x,position.z) * 2.0
 	w.setting = settings
 	w.node = node
 	
-	w.scale.x = (width*2.0)/(vgs_scale/2.0)
-	w.scale.y = w_size/(vgs_scale/2.0)
+	w.scale.x = (width * 2.0) / (vgs_scale / 2.0)
+	w.scale.y = w_size / (vgs_scale / 2.0)
 	
 	appended.append(w)
 
-func _physics_process(delta):
+func _physics_process(_delta:float) -> void:
 	
 	for i in appended:
-		i.position = size/2
+		i.position = size / 2
 		i.position += ((i.pos*(64.0/vgs_scale))/9.806)
 		
 		i.get_node("slippage").scale.y = (i.node.slip_percpre)*0.8

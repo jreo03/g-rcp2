@@ -2,20 +2,20 @@ extends Control
 
 var car
 
-func setcar():
+func setcar() -> void:
 	car = get_parent().get_node(get_parent().car)
 
-func _ready():
-	for i in $scroll/container.get_children():
+func _ready() -> void:
+	for i:CheckBox in $scroll/container.get_children():
 		i.button_pressed = misc_graphics_settings.get(i.var_name)
 		i.get_node("amount").text = str(i.button_pressed)
 
-func _process(delta):
+func _process(_delta:float) -> void:
 	for i in $scroll/container.get_children():
 		misc_graphics_settings.set(i.var_name,i.button_pressed)
 		i.get_node("amount").text = str(i.button_pressed)
 
-func _input(event):
+func _input(_event:InputEvent) -> void:
 	if Input.is_action_just_pressed("ui_cancel"):
 		visible = false
 	elif Input.is_action_just_pressed("toggle_fs"):
@@ -27,7 +27,7 @@ func _input(event):
 #			$scroll/container/_FULLSCREEN.button_pressed = true
 
 
-func _on_Button_pressed():
+func _on_Button_pressed() -> void:
 	get_parent().get_node("open graphics").release_focus()
 	if visible:
 		visible = false

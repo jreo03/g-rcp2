@@ -17,23 +17,23 @@ var maxfades:float = 0.0
 
 var pitch_influence:float = 1.0
 
-func play():
+func play() -> void:
 	for i in get_children():
 		i.play()
 #	stop()
-		
-func stop():
+
+func stop() -> void:
 	for i in get_children():
 		i.stop()
 
 var childcount:int = 0
 
-func _ready():
+func _ready() -> void:
 	play()
 	childcount = get_child_count()
 	maxfades = float(childcount-1.0)
 
-func _physics_process(_delta):
+func _physics_process(_delta:float) -> void:
 	
 	pitch = abs(get_parent().rpm*pitch_influence)/pitch_calibrate
 	
@@ -56,24 +56,24 @@ func _physics_process(_delta):
 	volume += (1.0-sfk)*vacuum_loudness
 	
 	for i in get_children():
-		var maxvol = float(str(i.get_child(0).name))/100.0
-		var maxpitch = float(str(i.name))/100000.0
+		var maxvol:float = float(str(i.get_child(0).name))/100.0
+		var maxpitch:float = float(str(i.name))/100000.0
 		
-		var index = float(i.get_index())
-		var dist = abs(index-fade)
+		var index:float = float(i.get_index())
+		var dist:float = abs(index-fade)
 		
 		dist *= abs(dist)
 		
 		var vol:float = 1.0-dist
 		vol = clampf(vol, 0.0, 1.0)
 		
-		var db = linear_to_db((vol*maxvol)*(volume*(overall_volume)))
+		var db:float = linear_to_db((vol*maxvol)*(volume*(overall_volume)))
 		if db < -60.0:
 			db = -60.0
 			
 		i.volume_db = db
 		i.max_db = i.volume_db
-		var pit = abs(pitch*maxpitch)
+		var pit:float = abs(pitch * maxpitch)
 		pit = clampf(pit, 0.01, 5.0)
 		
 		i.pitch_scale = pit

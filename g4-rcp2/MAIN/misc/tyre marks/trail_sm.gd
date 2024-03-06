@@ -1,22 +1,22 @@
 extends Node3D
 
-var last_pos = transform
-var g = Vector3(0,0,0)
+var last_pos:Transform3D = transform
+var g:Vector3 = Vector3(0,0,0)
 
-var vertices = []
+var vertices:Array = []
 
-var del = 0
+var del:int = 0
 
-var wid = 0.125
+var wid:float = 0.125
 
-var ran = false
+var ran:bool = false
 
-var inserting = false
-var inserting2 = false
+var inserting:bool = false
+var inserting2:bool = false
 
-var current_trail_node :MeshInstance3D = null
+var current_trail_node:MeshInstance3D = null
 var current_trail :ImmediateMesh = null
-var drawers = []
+var drawers:Array[MeshInstance3D] = []
 
 
 # i spent 5 days trying to figure out why the skids were not working properly
@@ -24,8 +24,8 @@ var drawers = []
 	# ok i just do this on line 82
 
 
-func add_segment():
-	var ppos = global_transform
+func add_segment() -> void:
+	var ppos:Transform3D = global_transform
 	
 	vertices.append( [
 		
@@ -38,27 +38,26 @@ func add_segment():
 	last_pos = ppos
 
 
-func _physics_process(delta):
+func _physics_process(_delta:float) -> void:
 	
 #	get_parent().get_node("Camera").rotation_degrees.y += 20
 	
 	del -= 1
 	
-	for i in drawers:
+	for i:MeshInstance3D in drawers:
 		i.delete_wait -= 1
-		if i.delete_wait<0:
+		if i.delete_wait < 0:
 			if current_trail == i:
 				current_trail = null
 			i.queue_free()
 			drawers.remove_at(0)
 		
-	if del<0 and inserting:
+	if del < 0 and inserting:
 		del = 5
 		add_segment()
 
 
-func _process(_delta):
-	
+func _process(_delta:float) -> void:
 	inserting = get_parent().get_parent().slip_perc.length()>get_parent().get_parent().stress +20.0 and get_parent().get_parent().is_colliding()
 	
 	position.y = -get_parent().get_parent().w_size +0.025
@@ -69,7 +68,7 @@ func _process(_delta):
 		if inserting2:
 			
 			if not current_trail_node == null:
-				var t = current_trail_node.global_transform
+				var t:Transform3D = current_trail_node.global_transform
 				remove_child(current_trail_node)
 				get_tree().get_current_scene().add_child(current_trail_node)
 				current_trail_node.global_transform = t
@@ -91,12 +90,12 @@ func _process(_delta):
 		look_at(g,Vector3(0,1,0))
 		
 	g = global_transform.origin
-	var ppos = global_transform
+	var ppos:Transform3D = global_transform
 	
 	if not current_trail_node == null:
 		if inserting:
 			current_trail_node.delete_wait = 180
-			if len(vertices)>0:
+			if len(vertices) > 0:
 				vertices[len(vertices)-1][0] = ((ppos.origin + ppos.basis.orthonormalized() * Vector3(wid,0,0)))
 				vertices[len(vertices)-1][1] = ((ppos.origin - ppos.basis.orthonormalized() * Vector3(wid,0,0)))
 				vertices[len(vertices)-1][2] = ppos.origin
@@ -107,7 +106,7 @@ func _process(_delta):
 		if vertices.size() > 0 : # check if we actually got stuff to make
 			current_trail.surface_begin(Mesh.PRIMITIVE_TRIANGLE_STRIP)
 			for i in vertices:
-				if len(i)>0:
+				if len(i) > 0:
 					# with the vulkan renderer (forward+ and mobile) you will get the following error
 					## "draw_list_draw: Too few vertices (2) for the render primitive set in the render pipeline (3)."
 					

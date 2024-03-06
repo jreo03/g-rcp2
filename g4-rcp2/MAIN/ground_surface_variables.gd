@@ -1,16 +1,16 @@
 extends StaticBody3D
 
-@export var wear_rate = 1.0
-@export var heat_rate = 1.0
-@export var fore_friction = 0.0
-@export var fore_stiffness = 0.0
-@export var particle_looseness = 0.0
-@export var ground_bump_height = 0.0
-@export var ground_bump_frequency = 0.0
-@export var ground_bump_frequency_random = 0.0
-@export var ground_friction = 1.0
-@export var ground_stiffness = 1.0
-@export var ground_builduprate = 0.0
-@export var ground_dirt = false
-@export var drag = 0.0
+@export var wear_rate:float = 1.0
+@export var heat_rate:float = 1.0
+@export var fore_friction:float = 0.0
+@export var fore_stiffness:float = 0.0
+@export var particle_looseness:float = 0.0
+@export var ground_bump_height:float = 0.0
+@export var ground_bump_frequency:float = 0.0
+@export var ground_bump_frequency_random:float = 0.0
+@export var ground_friction:float = 1.0
+@export var ground_stiffness:float = 1.0
+@export var ground_builduprate:float = 0.0
+@export var ground_dirt:bool = false
+@export var drag:float = 0.0
 

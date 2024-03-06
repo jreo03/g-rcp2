@@ -1,22 +1,22 @@
 extends Control
 
-@onready var button = $scroll/container/_DEFAULT.duplicate()
+@onready var button:Button = $scroll/container/_DEFAULT.duplicate()
 
-var pathh = "res://MISC/scene swapper/"
-var canclick = true
-var literal_cache = {}
+const pathh:String = "res://MISC/scene swapper/"
+var canclick:bool = true
+var literal_cache:Dictionary = {}
 
-@export var current_map = NodePath()
+@export var current_map:NodePath = NodePath()
 
-func list_files_in_directory(path):
+func list_files_in_directory(path:String) -> PackedStringArray:
 	
-	var files = []
+	var files:PackedStringArray = []
 #	var dir = Directory.new()
-	var dir = DirAccess.open(path)
+	var dir:DirAccess = DirAccess.open(path)
 	dir.list_dir_begin()
 	
 	while true:
-		var file = dir.get_next()
+		var file:String = dir.get_next()
 		if file == "":
 			break
 		elif not file.begins_with("."):
@@ -27,8 +27,8 @@ func list_files_in_directory(path):
 	return files
 	
 
-func load_and_cache(path):
-	var loaded = null
+func load_and_cache(path:String) -> PackedScene:
+	var loaded:PackedScene = null
 	
 	if path in literal_cache:
 		pass
@@ -38,11 +38,11 @@ func load_and_cache(path):
 	loaded = literal_cache[path]
 	return loaded
 
-func swapmap(naem):
+func swapmap(naem:String) -> void:
 	visible = false
 	get_node(current_map).queue_free()
 	
-	var d = load_and_cache(pathh+str("scenes/")+str(naem)+str("/scene")+str(".tscn")).instantiate()
+	var d:Node = load_and_cache(pathh + "scenes/" + naem + "/scene.tscn").instantiate()
 	
 	get_parent().get_parent().add_child(d)
 	
@@ -55,26 +55,25 @@ func swapmap(naem):
 	get_parent().get_node(get_parent().car).angular_velocity *= 0
 
 
-func _ready():
+func _ready() -> void:
 	$scroll/container/_DEFAULT.queue_free()
 	
+	var d:PackedStringArray = list_files_in_directory(pathh + "scenes")
 	
-	var d = list_files_in_directory(pathh+str("scenes"))
-	
-	for i in d:
-		var but = button.duplicate()
+	for i:String in d:
+		var but:Node = button.duplicate()
 		$scroll/container.add_child(but)
 		but.get_node("mapname").text = i
-		but.get_node("icon").texture = load(pathh+str("scenes/")+str(i)+str("/thumbnail")+str(".png"))
+		but.get_node("icon").texture = load(pathh + "scenes/" + i + "/thumbnail.png")
 #		but.connect("pressed", self, "swapmap",[i])
 		but.pressed.connect(swapmap.bind(i))
 	
 
-func _input(event):
+func _input(_event:InputEvent) -> void:
 	if Input.is_action_just_pressed("ui_cancel"):
 		visible = false
 
-func _on_swap_map_pressed():
+func _on_swap_map_pressed() -> void:
 	get_parent().get_node("swap map").release_focus()
 	if visible:
 		visible = false

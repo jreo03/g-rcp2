@@ -1,32 +1,31 @@
 extends Control
 
-@onready var button = $scroll/container/_DEFAULT.duplicate()
+@onready var button:Button = $scroll/container/_DEFAULT.duplicate()
 
-var pathh = "res://MISC/car swapper/"
-var canclick = true
-var literal_cache = {}
+const pathh:String = "res://MISC/car swapper/"
+var canclick:bool = true
+var literal_cache:Dictionary = {}
 
-func list_files_in_directory(path):
+func list_files_in_directory(path:String) -> PackedStringArray:
 	
-	var files = []
+	var files:PackedStringArray = []
 #	var dir = Directory.new()
-	var dir = DirAccess.open(path)
+	var dir:DirAccess = DirAccess.open(path)
 	dir.list_dir_begin()
-
+	
 	while true:
-		var file = dir.get_next()
+		var file:String = dir.get_next()
 		if file == "":
 			break
 		elif not file.begins_with("."):
 			files.append(file)
-
-	dir.list_dir_end()
-
-	return files
 	
+	dir.list_dir_end()
+	
+	return files
 
-func load_and_cache(path):
-	var loaded = null
+func load_and_cache(path:String) -> PackedScene:
+	var loaded:PackedScene = null
 	
 	if path in literal_cache:
 		pass
@@ -38,7 +37,7 @@ func load_and_cache(path):
 
 @onready var default_position = get_parent().get_parent().get_node("car").global_position
 
-func swapcar(naem):
+func swapcar(naem:String) -> void:
 	visible = false
 	get_parent().get_node("swap car").visible = false
 	if canclick:
@@ -53,12 +52,13 @@ func swapcar(naem):
 		
 		await get_tree().create_timer(1.0).timeout
 		
-		var d
+		var d:Node
+		
 		
 		if naem == "_DEFAULT_CAR_":
 			d = load_and_cache("res://base car.tscn").instantiate()
 		else:
-			d = load_and_cache(pathh+str("cars/")+str(naem)+str("/scene")+str(".tscn")).instantiate()
+			d = load_and_cache(pathh + "cars/"+ naem + "/scene.tscn").instantiate()
 		
 		get_parent().get_parent().add_child(d)
 		
@@ -75,9 +75,9 @@ func swapcar(naem):
 		
 		get_parent().get_node("power_graph")._ready()
 		
-		var peak = max(get_parent().get_node("power_graph").peaktq[0],get_parent().get_node("power_graph").peakhp[0])
+		var peak = max(get_parent().get_node("power_graph").peaktq[0], get_parent().get_node("power_graph").peakhp[0])
 		
-		get_parent().get_node("power_graph").draw_scale = 1.0/peak
+		get_parent().get_node("power_graph").draw_scale = 1.0 / peak
 		
 		get_parent().get_node("power_graph")._ready()
 		
@@ -93,26 +93,25 @@ func swapcar(naem):
 	get_parent().get_node("swap car").visible = true
 
 
-func _ready():
-	var d = list_files_in_directory(pathh+str("cars"))
+func _ready() -> void:
+	var d:PackedStringArray = list_files_in_directory(pathh + "cars")
 	
-	for i in d:
-		var but = button.duplicate()
+	for i:String in d:
+		var but:Button = button.duplicate()
 		$scroll/container.add_child(but)
 		but.get_node("carname").text = i
-		but.get_node("icon").texture = load(pathh+str("cars/")+str(i)+str("/thumbnail")+str(".png"))
+		but.get_node("icon").texture = load(pathh + "cars/" + i + "/thumbnail.png")
 #		but.connect("pressed", self, "swapcar",[i])
 		but.pressed.connect(swapcar.bind(i))
 		
 #	$scroll/container/_DEFAULT.connect("pressed", self, "swapcar",["_DEFAULT_CAR_"])
 	$scroll/container/_DEFAULT.pressed.connect(swapcar.bind("_DEFAULT_CAR_"))
-	
 
-func _input(event):
+func _input(_event:InputEvent) -> void:
 	if Input.is_action_just_pressed("ui_cancel"):
 		visible = false
 
-func _on_swap_car_pressed():
+func _on_swap_car_pressed() -> void:
 	get_parent().get_node("swap car").release_focus()
 	if visible:
 		visible = false

@@ -1,9 +1,8 @@
 extends Marker3D
 
-var default_cam_pos
+var default_cam_pos:Vector3
 var can_drag:bool = false
 var just_resetted:bool = false
-
 
 @export var mobile_controls:NodePath = NodePath()
 @export var car :NodePath = NodePath("../car")
@@ -14,14 +13,14 @@ var last_pos:Vector2 = Vector2(0,0)
 var x_drag_unlocked:bool = false
 var y_drag_unlocked:bool = false
 
-var resetdel = 0
-var default_zoom
+var resetdel:int = 0
+var default_zoom:float
 
 func _ready() -> void:
 	default_cam_pos = $orbit/Camera.position
 	default_zoom = default_cam_pos.z
 
-func _process(delta:float) -> void:
+func _process(_delta:float) -> void:
 	if has_node(debugger):
 		car = get_node(debugger).car
 	if has_node(car):
@@ -37,8 +36,7 @@ func _process(delta:float) -> void:
 		$orbit.global_position = get_node(car).global_position
 		$orbit/Camera.position = default_cam_pos -$orbit.position
 
-func _physics_process(delta:float) -> void:
-	
+func _physics_process(_delta:float) -> void:
 	if Input.is_action_pressed("zoom_out"):
 		default_cam_pos.z += 0.05
 	elif Input.is_action_pressed("zoom_in"):
@@ -55,7 +53,7 @@ func _physics_process(delta:float) -> void:
 		
 	resetdel -= 1
 
-func _input(event):
+func _input(event:InputEvent) -> void:
 	if not str(mobile_controls) == "":
 		if get_node(mobile_controls).visible:
 			can_drag = true
@@ -66,14 +64,13 @@ func _input(event):
 				if can_drag:
 					last_pos = event.position
 					if not event.is_pressed():
-						if resetdel>0:
+						if resetdel > 0:
 							$orbit.rotation_degrees.y = 0.0
 							default_cam_pos.z = default_zoom
 							just_resetted = true
 						resetdel = 15
 			else:
 				just_resetted = false
-
 			if event is InputEventScreenDrag:
 				if can_drag and not just_resetted:
 					drag_velocity.x = event.position.x - last_pos.x
