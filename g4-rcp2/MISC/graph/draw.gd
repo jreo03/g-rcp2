@@ -53,7 +53,7 @@ var peakhp:Array[float] = [0.0,0.0]
 var peaktq:Array[float] = [0.0,0.0]
 
 func _ready() -> void:
-
+	
 	peakhp = [0.0,0.0]
 	peaktq = [0.0,0.0]
 	$torque.clear_points()

@@ -5,7 +5,7 @@ var width:float = 0.0
 var weight:float = 0.0
 var dirt:float = 0.0
 
-var wheels:Array = []
+var wheels:Array[ViVeWheel] = []
 
 func play() -> void:
 	for i in get_children():
@@ -20,31 +20,27 @@ func _ready() -> void:
 	for i in get_parent().get_children():
 		if "TyreSettings" in i:
 			wheels.append(i)
-	
 	play()
 
-func most_skidding(array:Array):
+func most_skidding(array:Array[ViVeWheel]) -> ViVeWheel:
 	var val:float = -10000000000000000000000000000000000.0
-	var obj
-	
+	var obj:ViVeWheel
 	for i in array:
 		val = max(val, abs(i.skvol))
-		
 		if val == abs(i.skvol):
 			obj = i
-	
 	return obj
 
 func _physics_process(_delta:float) -> void:
 	dirt = 0.0
-	for i in wheels:
+	for i:ViVeWheel in wheels:
 		dirt += float(i.ground_dirt)/len(wheels)
 	
-	var wheel = most_skidding(wheels)
+	var wheel:ViVeWheel = most_skidding(wheels)
 	
 	length = wheel.skvol / 2.0 - 1.0
 	
-	var roll = abs(wheel.wv * wheel.w_size) - wheel.velocity.length()
+	var roll:float = abs(wheel.wv * wheel.w_size) - wheel.velocity.length()
 	
 	if length > 2.0:
 		length = 2.0

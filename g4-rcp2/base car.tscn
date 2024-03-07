@@ -250,7 +250,6 @@ mesh = SubResource("10")
 [node name="fr" parent="." instance=ExtResource("1")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.2, 0.2, 3.8)
 target_position = Vector3(0, -2.7, 0)
-SwayBarConnection = "fl"
 Caster = 2.0
 S_Stiffness = 55.0
 S_Damping = 4.0
@@ -266,7 +265,6 @@ skeleton = NodePath("../../../../..")
 [node name="fl" parent="." instance=ExtResource("1")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.2, 0.2, 3.8)
 target_position = Vector3(0, -2.7, 0)
-SwayBarConnection = "fr"
 Caster = 2.0
 S_Stiffness = 55.0
 S_Damping = 4.0
@@ -282,7 +280,6 @@ skeleton = NodePath("../../../../..")
 [node name="rr" parent="." instance=ExtResource("1")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.2, 0.2, -3.8)
 target_position = Vector3(0, -2.7, 0)
-SwayBarConnection = "rl"
 B_Torque = 30.0
 B_Bias = 0.2
 HB_Bias = 1.0
@@ -295,7 +292,6 @@ skeleton = NodePath("../../../../..")
 [node name="rl" parent="." instance=ExtResource("1")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.2, 0.2, -3.8)
 target_position = Vector3(0, -2.7, 0)
-SwayBarConnection = "rr"
 B_Torque = 30.0
 B_Bias = 0.2
 HB_Bias = 1.0

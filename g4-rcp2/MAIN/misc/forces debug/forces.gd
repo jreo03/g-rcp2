@@ -2,7 +2,7 @@ extends MeshInstance3D
 
 @export var Scale:float = 0.5
 
-func _physics_process(delta:float) -> void:
+func _physics_process(_delta:float) -> void:
 	visible = get_parent().get_parent().Debug_Mode
 	$compress.visible = get_parent().is_colliding()
 	$longi.visible = get_parent().is_colliding()

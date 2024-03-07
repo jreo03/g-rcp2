@@ -10,12 +10,12 @@ extends Node3D
 func _physics_process(_delta:float) -> void:
 	#these are both calling up to the parent ViVeWheel
 	var velo1_v:Vector3 = get_parent().get_parent().get_parent().velocity
-	var velo2_v:Vector3 = get_parent().get_parent().get_parent().velocity2
+	var _velo2_v:Vector3 = get_parent().get_parent().get_parent().velocity2
 	
 	visible = VitaVehicleSimulation.misc_smoke
 	
-	$revolvel.position.x = float(wheel_self.TyreSettings["Width (mm)"]) * 0.0030592 / 2
-	$revolver.position.x = -float(wheel_self.TyreSettings["Width (mm)"]) * 0.0030592 / 2
+	$revolvel.position.x = float(wheel_self.TyreSettings.Width_mm) * 0.0030592 / 2
+	$revolver.position.x = -float(wheel_self.TyreSettings.Width_mm) * 0.0030592 / 2
 	
 	$static.global_rotation = velo1.global_rotation
 	var direction:Vector3 = velo1_v * 0.75

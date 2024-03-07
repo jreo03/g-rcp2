@@ -61,7 +61,7 @@ func _process(_delta:float) -> void:
 	inserting = get_parent().get_parent().slip_perc.length()>get_parent().get_parent().stress +20.0 and get_parent().get_parent().is_colliding()
 	
 	position.y = -get_parent().get_parent().w_size +0.025
-	wid = get_parent().get_parent().TyreSettings["Width (mm)"]/750.0
+	wid = get_parent().get_parent().TyreSettings.Width_mm /750.0
 	
 	if not inserting2 == inserting:
 		inserting2 = inserting
@@ -105,7 +105,7 @@ func _process(_delta:float) -> void:
 		
 		if vertices.size() > 0 : # check if we actually got stuff to make
 			current_trail.surface_begin(Mesh.PRIMITIVE_TRIANGLE_STRIP)
-			for i in vertices:
+			for i:Array in vertices:
 				if len(i) > 0:
 					# with the vulkan renderer (forward+ and mobile) you will get the following error
 					## "draw_list_draw: Too few vertices (2) for the render primitive set in the render pipeline (3)."

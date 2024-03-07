@@ -17,7 +17,7 @@ class_name ViVeCarSS
 @export var SteeringAssistance:float = 1.0
 @export var SteeringAssistanceAngular:float = 0.12
 
-@export var LooseSteering :bool = false #simulate rack and pinion steering physics (EXPERIMENTAL)
+@export var LooseSteering:bool = false #simulate rack and pinion steering physics (EXPERIMENTAL)
 
 @export var OnThrottleRate:float = 0.2
 @export var OffThrottleRate:float = 0.2
@@ -35,16 +35,6 @@ class_name ViVeCarSS
 @export var MaxBrake:float = 1.0
 @export var MaxHandbrake:float = 1.0
 @export var MaxClutch:float = 1.0
-
-#@export var GearAssistant:Array[float] = [
-#20, # Shift delay
-#2, # Assistance Level (0 - 2)
-#0.944087, # Speed Influence (will be automatically set)
-#6000.0, # Downshift RPM Iteration
-#6200.0, # Upshift RPM
-#3000.0, # Clutch-Out RPM
-#5, # throttle input allowed after shiting delay
-#]
 
 # meta
 @export var Controlled:bool = true
@@ -90,45 +80,16 @@ enum TransmissionTypes {
 4000.0, # engagement rpm (auto/dct/cvt)
 ]
 
-@export var CVTSettings:Array[float] = [
-0.75, # throttle efficiency threshold (range: 0 - 1)
-0.025, # acceleration rate (range: 0 - 1)
-0.9, # iteration 1 (higher = higher rpm)
-500.0, # iteration 2 (higher = better acceleration from standstill but unstable)
-2.0, # iteration 3 (higher = longer it takes to "lock" the rpm)
-0.2, # iteration 4 (keep it over 0.1)
-]
+@export var CVTSettings:ViVeCVT = ViVeCVT.new()
 
 #stability
-@export var ABS:Array = [ # anti-lock braking system
-2500.0, # threshold
-1, # pump time
-10, # vehicle speed before activation
-true, # enabled
-0.5, # pump force (0.0 - 1.0)
-500.0, # lateral threshold
-2, # lateral pump time
-]
+@export var ABS:ViVeABS = ViVeABS.new()
 
-@export var ESP:Array = [ # electronic stability program
-0.5, # stabilisation theshold
-1.5, # stabilisation rate (higher = understeer, understeer = inefficient)
-1, # yaw threshold
-3.0, # yaw rate
-false, # enableda
-]
+@export var ESP:ViVeESP = ViVeESP.new()
 
-@export var BTCS:Array = [ # brake-based traction control system
-10, # threshold
-0.05, # sensitivity
-false, # enabled
-]
+@export var BTCS:ViVeBTCS = ViVeBTCS.new()
 
-@export var TTCS:Array = [ # throttle-based traction control system
-5, # threshold
-1.0, # sensitivity
-false, # enabled
-]
+@export var TTCS:ViVeTTCS = ViVeTTCS.new()
 
 #differentials
 @export var Locking:float = 0.1
@@ -216,8 +177,8 @@ var actualgear:int = 0
 var gearstress:float = 0.0
 var throttle:float = 0.0
 var cvtaccel:float = 0.0
-var sassistdel = 0
-var sassiststep = 0
+var sassistdel:float = 0 #maybe int
+var sassiststep:float = 0 # maybe int
 var clutchin:bool = false
 var gasrestricted:bool = false
 var revmatch:bool = false

@@ -11,7 +11,7 @@ var skytype :int = 0
 
 var fs2 :bool = false
 
-func _process(delta:float) -> void:
+func _process(_delta:float) -> void:
 #	get_viewport().fxaa = fxaa
 	
 	if fxaa:

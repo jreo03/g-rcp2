@@ -1,6 +1,6 @@
 extends Control
 
-var car
+var car:ViVeCar
 
 func setcar() -> void:
 	car = get_parent().get_node(get_parent().car)

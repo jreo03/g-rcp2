@@ -89,7 +89,7 @@ func _physics_process(_delta:float) -> void:
 			for i in exhaust_particles:
 				get_node(i).emitting = false
 	
-	var wh = abs(get_parent().rpm/10000.0)*WhinePitch
+	var wh:float = abs(get_parent().rpm / 10000.0) * WhinePitch
 	if wh < 0.0:
 		wh = 0.0
 	if wh > 0.01:

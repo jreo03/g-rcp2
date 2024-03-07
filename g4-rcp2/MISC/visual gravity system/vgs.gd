@@ -6,29 +6,30 @@ class_name ViVeVGS
 
 @export var gforce:Vector2 = Vector2(0,0)
 
-@onready var wheel:Polygon2D = $wheel.duplicate()
+@onready var wheel:ViVeDebugWheel = $wheel.duplicate()
 
 var glength:float = 0.0
 
-var appended:Array = []
+var appended:Array[ViVeDebugWheel] = []
 
 func _ready() -> void:
 	$wheel.queue_free()
 
 
+
 func clear() -> void:
-	for i in appended:
+	for i:ViVeDebugWheel in appended:
 		i.queue_free()
 	appended = []
 
 
-func append_wheel(position,settings,node):
-	var w_size:float = ((abs(int(settings["Width (mm)"])) * ((abs(int(settings["Aspect Ratio"])) * 2.0) / 100.0) + abs(int(settings["Rim Size (in)"])) * 25.4) * 0.003269) / 2.0
-	var width:float = (abs(int(settings["Width (mm)"])) * 0.003269) / 2.0
+func append_wheel(position:Vector3 ,settings:ViVeTyreSettings, node:ViVeWheel) -> void:
+	var w_size:float = ((abs(settings.Width_mm) * ((abs(settings.Aspect_Ratio) * 2.0) / 100.0) + abs(settings.Rim_Size_in) * 25.4) * 0.003269) / 2.0
+	var width:float = (abs(settings.Width_mm) * 0.003269) / 2.0
 	
-	var w:Polygon2D = wheel.duplicate()
+	var w:ViVeDebugWheel = wheel.duplicate()
 	add_child(w)
-	w.pos = -Vector2(position.x,position.z) * 2.0
+	w.pos = - Vector2(position.x,position.z) * 2.0
 	w.setting = settings
 	w.node = node
 	
@@ -38,35 +39,34 @@ func append_wheel(position,settings,node):
 	appended.append(w)
 
 func _physics_process(_delta:float) -> void:
-	
-	for i in appended:
+	for i:ViVeDebugWheel in appended:
 		i.position = size / 2
-		i.position += ((i.pos*(64.0/vgs_scale))/9.806)
+		i.position += ((i.pos * (64.0 / vgs_scale)) / 9.806)
 		
-		i.get_node("slippage").scale.y = (i.node.slip_percpre)*0.8
-
+		i.slippage.scale.y = (i.node.slip_percpre) * 0.8
+		
 		i.rotation_degrees = -i.node.rotation_degrees.y
-
+		
 		i.self_modulate = Color(1,1,1)
-		if i.get_node("slippage").scale.y<0.0:
-			i.get_node("slippage").scale.y = 0.0
-		elif i.get_node("slippage").scale.y>0.8:
-			i.get_node("slippage").scale.y = 0.8
-			if abs(i.node.wv*i.node.w_size)>i.node.velocity.length():
+		
+		if i.slippage.scale.y < 0.0:
+			i.slippage.scale.y = 0.0
+		elif i.slippage.scale.y > 0.8:
+			i.slippage.scale.y = 0.8
+			if abs(i.node.wv * i.node.w_size)>i.node.velocity.length():
 				i.self_modulate = Color(1,0,0)
 			
 	
-	glength = Vector2(abs(gforce.x),abs(gforce.y)).length()/vgs_scale -1.0
-	if Vector2(abs(gforce.x),abs(gforce.y)).length()>MaxG:
+	glength = Vector2(abs(gforce.x), abs(gforce.y)).length() / vgs_scale - 1.0
+	if Vector2(abs(gforce.x), abs(gforce.y)).length() > MaxG:
 		$centre/Circle.modulate = Color(1.0,1.0,0.5,1.0)
 	else:
 		$centre/Circle.modulate = Color(1.0,0.75,0.0,1.0)
-
-	if glength<0.0:
-		glength = 0.0
+	
+	glength = maxf(glength, 0.0)
 	
 	gforce /= glength +1.0
 	
-	$centre.position = size/2 +gforce*(64.0/vgs_scale)
-	$field.position = size/2
+	$centre.position = size / 2 + gforce * (64.0 / vgs_scale)
+	$field.position = size / 2
 	

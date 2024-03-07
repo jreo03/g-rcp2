@@ -1,5 +1,5 @@
 extends Resource
-class_name GearAssistant
+class_name ViVeGearAssist
 
 @export var shift_delay:int = 20 #0
 @export var assist_level:int = 2 #1

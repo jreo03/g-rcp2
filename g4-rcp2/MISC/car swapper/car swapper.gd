@@ -35,7 +35,7 @@ func load_and_cache(path:String) -> PackedScene:
 	loaded = literal_cache[path]
 	return loaded
 
-@onready var default_position = get_parent().get_parent().get_node("car").global_position
+@onready var default_position:Vector3 = get_parent().get_parent().get_node("car").global_position
 
 func swapcar(naem:String) -> void:
 	visible = false
@@ -75,7 +75,7 @@ func swapcar(naem:String) -> void:
 		
 		get_parent().get_node("power_graph")._ready()
 		
-		var peak = max(get_parent().get_node("power_graph").peaktq[0], get_parent().get_node("power_graph").peakhp[0])
+		var peak:float = max(get_parent().get_node("power_graph").peaktq[0], get_parent().get_node("power_graph").peakhp[0])
 		
 		get_parent().get_node("power_graph").draw_scale = 1.0 / peak
 		
