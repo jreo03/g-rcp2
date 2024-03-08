@@ -4,15 +4,16 @@ importer="texture"
 type="CompressedTexture2D"
 uid="uid://bil2mmi4jx7ry"
 path.s3tc="res://.godot/imported/roadsurface.png-a299cb6c8d2f277ceefc827a02afe063.s3tc.ctex"
+path.etc2="res://.godot/imported/roadsurface.png-a299cb6c8d2f277ceefc827a02afe063.etc2.ctex"
 metadata={
-"imported_formats": ["s3tc_bptc"],
+"imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
 }
 
 [deps]
 
 source_file="res://MISC/scene swapper/scenes/RCP Proving Grounds/assets/roadsurface.png"
-dest_files=["res://.godot/imported/roadsurface.png-a299cb6c8d2f277ceefc827a02afe063.s3tc.ctex"]
+dest_files=["res://.godot/imported/roadsurface.png-a299cb6c8d2f277ceefc827a02afe063.s3tc.ctex", "res://.godot/imported/roadsurface.png-a299cb6c8d2f277ceefc827a02afe063.etc2.ctex"]
 
 [params]
 

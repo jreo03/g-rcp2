@@ -4,15 +4,16 @@ importer="texture"
 type="CompressedTexture2D"
 uid="uid://lhxyg0uvrnb5"
 path.s3tc="res://.godot/imported/Grid.png-2111b632e1715715316a25911ba3fa72.s3tc.ctex"
+path.etc2="res://.godot/imported/Grid.png-2111b632e1715715316a25911ba3fa72.etc2.ctex"
 metadata={
-"imported_formats": ["s3tc_bptc"],
+"imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
 }
 
 [deps]
 
 source_file="res://Grid.png"
-dest_files=["res://.godot/imported/Grid.png-2111b632e1715715316a25911ba3fa72.s3tc.ctex"]
+dest_files=["res://.godot/imported/Grid.png-2111b632e1715715316a25911ba3fa72.s3tc.ctex", "res://.godot/imported/Grid.png-2111b632e1715715316a25911ba3fa72.etc2.ctex"]
 
 [params]
 

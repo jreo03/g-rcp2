@@ -18,6 +18,7 @@ var current_trail_node:MeshInstance3D = null
 var current_trail :ImmediateMesh = null
 var drawers:Array[MeshInstance3D] = []
 
+var wheel_parent:ViVeWheel
 
 # i spent 5 days trying to figure out why the skids were not working properly
 	# the immediate mesh resource was shared between all the skids :/
@@ -51,17 +52,19 @@ func _physics_process(_delta:float) -> void:
 				current_trail = null
 			i.queue_free()
 			drawers.remove_at(0)
-		
+	
 	if del < 0 and inserting:
 		del = 5
 		add_segment()
 
 
 func _process(_delta:float) -> void:
-	inserting = get_parent().get_parent().slip_perc.length()>get_parent().get_parent().stress +20.0 and get_parent().get_parent().is_colliding()
+	wheel_parent = get_parent().get_parent()
 	
-	position.y = -get_parent().get_parent().w_size +0.025
-	wid = get_parent().get_parent().TyreSettings.Width_mm /750.0
+	inserting = wheel_parent.slip_perc.length() > wheel_parent.stress + 20.0 and wheel_parent.is_colliding()
+	
+	position.y = -wheel_parent.w_size + 0.025
+	wid = wheel_parent.TyreSettings.Width_mm / 750.0
 	
 	if not inserting2 == inserting:
 		inserting2 = inserting
@@ -83,12 +86,12 @@ func _process(_delta:float) -> void:
 			
 			add_child(current_trail_node)
 			drawers.append(current_trail_node)
-		
+	
 	
 	ran = true
-	if (global_transform.origin - g).length_squared()>0.01:
-		look_at(g,Vector3(0,1,0))
-		
+	if (global_transform.origin - g).length_squared() > 0.01:
+		look_at(g,Vector3(0, 1, 0))
+	
 	g = global_transform.origin
 	var ppos:Transform3D = global_transform
 	
@@ -96,9 +99,9 @@ func _process(_delta:float) -> void:
 		if inserting:
 			current_trail_node.delete_wait = 180
 			if len(vertices) > 0:
-				vertices[len(vertices)-1][0] = ((ppos.origin + ppos.basis.orthonormalized() * Vector3(wid,0,0)))
-				vertices[len(vertices)-1][1] = ((ppos.origin - ppos.basis.orthonormalized() * Vector3(wid,0,0)))
-				vertices[len(vertices)-1][2] = ppos.origin
+				vertices[len(vertices) - 1][0] = ((ppos.origin + ppos.basis.orthonormalized() * Vector3(wid, 0, 0)))
+				vertices[len(vertices) - 1][1] = ((ppos.origin - ppos.basis.orthonormalized() * Vector3(wid, 0, 0)))
+				vertices[len(vertices) - 1][2] = ppos.origin
 			
 		current_trail_node.global_transform.basis = get_tree().get_current_scene().global_transform.basis
 		current_trail.clear_surfaces()

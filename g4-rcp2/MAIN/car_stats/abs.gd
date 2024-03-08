@@ -9,7 +9,7 @@ class_name ViVeABS
 @export var lat_thresh:float = 500.0 #5
 @export var lat_pump_time:float = 2.0 #6
 
-var reference:Array = [ # anti-lock braking system
+var orig_reference:Array = [ # anti-lock braking system
 2500.0, # threshold
 1, # pump time
 10, # vehicle speed before activation

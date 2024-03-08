@@ -4,15 +4,16 @@ importer="texture"
 type="CompressedTexture2D"
 uid="uid://duss7qfht17f4"
 path.bptc="res://.godot/imported/sphere_normals2.png-b95a11fc0ebfe847bcfbcdf8ba35923e.bptc.ctex"
+path.astc="res://.godot/imported/sphere_normals2.png-b95a11fc0ebfe847bcfbcdf8ba35923e.astc.ctex"
 metadata={
-"imported_formats": ["s3tc_bptc"],
+"imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
 }
 
 [deps]
 
 source_file="res://MAIN/misc/tyre smoke/sphere_normals2.png"
-dest_files=["res://.godot/imported/sphere_normals2.png-b95a11fc0ebfe847bcfbcdf8ba35923e.bptc.ctex"]
+dest_files=["res://.godot/imported/sphere_normals2.png-b95a11fc0ebfe847bcfbcdf8ba35923e.bptc.ctex", "res://.godot/imported/sphere_normals2.png-b95a11fc0ebfe847bcfbcdf8ba35923e.astc.ctex"]
 
 [params]
 

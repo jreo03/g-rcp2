@@ -4,15 +4,16 @@ importer="texture"
 type="CompressedTexture2D"
 uid="uid://ctggu2i2uiplr"
 path.s3tc="res://.godot/imported/smoke.png-05c97b0f6ec6a08f3819f01fee5f4408.s3tc.ctex"
+path.etc2="res://.godot/imported/smoke.png-05c97b0f6ec6a08f3819f01fee5f4408.etc2.ctex"
 metadata={
-"imported_formats": ["s3tc_bptc"],
+"imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
 }
 
 [deps]
 
 source_file="res://MAIN/misc/tyre smoke/smoke.png"
-dest_files=["res://.godot/imported/smoke.png-05c97b0f6ec6a08f3819f01fee5f4408.s3tc.ctex"]
+dest_files=["res://.godot/imported/smoke.png-05c97b0f6ec6a08f3819f01fee5f4408.s3tc.ctex", "res://.godot/imported/smoke.png-05c97b0f6ec6a08f3819f01fee5f4408.etc2.ctex"]
 
 [params]
 

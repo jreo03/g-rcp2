@@ -171,7 +171,7 @@ color_ramp = SubResource("12")
 
 [node name="revolvel" type="Node3D" parent="."]
 
-[node name="lvl1" type="CPUParticles3D" parent="revolvel"]
+[node name="lvl1" type="CPUParticles3D" parent="revolvel" groups=["Revolve_1"]]
 transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 0, 0, 0)
 emitting = false
 amount = 16
@@ -197,7 +197,7 @@ scale_amount_curve = SubResource("16")
 color = Color(1, 1, 1, 0.25)
 color_ramp = SubResource("15")
 
-[node name="lvl2" type="CPUParticles3D" parent="revolvel"]
+[node name="lvl2" type="CPUParticles3D" parent="revolvel" groups=["Revolve_2"]]
 transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 0, 0, 0)
 emitting = false
 amount = 32
@@ -222,7 +222,7 @@ scale_amount_curve = SubResource("16")
 color = Color(1, 1, 1, 0.25)
 color_ramp = SubResource("15")
 
-[node name="lvl3" type="CPUParticles3D" parent="revolvel"]
+[node name="lvl3" type="CPUParticles3D" parent="revolvel" groups=["Revolve_3"]]
 transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 0, 0, 0)
 emitting = false
 amount = 64
@@ -249,7 +249,7 @@ color_ramp = SubResource("15")
 
 [node name="revolver" type="Node3D" parent="."]
 
-[node name="lvl1" type="CPUParticles3D" parent="revolver"]
+[node name="lvl1" type="CPUParticles3D" parent="revolver" groups=["Revolve_1"]]
 transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 0, 0, 0)
 emitting = false
 amount = 16
@@ -274,7 +274,7 @@ scale_amount_curve = SubResource("16")
 color = Color(1, 1, 1, 0.25)
 color_ramp = SubResource("15")
 
-[node name="lvl2" type="CPUParticles3D" parent="revolver"]
+[node name="lvl2" type="CPUParticles3D" parent="revolver" groups=["Revolve_2"]]
 transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 0, 0, 0)
 emitting = false
 amount = 32
@@ -298,7 +298,7 @@ scale_amount_curve = SubResource("16")
 color = Color(1, 1, 1, 0.25)
 color_ramp = SubResource("15")
 
-[node name="lvl3" type="CPUParticles3D" parent="revolver"]
+[node name="lvl3" type="CPUParticles3D" parent="revolver" groups=["Revolve_3"]]
 transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 0, 0, 0)
 emitting = false
 amount = 64

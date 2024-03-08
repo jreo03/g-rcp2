@@ -4,15 +4,16 @@ importer="texture"
 type="CompressedTexture2D"
 uid="uid://cx60b8wmlk323"
 path.s3tc="res://.godot/imported/cobbles.png-a8fef709c046b232b6ae608a5748554b.s3tc.ctex"
+path.etc2="res://.godot/imported/cobbles.png-a8fef709c046b232b6ae608a5748554b.etc2.ctex"
 metadata={
-"imported_formats": ["s3tc_bptc"],
+"imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
 }
 
 [deps]
 
 source_file="res://MISC/scene swapper/scenes/unfinished test track/assets/cobbles.png"
-dest_files=["res://.godot/imported/cobbles.png-a8fef709c046b232b6ae608a5748554b.s3tc.ctex"]
+dest_files=["res://.godot/imported/cobbles.png-a8fef709c046b232b6ae608a5748554b.s3tc.ctex", "res://.godot/imported/cobbles.png-a8fef709c046b232b6ae608a5748554b.etc2.ctex"]
 
 [params]
 

@@ -7,7 +7,7 @@ class_name ViVeESP
 @export var yaw_rate: float = 3.0
 @export var enabled:bool = false
 
-var reference:Array = [ # electronic stability program
+var orig_reference:Array = [ # electronic stability program
 0.5, # stabilisation theshold
 1.5, # stabilisation rate (higher = understeer, understeer = inefficient)
 1, # yaw threshold

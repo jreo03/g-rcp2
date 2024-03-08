@@ -48,8 +48,7 @@ func _physics_process(_delta:float) -> void:
 	
 	var sfk:float = 1.0-(vacuum*get_parent().throttle)
 	
-	if sfk < vacuum_crossfade:
-		sfk = vacuum_crossfade
+	sfk = maxf(sfk, vacuum_crossfade)
 	
 	fade *= sfk
 	
@@ -64,13 +63,12 @@ func _physics_process(_delta:float) -> void:
 		
 		dist *= abs(dist)
 		
-		var vol:float = 1.0-dist
-		vol = clampf(vol, 0.0, 1.0)
+		var vol:float = clampf(1.0 - dist, 0.0, 1.0)
 		
-		var db:float = linear_to_db((vol*maxvol)*(volume*(overall_volume)))
-		if db < -60.0:
-			db = -60.0
-			
+		var db:float = linear_to_db((vol * maxvol) * (volume * (overall_volume)))
+		
+		db = maxf(db, -60.0)
+		
 		i.volume_db = db
 		i.max_db = i.volume_db
 		var pit:float = abs(pitch * maxpitch)

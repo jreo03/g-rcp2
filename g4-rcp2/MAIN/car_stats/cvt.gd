@@ -8,7 +8,7 @@ class_name ViVeCVT
 @export var iteration_3:float = 2.0 #4
 @export var iteration_4: float = 0.2 #5
 
-var reference:Array[float] = [
+var orig_reference:Array[float] = [
 0.75, # throttle efficiency threshold (range: 0 - 1)
 0.025, # acceleration rate (range: 0 - 1)
 0.9, # iteration 1 (higher = higher rpm)

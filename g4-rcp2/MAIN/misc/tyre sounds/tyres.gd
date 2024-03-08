@@ -17,10 +17,11 @@ func stop() -> void:
 		i.stop()
 
 func _ready() -> void:
-	for i in get_parent().get_children():
-		if "TyreSettings" in i:
-			wheels.append(i)
+	get_parent().connect("wheels_ready", load_wheels)
 	play()
+
+func load_wheels() -> void:
+	wheels = get_parent().get_wheels()
 
 func most_skidding(array:Array[ViVeWheel]) -> ViVeWheel:
 	var val:float = -10000000000000000000000000000000000.0
@@ -34,7 +35,7 @@ func most_skidding(array:Array[ViVeWheel]) -> ViVeWheel:
 func _physics_process(_delta:float) -> void:
 	dirt = 0.0
 	for i:ViVeWheel in wheels:
-		dirt += float(i.ground_dirt)/len(wheels)
+		dirt += float(i.surface_vars.ground_dirt) / len(wheels)
 	
 	var wheel:ViVeWheel = most_skidding(wheels)
 	
@@ -42,8 +43,7 @@ func _physics_process(_delta:float) -> void:
 	
 	var roll:float = abs(wheel.wv * wheel.w_size) - wheel.velocity.length()
 	
-	if length > 2.0:
-		length = 2.0
+	length = maxf(length, 2.0)
 	
 	width -= (width - (1.0 - (roll / 10.0 - 1.0))) * 0.05
 	
@@ -55,19 +55,20 @@ func _physics_process(_delta:float) -> void:
 		total += i.skvol
 	
 	total /= 10.0
-	if total > 1.0:
-		total = 1.0
 	
+	total = maxf(total, 1.0)
+	
+	var mult:float = (get_parent().linear_velocity.length() / 5000.0 + 1.0)
 #	$roll0.pitch_scale = 1.0    /(get_parent().linear_velocity.length()/500.0 +1.0)
-	$roll1.pitch_scale = 1.0    /(get_parent().linear_velocity.length()/5000.0 +1.0)
-	$roll2.pitch_scale = 1.0    /(get_parent().linear_velocity.length()/5000.0 +1.0)
-	$peel0.pitch_scale = 0.95 +length/8.0    /(get_parent().linear_velocity.length()/5000.0 +1.0)
-	$peel1.pitch_scale = 1.0    /(get_parent().linear_velocity.length()/5000.0 +1.0)
-	$peel2.pitch_scale = 1.1 -total*0.1    /(get_parent().linear_velocity.length()/5000.0 +1.0)
+	$roll1.pitch_scale = 1.0 / mult
+	$roll2.pitch_scale = 1.0 / mult
+	$peel0.pitch_scale = 0.95 + length / 8.0 / mult
+	$peel1.pitch_scale = 1.0 / mult
+	#$peel2.pitch_scale =  1.1 - total * 0.1 / mult
 	
-	var drit:float = (get_parent().linear_velocity.length()*wheel.stress) / 1000.0 - 0.1
-	if drit > 0.5:
-		drit = 0.5
+	var drit:float = (get_parent().linear_velocity.length() * wheel.stress) / 1000.0 - 0.1
+	
+	drit = minf(drit, 0.5)
 	
 	drit += wheel.skvol / 2.0 - 0.1
 	

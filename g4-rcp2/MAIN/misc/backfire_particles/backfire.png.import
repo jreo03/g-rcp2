@@ -4,15 +4,16 @@ importer="texture"
 type="CompressedTexture2D"
 uid="uid://1a0k3s3amej8"
 path.s3tc="res://.godot/imported/backfire.png-a05415903e2ee00cf71d73d4efcb76ab.s3tc.ctex"
+path.etc2="res://.godot/imported/backfire.png-a05415903e2ee00cf71d73d4efcb76ab.etc2.ctex"
 metadata={
-"imported_formats": ["s3tc_bptc"],
+"imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
 }
 
 [deps]
 
 source_file="res://MAIN/misc/backfire_particles/backfire.png"
-dest_files=["res://.godot/imported/backfire.png-a05415903e2ee00cf71d73d4efcb76ab.s3tc.ctex"]
+dest_files=["res://.godot/imported/backfire.png-a05415903e2ee00cf71d73d4efcb76ab.s3tc.ctex", "res://.godot/imported/backfire.png-a05415903e2ee00cf71d73d4efcb76ab.etc2.ctex"]
 
 [params]
 

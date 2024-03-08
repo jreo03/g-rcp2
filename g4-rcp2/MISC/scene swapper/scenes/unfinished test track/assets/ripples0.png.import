@@ -4,15 +4,16 @@ importer="texture"
 type="CompressedTexture2D"
 uid="uid://che72isf8a6ni"
 path.s3tc="res://.godot/imported/ripples0.png-584ab5d942305fa7a6973f4c878736e7.s3tc.ctex"
+path.etc2="res://.godot/imported/ripples0.png-584ab5d942305fa7a6973f4c878736e7.etc2.ctex"
 metadata={
-"imported_formats": ["s3tc_bptc"],
+"imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
 }
 
 [deps]
 
 source_file="res://MISC/scene swapper/scenes/unfinished test track/assets/ripples0.png"
-dest_files=["res://.godot/imported/ripples0.png-584ab5d942305fa7a6973f4c878736e7.s3tc.ctex"]
+dest_files=["res://.godot/imported/ripples0.png-584ab5d942305fa7a6973f4c878736e7.s3tc.ctex", "res://.godot/imported/ripples0.png-584ab5d942305fa7a6973f4c878736e7.etc2.ctex"]
 
 [params]
 

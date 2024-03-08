@@ -1,26 +1,11 @@
 res://default_env.tres
 res://world.tscn
-res://base car.tscn
-res://MISC/debugger.tscn
-res://MAIN/wheel.tscn
-res://MAIN/wheel.gd
-res://MISC/visual gravity system/vgs.tscn
 res://MAIN/car.gd
-res://MISC/visual gravity system/vgs.gd
-res://MAIN/car_stats/tyre_settings.gd
-res://MISC/visual gravity system/wheel_variables.gd
-res://MISC/misc scripts/debug.gd
-res://MISC/graph/display.tscn
-res://MISC/graph/draw.gd
+res://MISC/debugger.tscn
+res://MISC/scene swapper/scenes/Test Scene/scene.tscn
+res://base car.tscn
+res://MAIN/misc/tyre sounds/tyres.gd
+res://MAIN/misc/tyre smoke/smoke.tscn
 res://MAIN/misc/tyre smoke/tyre_smoke.gd
-res://MAIN/misc/tyre marks/trail_sm.gd
-res://MAIN/car_stats/car_cvt.gd
-res://MAIN/car_stats/car_transmission.gd
-res://MAIN/vitavehicle.gd
-res://MAIN/car_stats/torque.gd
-res://MAIN/car_stats/car_ttcs.gd
-res://MAIN/car_stats/btcs.gd
-res://MAIN/car_stats/cvt.gd
-res://MAIN/car_stats/esp.gd
-res://MAIN/car_stats/abs.gd
-res://MAIN/car_stats/gear_assistant.gd
+res://MAIN/wheel.tscn
+res://MISC/graph/draw.gd

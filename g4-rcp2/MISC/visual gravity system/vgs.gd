@@ -23,13 +23,16 @@ func clear() -> void:
 	appended = []
 
 
-func append_wheel(position:Vector3 ,settings:ViVeTyreSettings, node:ViVeWheel) -> void:
+func append_wheel(node:ViVeWheel) -> void:
+	var settings:ViVeTyreSettings = node.TyreSettings
+	var pos:Vector3 = node.position
+	
 	var w_size:float = ((abs(settings.Width_mm) * ((abs(settings.Aspect_Ratio) * 2.0) / 100.0) + abs(settings.Rim_Size_in) * 25.4) * 0.003269) / 2.0
 	var width:float = (abs(settings.Width_mm) * 0.003269) / 2.0
 	
 	var w:ViVeDebugWheel = wheel.duplicate()
 	add_child(w)
-	w.pos = - Vector2(position.x,position.z) * 2.0
+	w.pos = - Vector2(pos.x,pos.z) * 2.0
 	w.setting = settings
 	w.node = node
 	
@@ -49,11 +52,9 @@ func _physics_process(_delta:float) -> void:
 		
 		i.self_modulate = Color(1,1,1)
 		
-		if i.slippage.scale.y < 0.0:
-			i.slippage.scale.y = 0.0
-		elif i.slippage.scale.y > 0.8:
-			i.slippage.scale.y = 0.8
-			if abs(i.node.wv * i.node.w_size)>i.node.velocity.length():
+		i.slippage.scale.y = clampf(i.slippage.scale.y, 0.0, 0.8)
+		if i.slippage.scale.y == 0.8:
+			if abs(i.node.wv * i.node.w_size) > i.node.velocity.length():
 				i.self_modulate = Color(1,0,0)
 			
 	

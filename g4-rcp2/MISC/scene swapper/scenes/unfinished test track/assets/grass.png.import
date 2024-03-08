@@ -4,15 +4,16 @@ importer="texture"
 type="CompressedTexture2D"
 uid="uid://b1yde1lneykc5"
 path.s3tc="res://.godot/imported/grass.png-b5dc6e5d0a788e672969048ab0d1cd71.s3tc.ctex"
+path.etc2="res://.godot/imported/grass.png-b5dc6e5d0a788e672969048ab0d1cd71.etc2.ctex"
 metadata={
-"imported_formats": ["s3tc_bptc"],
+"imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
 }
 
 [deps]
 
 source_file="res://MISC/scene swapper/scenes/unfinished test track/assets/grass.png"
-dest_files=["res://.godot/imported/grass.png-b5dc6e5d0a788e672969048ab0d1cd71.s3tc.ctex"]
+dest_files=["res://.godot/imported/grass.png-b5dc6e5d0a788e672969048ab0d1cd71.s3tc.ctex", "res://.godot/imported/grass.png-b5dc6e5d0a788e672969048ab0d1cd71.etc2.ctex"]
 
 [params]
 

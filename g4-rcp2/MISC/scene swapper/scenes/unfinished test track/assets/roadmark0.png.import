@@ -4,15 +4,16 @@ importer="texture"
 type="CompressedTexture2D"
 uid="uid://darskrbadljf8"
 path.s3tc="res://.godot/imported/roadmark0.png-f1adc69c8987e32fae04abc62413b708.s3tc.ctex"
+path.etc2="res://.godot/imported/roadmark0.png-f1adc69c8987e32fae04abc62413b708.etc2.ctex"
 metadata={
-"imported_formats": ["s3tc_bptc"],
+"imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
 }
 
 [deps]
 
 source_file="res://MISC/scene swapper/scenes/unfinished test track/assets/roadmark0.png"
-dest_files=["res://.godot/imported/roadmark0.png-f1adc69c8987e32fae04abc62413b708.s3tc.ctex"]
+dest_files=["res://.godot/imported/roadmark0.png-f1adc69c8987e32fae04abc62413b708.s3tc.ctex", "res://.godot/imported/roadmark0.png-f1adc69c8987e32fae04abc62413b708.etc2.ctex"]
 
 [params]
 

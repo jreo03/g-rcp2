@@ -10,12 +10,13 @@ config_version=5
 
 [application]
 
-config/name="VitaVehicle - Godot 4"
-config/description="Realistic Vehicle Simulation for Godot 4"
+config/name="VitaVehicle - Godot 4.2"
+config/description="Realistic Vehicle Simulation for Godot 4.2"
 run/main_scene="res://world.tscn"
 config/features=PackedStringArray("4.2")
 boot_splash/bg_color=Color(0.141176, 0.141176, 0.141176, 1)
 boot_splash/image="res://logo.png"
+boot_splash/use_filter=false
 config/icon="res://icon.png"
 
 [autoload]
@@ -212,6 +213,7 @@ common/enable_pause_aware_picking=true
 [rendering]
 
 renderer/rendering_method="gl_compatibility"
+textures/vram_compression/import_etc2_astc=true
 textures/lossless_compression/force_png=true
 environment/defaults/default_environment="res://default_env.tres"
 quality/driver/driver_name="GLES2"
