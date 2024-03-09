@@ -3,12 +3,12 @@ class_name ViVeCarControls
 
 enum ControlType {
 	CONTROLS_KEYBOARD_MOUSE,
-	CONTROLS_KEYBOARD,
 	CONTROLS_TOUCH,
 	CONTROLS_JOYPAD,
 }
 
-@export_enum("Keyboard and Mouse", "Keyboard", "Touch controls (Gyro)", "Joypad") var control_type:int = 1
+@export_enum("Keyboard and Mouse", "Keyboard", "Touch controls (Gyro)", "Joypad") var control_type:int = 0
+
 @export var Use_Global_Control_Settings:bool = false
 @export var UseMouseSteering:bool = false
 @export var UseAccelerometreSteering :bool = false
@@ -113,7 +113,7 @@ func apply_gear_assist() -> void:
 			gasrestricted = false
 			clutchin = false
 			revmatch = false
-
+			
 			gaspedal = digital_button_curve(
 				(gas and not gasrestricted or revmatch), 
 				gaspedal, OnThrottleRate, OffThrottleRate)
@@ -171,44 +171,50 @@ func digital_button_curve(digital:bool, analog:float, on_rate:float, off_rate:fl
 		analog -= off_rate / clock_mult
 	return analog
 
-func new_controls() -> void:
-	var ctrl:ControlType = control_type as ControlType
-	#temporary 
-	if UseMouseSteering:
-		ctrl = ControlType.CONTROLS_KEYBOARD_MOUSE
-	elif UseAccelerometreSteering:
-		ctrl = ControlType.CONTROLS_JOYPAD
-	else:
-		ctrl = ControlType.CONTROLS_KEYBOARD
-	var mouseposx:float = 0.0
-	
-	match ctrl:
-		ControlType.CONTROLS_KEYBOARD_MOUSE:
-			controls_keyboard_mouse(mouseposx)
-		ControlType.CONTROLS_KEYBOARD:
-			controls_keyboard_mouse()
-		ControlType.CONTROLS_TOUCH:
-			controls_touchscreen()
-		ControlType.CONTROLS_JOYPAD:
-			controls_joypad()
-
 func controls_touchscreen() -> void:
 	steer_analog(Input.get_accelerometer().x / 10.0)
+	
 
 func controls_joypad() -> void:
 	const joypad_index:int = 0 #This can be switched to anything else later on for splitscreen
 	
 	su = Input.is_joy_button_pressed(joypad_index, JOY_BUTTON_Y)
 	sd = Input.is_joy_button_pressed(joypad_index, JOY_BUTTON_X)
-	handbrake = Input.is_joy_button_pressed(joypad_index, JOY_BUTTON_DPAD_DOWN)
+	gas = bool(Input.get_joy_axis(joypad_index, JOY_AXIS_TRIGGER_RIGHT))
+	brake = bool(Input.get_joy_axis(joypad_index, JOY_AXIS_TRIGGER_LEFT))
+	handbrake = Input.is_joy_button_pressed(joypad_index, JOY_BUTTON_B)
 	left = Input.is_joy_button_pressed(joypad_index, JOY_BUTTON_DPAD_LEFT)
 	right = Input.is_joy_button_pressed(joypad_index, JOY_BUTTON_DPAD_RIGHT)
 	
-	steer_analog(Input.get_joy_axis(joypad_index, JOY_AXIS_LEFT_X))
+	if left:
+		steer_velocity -= 0.01
+	elif right:
+		steer_velocity += 0.01
+	
+	
+	
+	gasrestricted = false
+	clutchin = false
+	revmatch = false
 	
 	gaspedal = Input.get_joy_axis(joypad_index, JOY_AXIS_TRIGGER_RIGHT)
 	brakepedal = Input.get_joy_axis(joypad_index, JOY_AXIS_TRIGGER_LEFT)
 	handbrakepull = digital_button_curve(handbrake, handbrakepull, OnHandbrakeRate, OffHandbrakeRate)
+	
+	
+	
+	var siding:float = abs(velocity.x)
+	
+	#Based on the syntax, I'm unsure if this is doing what it "should" do...?
+	if (velocity.x > 0 and steer2 > 0) or (velocity.x < 0 and steer2 < 0):
+		siding = 0.0
+	
+	var going:float = velocity.z / (siding + 1.0)
+	going = maxf(going, 0)
+	
+	steer_analog(Input.get_joy_axis(joypad_index, JOY_AXIS_LEFT_X))
+	
+	apply_assistance_factor(going)
 
 
 func controls_keyboard_mouse(mouseposx:float = 0.0) -> void:
@@ -239,7 +245,7 @@ func controls_keyboard_mouse(mouseposx:float = 0.0) -> void:
 	apply_gear_assist()
 	
 	var siding:float = abs(velocity.x)
-		
+	
 	#Based on the syntax, I'm unsure if this is doing what it "should" do...?
 	if (velocity.x > 0 and steer2 > 0) or (velocity.x < 0 and steer2 < 0):
 		siding = 0.0

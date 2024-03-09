@@ -15,3 +15,4 @@ res://MAIN/vitavehicle.gd
 res://MISC/controls config/run.gd
 res://MAIN/misc/engine sound/crossfade.gd
 res://MAIN/wheel.gd
+res://MISC/controls config/option_variables.gd

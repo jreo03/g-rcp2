@@ -1,4 +1,4 @@
-[gd_scene load_steps=17 format=3 uid="uid://b77dj0608nvq0"]
+[gd_scene load_steps=18 format=3 uid="uid://b77dj0608nvq0"]
 
 [ext_resource type="Texture2D" uid="uid://b315i7ikjj32c" path="res://logo.png" id="2"]
 [ext_resource type="Script" path="res://MISC/misc scripts/debug.gd" id="3"]
@@ -12,6 +12,7 @@
 [ext_resource type="Script" path="res://MISC/car swapper/car swapper.gd" id="10"]
 [ext_resource type="Texture2D" uid="uid://cr5l3r8wqkyn6" path="res://MAIN/misc/textures/sw.png" id="11"]
 [ext_resource type="Texture2D" uid="uid://b7tkt12prqch8" path="res://MAIN/misc/textures/sw_desired.png" id="12"]
+[ext_resource type="Script" path="res://MISC/controls config/option_variables.gd" id="12_ofvnx"]
 [ext_resource type="PackedScene" uid="uid://b1vo60v1pjs6w" path="res://MISC/tachometre/tacho.tscn" id="13"]
 [ext_resource type="PackedScene" uid="uid://cbskusbekrb4l" path="res://MISC/vertical progress bar/bar.tscn" id="14"]
 [ext_resource type="PackedScene" uid="uid://cnjbclsh2lklc" path="res://MISC/visual gravity system/vgs.tscn" id="15"]
@@ -332,7 +333,6 @@ offset_right = 64.36
 offset_bottom = 0.0799561
 
 [node name="controls manipulator" type="Control" parent="."]
-visible = false
 anchors_preset = 0
 anchor_left = 0.334961
 anchor_top = 0.1975
@@ -416,24 +416,17 @@ anchor_bottom = 1.0
 text = "false"
 vertical_alignment = 2
 
-[node name="CheckBox2" type="CheckBox" parent="controls manipulator/scroll/container"]
-custom_minimum_size = Vector2(240, 60)
+[node name="OptionButton" type="OptionButton" parent="controls manipulator/scroll/container"]
 layout_mode = 2
-script = ExtResource("9")
-var_name = "UseAccelerometreSteering"
-
-[node name="text" type="Label" parent="controls manipulator/scroll/container/CheckBox2"]
-layout_mode = 0
-anchor_right = 1.0
-anchor_bottom = 1.0
-text = "Use Accelerometre Steering"
-
-[node name="amount" type="Label" parent="controls manipulator/scroll/container/CheckBox2"]
-layout_mode = 0
-anchor_right = 1.0
-anchor_bottom = 1.0
-text = "false"
-vertical_alignment = 2
+item_count = 3
+selected = 0
+popup/item_0/text = "Keyboard & Mouse"
+popup/item_0/id = 1
+popup/item_1/text = "Touch Controls"
+popup/item_1/id = 0
+popup/item_2/text = "Joypad"
+popup/item_2/id = 2
+script = ExtResource("12_ofvnx")
 
 [node name="HSlider4" type="HSlider" parent="controls manipulator/scroll/container"]
 custom_minimum_size = Vector2(240, 60)
@@ -447,6 +440,7 @@ var_name = "SteerAmountDecay"
 layout_mode = 0
 anchor_right = 1.0
 anchor_bottom = 1.0
+offset_bottom = 3.0
 text = "Steer Amount Decay"
 
 [node name="amount" type="Label" parent="controls manipulator/scroll/container/HSlider4"]

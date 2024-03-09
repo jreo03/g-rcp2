@@ -17,15 +17,7 @@ var c_pws:Array[ViVeWheel]
 
 @export var Debug_Mode :bool = false
 
-enum ControlType {
-	CONTROLS_KEYBOARD_MOUSE,
-	CONTROLS_KEYBOARD,
-	CONTROLS_TOUCH,
-	CONTROLS_JOYPAD,
-}
-
 @export_group("Controls")
-@export_enum("Keyboard and Mouse", "Keyboard", "Touch controls (Gyro)", "Joypad") var control_type:int = 1
 @export var car_controls:ViVeCarControls = ViVeCarControls.new()
 
 
@@ -242,24 +234,15 @@ func get_powered_wheels() -> Array[ViVeWheel]:
 	return return_this
 
 func new_controls() -> void:
-	var ctrl:ControlType = control_type as ControlType
-	#temporary 
-	if car_controls.UseMouseSteering:
-		ctrl = ControlType.CONTROLS_KEYBOARD_MOUSE
-	elif car_controls.UseAccelerometreSteering:
-		ctrl = ControlType.CONTROLS_JOYPAD
-	else:
-		ctrl = ControlType.CONTROLS_KEYBOARD
-	var mouseposx:float = 0.0
-	
-	match ctrl:
-		ControlType.CONTROLS_KEYBOARD_MOUSE:
+	match car_controls.control_type as ViVeCarControls.ControlType:
+		ViVeCarControls.ControlType.CONTROLS_KEYBOARD_MOUSE:
+			var mouseposx:float = 0.0
+			if get_viewport().size.x > 0.0:
+				mouseposx = get_viewport().get_mouse_position().x / get_viewport().size.x
 			car_controls.controls_keyboard_mouse(mouseposx)
-		ControlType.CONTROLS_KEYBOARD:
-			car_controls.controls_keyboard_mouse()
-		ControlType.CONTROLS_TOUCH:
+		ViVeCarControls.ControlType.CONTROLS_TOUCH:
 			car_controls.controls_touchscreen()
-		ControlType.CONTROLS_JOYPAD:
+		ViVeCarControls.ControlType.CONTROLS_JOYPAD:
 			car_controls.controls_joypad()
 
 func controls() -> void:
