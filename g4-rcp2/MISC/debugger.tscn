@@ -333,6 +333,7 @@ offset_right = 64.36
 offset_bottom = 0.0799561
 
 [node name="controls manipulator" type="Control" parent="."]
+visible = false
 anchors_preset = 0
 anchor_left = 0.334961
 anchor_top = 0.1975

@@ -1,18 +1,7 @@
 res://default_env.tres
 res://world.tscn
-res://MAIN/car.gd
 res://MISC/debugger.tscn
 res://MISC/scene swapper/scenes/Test Scene/scene.tscn
 res://base car.tscn
-res://MAIN/misc/tyre sounds/tyres.gd
 res://MAIN/misc/tyre smoke/smoke.tscn
-res://MAIN/misc/tyre smoke/tyre_smoke.gd
 res://MAIN/wheel.tscn
-res://MISC/graph/draw.gd
-res://MISC/misc scripts/debug.gd
-res://MAIN/controls.gd
-res://MAIN/vitavehicle.gd
-res://MISC/controls config/run.gd
-res://MAIN/misc/engine sound/crossfade.gd
-res://MAIN/wheel.gd
-res://MISC/controls config/option_variables.gd

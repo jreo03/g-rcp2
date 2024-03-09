@@ -216,7 +216,6 @@ func controls_joypad() -> void:
 	
 	apply_assistance_factor(going)
 
-
 func controls_keyboard_mouse(mouseposx:float = 0.0) -> void:
 	if UseMouseSteering:
 		gas = Input.is_action_pressed("gas_mouse")
