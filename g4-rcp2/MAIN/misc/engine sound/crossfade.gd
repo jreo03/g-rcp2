@@ -38,11 +38,11 @@ func _physics_process(_delta:float) -> void:
 	pitch = abs(get_parent().rpm*pitch_influence)/pitch_calibrate
 	
 	volume = 0.5 +get_parent().throttle*0.5
-	fade = (get_node("100500").pitch_scale  -0.22222)*(crossfade_influence +float(get_parent().throttle)*crossfade_throttle +float(get_parent().vvt)*crossfade_vvt)
+	fade = (get_node("100500").pitch_scale - 0.22222) * (crossfade_influence + float(get_parent().throttle) * crossfade_throttle + float(get_parent().vvt) * crossfade_vvt)
 	
-	fade = clampf(fade, childcount-1, 0.0)
-	
-	vacuum = (get_parent().gaspedal-get_parent().throttle)*4
+	fade = clampf(fade, childcount - 1, 0.0)
+	 
+	vacuum = (get_parent().car_controls.gaspedal - get_parent().throttle) * 4
 	
 	vacuum = clampf(vacuum, 0, 1)
 	
@@ -52,11 +52,11 @@ func _physics_process(_delta:float) -> void:
 	
 	fade *= sfk
 	
-	volume += (1.0-sfk)*vacuum_loudness
+	volume += (1.0 - sfk) * vacuum_loudness
 	
 	for i in get_children():
-		var maxvol:float = float(str(i.get_child(0).name))/100.0
-		var maxpitch:float = float(str(i.name))/100000.0
+		var maxvol:float = float(str(i.get_child(0).name)) / 100.0
+		var maxpitch:float = float(str(i.name)) / 100000.0
 		
 		var index:float = float(i.get_index())
 		var dist:float = abs(index-fade)

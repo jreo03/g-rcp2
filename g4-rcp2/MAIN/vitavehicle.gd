@@ -13,28 +13,7 @@ enum GearAssist {
 
 var GearAssistss:int = 2 # 0 = manual, 1 = semi-manual, 2 = auto
 
-var UseMouseSteering:bool = false
-var UseAccelerometreSteering:bool = false
-var SteerSensitivity:float = 1.0
-var KeyboardSteerSpeed:float = 0.025
-var KeyboardReturnSpeed:float = 0.05
-var KeyboardCompensateSpeed:float = 0.1
-
-var SteerAmountDecay:float = 0.0125 # understeer help
-var SteeringAssistance:float = 1.0
-var SteeringAssistanceAngular:float = 0.25
-
-var OnThrottleRate:float = 0.2
-var OffThrottleRate:float = 0.2
-
-var OnBrakeRate:float = 0.05
-var OffBrakeRate:float = 0.1
-
-var OnHandbrakeRate:float = 0.2
-var OffHandbrakeRate:float = 0.2
-
-var OnClutchRate:float = 0.2
-var OffClutchRate:float = 0.2
+@export var universal_controls:ViVeCarControls = ViVeCarControls.new()
 
 const multivariation_inputs:PackedStringArray = [
 "RiseRPM","TorqueRise","BuildUpTorque","EngineFriction",

@@ -31,14 +31,17 @@ func setup_wheel_debug() -> void:
 		vgs.append_wheel(d)
 
 func _process(delta:float) -> void:
-	car_node = get_node(car)
-	if car_node == null:
+	if has_node(car):
+		car_node = get_node(car)
+	else:
 		car_node = ViVeCar.new()
 	VitaVehicleSimulation.misc_smoke = misc_graphics_settings.smoke
 	if delta > 0:
+		#str(Performance.get_monitor(Performance.TIME_FPS))
 		$container/fps.text = "fps: " + str(1.0 / delta)
-		$sw.rotation_degrees = car_node.steer * 380.0
-		$sw_desired.rotation_degrees = car_node.steer2 * 380.0 #This is how the debug gets steer value
+		
+		$sw.rotation_degrees = car_node.car_controls.steer * 380.0
+		$sw_desired.rotation_degrees = car_node.car_controls.steer2 * 380.0
 		if car_node.Debug_Mode:
 			$container/weight_dist.text = "weight distribution: F%f/R%f" % [car_node.weight_dist[0] * 100, car_node.weight_dist[1] * 100]
 		else:
@@ -51,9 +54,9 @@ func _process(delta:float) -> void:
 	if car:
 		$"fix engine".visible = car_node.rpm < car_node.DeadRPM
 		
-		$throttle.bar_scale = car_node.gaspedal
-		$brake.bar_scale = car_node.brakepedal
-		$handbrake.bar_scale = car_node.handbrakepull
+		$throttle.bar_scale = car_node.car_controls.gaspedal
+		$brake.bar_scale = car_node.car_controls.brakepedal
+		$handbrake.bar_scale = car_node.car_controls.handbrakepull
 		$clutch.bar_scale = car_node.clutchpedalreal
 		
 		$tacho/speedk.text = "KM/PH: " +str(int(car_node.linear_velocity.length() * 1.10130592))
@@ -71,14 +74,14 @@ func _process(delta:float) -> void:
 			_:
 				pass
 		
-		$hp.text = "Power: %s%s @ %s RPM" % [str( int(power_graph.peakhp[0]*10.0)/10.0 ), hpunit ,str( int(power_graph.peakhp[1]*10.0)/10.0 )]
+		$hp.text = "Power: %s%s @ %s RPM" % [str( int(power_graph.peakhp[0] * 10.0) / 10.0 ), hpunit, str(int(power_graph.peakhp[1] * 10.0) / 10.0)]
 		
 		var tqunit:String = "ft⋅lb"
 		if power_graph.Torque_Unit == 1:
 			tqunit = "nm"
 		elif power_graph.Torque_Unit == 2:
 			tqunit = "kg/m"
-		$tq.text = "Torque: %s%s @ %s RPM" % [str( int(power_graph.peaktq[0] * 10.0) / 10.0 ), tqunit ,str( int(power_graph.peaktq[1] * 10.0) / 10.0 )]
+		$tq.text = "Torque: %s%s @ %s RPM" % [str(int(power_graph.peaktq[0] * 10.0) / 10.0 ), tqunit, str(int(power_graph.peaktq[1] * 10.0) / 10.0)]
 		
 		$power_graph/rpm.position.x = (car_node.rpm/power_graph.Generation_Range) * power_graph.size.x - 1.0
 		$power_graph/redline.position.x = (car_node.RPMLimit/power_graph.Generation_Range) * power_graph.size.x - 1.0
@@ -94,21 +97,21 @@ func _process(delta:float) -> void:
 		else:
 			tacho_rpm.self_modulate = Color(1,1,1)
 		
-		if car_node.gear == 0:
+		if car_node.car_controls.gear == 0:
 			tacho_gear.text = "N"
-		elif car_node.gear == -1:
+		elif car_node.car_controls.gear == -1:
 			tacho_gear.text = "R"
 		else:
 			if car_node.TransmissionType == 1 or car_node.TransmissionType == 2:
 				tacho_gear.text = "D"
 			else:
-				tacho_gear.text = str(car_node.gear)
+				tacho_gear.text = str(car_node.car_controls.gear)
 
 func _physics_process(_delta:float) -> void:
 	if not str(car) == "":
 		vgs.gforce -= (vgs.gforce - Vector2(car_node.gforce.x,car_node.gforce.z)) * 0.5
 		
-		$tacho/abs.visible = car_node.abspump > 0 and car_node.brakepedal > 0.1
+		$tacho/abs.visible = car_node.abspump > 0 and car_node.car_controls.brakepedal > 0.1
 		$tacho/tcs.visible = car_node.tcsflash
 		$tacho/esp.visible = car_node.espflash
 

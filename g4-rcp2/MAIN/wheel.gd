@@ -122,7 +122,7 @@ func _ready() -> void:
 
 func power() -> void:
 	if not c_p == 0:
-		dist *= (car.clutchpedal * car.clutchpedal) / (car.currentstable)
+		dist *= (car.car_controls.clutchpedal * car.car_controls.clutchpedal) / (car.currentstable)
 		var dist_cache:float = dist
 		
 		var tol:float = (0.1475/1.3558) * car.ClutchGrip
@@ -175,7 +175,7 @@ func _physics_process(_delta:float) -> void:
 	var x_pos:float = float(translation.x > 0)
 	var x_neg:float = float(translation.x < 0)
 	
-	if Steer and absf(car.steer) > 0:
+	if Steer and absf(car.car_controls.steer) > 0:
 		#var form1 :float = 0.0
 		#var form2 :float = car.steering_geometry[1] -translation.x
 		var lasttransform:Transform3D = global_transform
@@ -186,7 +186,7 @@ func _physics_process(_delta:float) -> void:
 		# just making this use origin fixed it. lol
 		global_transform.origin = lasttransform.origin
 		
-		if car.steer > 0.0:
+		if car.car_controls.steer > 0.0:
 			rotate_object_local(Vector3(0, 1, 0), - deg_to_rad(90.0))
 		
 		else:
@@ -291,13 +291,13 @@ func _physics_process(_delta:float) -> void:
 	
 	wheelpower = 0.0
 	
-	var braked:float = car.brakeline * B_Bias + car.handbrakepull * HB_Bias
+	var braked:float = car.brakeline * B_Bias + car.car_controls.handbrakepull * HB_Bias
 	braked = minf(braked, 1.0)
 	var bp:float = (B_Torque * braked) / w_weight_read
 	
 	if not car.actualgear == 0:
 		if car.dsweightrun > 0.0:
-			bp += ((car.stalled * (c_p / car.ds_weight)) * car.clutchpedal) * (((500.0 / (car.RevSpeed * 100.0)) / (car.dsweightrun / 2.5)) / w_weight_read)
+			bp += ((car.stalled * (c_p / car.ds_weight)) * car.car_controls.clutchpedal) * (((500.0 / (car.RevSpeed * 100.0)) / (car.dsweightrun / 2.5)) / w_weight_read)
 	if bp > 0.0:
 		if abs(absolute_wv) > 0.0:
 			var distanced:float = abs(absolute_wv) / bp

@@ -112,7 +112,7 @@ mouse_filter = 2
 
 [node name="fps" type="Label" parent="container"]
 layout_mode = 2
-text = "debug"
+text = "fps:"
 
 [node name="weight_dist" type="Label" parent="container"]
 layout_mode = 2

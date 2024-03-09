@@ -13,10 +13,10 @@ func _ready() -> void:
 			i.get_node("amount").text = str(int(i.value))
 		else:
 			if i.get_class() == "HSlider":
-				i.value = car.get(i.var_name)
+				i.value = car.car_controls.get(i.var_name)
 				i.get_node("amount").text = str(i.value)
 			else:
-				i.button_pressed = car.get(i.var_name)
+				i.button_pressed = car.car_controls.get(i.var_name)
 				i.get_node("amount").text = str(i.button_pressed)
 
 func _process(_delta:float) -> void:

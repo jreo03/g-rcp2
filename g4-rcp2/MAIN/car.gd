@@ -26,36 +26,8 @@ enum ControlType {
 
 @export_group("Controls")
 @export_enum("Keyboard and Mouse", "Keyboard", "Touch controls (Gyro)", "Joypad") var control_type:int = 1
-@export var Use_Global_Control_Settings:bool = false
-@export var UseMouseSteering:bool = false
-@export var UseAccelerometreSteering :bool = false
-@export var SteerSensitivity:float = 1.0
-@export var KeyboardSteerSpeed:float = 0.025
-@export var KeyboardReturnSpeed:float = 0.05
-@export var KeyboardCompensateSpeed:float = 0.1
+@export var car_controls:ViVeCarControls = ViVeCarControls.new()
 
-@export var SteerAmountDecay:float = 0.015 # understeer help
-@export var SteeringAssistance:float = 1.0
-@export var SteeringAssistanceAngular:float = 0.12
-
-@export var LooseSteering :bool = false #simulate rack and pinion steering physics (EXPERIMENTAL)
-
-@export var OnThrottleRate:float = 0.2
-@export var OffThrottleRate:float = 0.2
-
-@export var OnBrakeRate:float = 0.05
-@export var OffBrakeRate:float = 0.1
-
-@export var OnHandbrakeRate:float = 0.2
-@export var OffHandbrakeRate:float = 0.2
-
-@export var OnClutchRate:float = 0.2
-@export var OffClutchRate:float = 0.2
-
-@export var MaxThrottle:float = 1.0
-@export var MaxBrake:float = 1.0
-@export var MaxHandbrake:float = 1.0
-@export var MaxClutch:float = 1.0
 
 @export var GearAssist:ViVeGearAssist = ViVeGearAssist.new()
 
@@ -91,6 +63,14 @@ enum TransmissionTypes {
 	continuous_variable = 2,
 	semi_auto = 3
 }
+
+class newAutoSettings:
+	extends Resource
+	@export var shift_rpm:float = 6500.0
+	@export var downshift_thresh:float = 300.0
+	@export var throt_eff_thresh:float = 0.5
+	@export var engage_rpm_thresh:float = 0.0
+	@export var engage_rpm:float = 4000.0
 
 @export var AutoSettings:Array[float] = [
 6500.0, # shift rpm (auto)
@@ -172,7 +152,7 @@ var rpm:float = 0.0
 var rpmspeed:float = 0.0
 var resistancerpm:float = 0.0
 var resistancedv:float = 0.0
-var gear:int = 0
+
 var limdel:float = 0.0
 var actualgear:int = 0
 var gearstress:float = 0.0
@@ -180,15 +160,7 @@ var throttle:float = 0.0
 var cvtaccel:float = 0.0
 var sassistdel:float = 0.0
 var sassiststep:int = 0
-var clutchin:bool = false
-var gasrestricted:bool = false
-var revmatch:bool = false
-var gaspedal:float = 0.0
-var brakepedal:float = 0.0
-var clutchpedal:float = 0.0
 var clutchpedalreal:float = 0.0
-var steer:float = 0.0
-var steer2:float = 0.0
 var abspump:float = 0.0
 var tcsweight:float = 0.0
 var tcsflash:bool = false
@@ -199,7 +171,6 @@ var brake_allowed:float = 0.0
 var readout_torque:float = 0.0
 
 var brakeline:float = 0.0
-var handbrakepull:float = 0.0
 var dsweight:float = 0.0
 var dsweightrun:float = 0.0
 var diffspeed:float = 0.0
@@ -220,27 +191,18 @@ var resistance:float = 0.0
 var wob:float = 0.0
 var ds_weight:float = 0.0
 var steer_torque:float = 0.0
-var steer_velocity:float = 0.0
+
 var drivewheels_size:float = 1.0
 
 var steering_angles:Array[float] = []
 var max_steering_angle:float = 0.0
-var assistance_factor:float = 0.0
+
 
 var pastvelocity:Vector3 = Vector3(0,0,0)
 var gforce:Vector3 = Vector3(0,0,0)
 var clock_mult:float = 1.0
 var dist:float = 0.0
 var stress:float = 0.0
-
-var su:bool = false
-var sd:bool = false
-var gas:bool = false
-var brake:bool = false
-var handbrake:bool = false
-var right:bool = false
-var left:bool = false
-var clutch:bool = false
 
 var velocity:Vector3 = Vector3(0,0,0)
 var rvelocity:Vector3 = Vector3(0,0,0)
@@ -280,248 +242,212 @@ func get_powered_wheels() -> Array[ViVeWheel]:
 	return return_this
 
 func new_controls() -> void:
-	
 	var ctrl:ControlType = control_type as ControlType
-	ctrl = ControlType.CONTROLS_JOYPAD
+	#temporary 
+	if car_controls.UseMouseSteering:
+		ctrl = ControlType.CONTROLS_KEYBOARD_MOUSE
+	elif car_controls.UseAccelerometreSteering:
+		ctrl = ControlType.CONTROLS_JOYPAD
+	else:
+		ctrl = ControlType.CONTROLS_KEYBOARD
+	var mouseposx:float = 0.0
+	
 	match ctrl:
 		ControlType.CONTROLS_KEYBOARD_MOUSE:
-			var mouseposx:float = 0.0
-			
-			if get_viewport().size.x > 0.0:
-				mouseposx = get_viewport().get_mouse_position().x / get_viewport().size.x
-			
-			steer2 = control_steer_analog((mouseposx - 0.5) * 2.0)
-			
+			car_controls.controls_keyboard_mouse(mouseposx)
 		ControlType.CONTROLS_KEYBOARD:
-			
-			control_steer_digital_curve()
-			
+			car_controls.controls_keyboard_mouse()
 		ControlType.CONTROLS_TOUCH:
-			steer2 = control_steer_analog(Input.get_accelerometer().x / 10.0)
-			
+			car_controls.controls_touchscreen()
 		ControlType.CONTROLS_JOYPAD:
-			const joypad_index:int = 0 #This can be switched to anything else later on for splitscreen
-			
-			steer2 = control_steer_analog(Input.get_joy_axis(joypad_index, JOY_AXIS_LEFT_X))
-			gaspedal = Input.get_joy_axis(joypad_index, JOY_AXIS_TRIGGER_RIGHT)
-			brakepedal = Input.get_joy_axis(joypad_index, JOY_AXIS_TRIGGER_LEFT)
-
-func control_steer_digital_curve() -> void:
-	if right:
-		if steer2 > 0:
-			steer2 += KeyboardSteerSpeed
-		else:
-			steer2 += KeyboardCompensateSpeed
-	elif left:
-		if steer2 < 0:
-			steer2 -= KeyboardSteerSpeed
-		else:
-			steer2 -= KeyboardCompensateSpeed
-	else:
-		if steer2 > KeyboardReturnSpeed:
-			steer2 -= KeyboardReturnSpeed
-		elif steer2 < - KeyboardReturnSpeed:
-			steer2 += KeyboardReturnSpeed
-		else:
-			steer2 = 0.0
-	steer2 = clampf(steer2, -1.0, 1.0)
-
-func control_steer_analog(input_axis:float) -> float:
-	var output:float = (input_axis - 0.5) * 2.0
-	
-	output *= SteerSensitivity
-	
-	output = clampf(output, -1.0, 1.0)
-	
-	var s:float = abs(output) * 1.0 + 0.5
-	s = minf(s, 1.0)
-	
-	output *= s
-	return output
+			car_controls.controls_joypad()
 
 func controls() -> void:
 	
 	#Tbh I don't see why these need to be divided, but...
-	if UseMouseSteering:
-		gas = Input.is_action_pressed("gas_mouse")
-		brake = Input.is_action_pressed("brake_mouse")
-		su = Input.is_action_just_pressed("shiftup_mouse")
-		sd = Input.is_action_just_pressed("shiftdown_mouse")
-		handbrake = Input.is_action_pressed("handbrake_mouse")
+	if car_controls.UseMouseSteering:
+		car_controls.gas = Input.is_action_pressed("gas_mouse")
+		car_controls.brake = Input.is_action_pressed("brake_mouse")
+		car_controls.su = Input.is_action_just_pressed("shiftup_mouse")
+		car_controls.sd = Input.is_action_just_pressed("shiftdown_mouse")
+		car_controls.handbrake = Input.is_action_pressed("handbrake_mouse")
 	else:
-		gas = Input.is_action_pressed("gas")
-		brake = Input.is_action_pressed("brake")
-		su = Input.is_action_just_pressed("shiftup")
-		sd = Input.is_action_just_pressed("shiftdown")
-		handbrake = Input.is_action_pressed("handbrake")
+		car_controls.gas = Input.is_action_pressed("gas")
+		car_controls.brake = Input.is_action_pressed("brake")
+		car_controls.su = Input.is_action_just_pressed("shiftup")
+		car_controls.sd = Input.is_action_just_pressed("shiftdown")
+		car_controls.handbrake = Input.is_action_pressed("handbrake")
 	
-	left = Input.is_action_pressed("left")
-	right = Input.is_action_pressed("right")
+	car_controls.left = Input.is_action_pressed("left")
+	car_controls.right = Input.is_action_pressed("right")
 	
-	if left:
-		steer_velocity -= 0.01
-	elif right:
-		steer_velocity += 0.01
+	if car_controls.left:
+		car_controls.steer_velocity -= 0.01
+	elif car_controls.right:
+		car_controls.steer_velocity += 0.01
 	
-	if LooseSteering:
-		steer += steer_velocity
+	if car_controls.LooseSteering:
+		car_controls.steer += car_controls.steer_velocity
 		
-		if abs(steer) > 1.0:
-			steer_velocity *= -0.5
+		if abs(car_controls.steer) > 1.0:
+			car_controls.steer_velocity *= -0.5
 		
 		for i:ViVeWheel in [front_left,front_right]:
-			steer_velocity += (i.directional_force.x * 0.00125) * i.Caster
-			steer_velocity -= (i.stress * 0.0025) * (atan2(abs(i.wv), 1.0) * i.angle)
+			car_controls.steer_velocity += (i.directional_force.x * 0.00125) * i.Caster
+			car_controls.steer_velocity -= (i.stress * 0.0025) * (atan2(abs(i.wv), 1.0) * i.angle)
 			
-			steer_velocity += steer * (i.directional_force.z * 0.0005) * i.Caster
+			car_controls.steer_velocity += car_controls.steer * (i.directional_force.z * 0.0005) * i.Caster
 			
 			if i.position.x > 0:
-				steer_velocity += i.directional_force.z * 0.0001
+				car_controls.steer_velocity += i.directional_force.z * 0.0001
 			else:
-				steer_velocity -= i.directional_force.z * 0.0001
+				car_controls.steer_velocity -= i.directional_force.z * 0.0001
 		
-			steer_velocity /= i.stress / (i.slip_percpre * (i.slip_percpre * 100.0) + 1.0) + 1.0
+			car_controls.steer_velocity /= i.stress / (i.slip_percpre * (i.slip_percpre * 100.0) + 1.0) + 1.0
 	
 	if Controlled:
 		if GearAssist.assist_level == 2:
-			if (gas and not gasrestricted and not gear == -1) or (brake and gear == -1) or revmatch:
-				gaspedal += OnThrottleRate / clock_mult
+			if (car_controls.gas and not car_controls.gasrestricted and not car_controls.gear == -1) or (car_controls.brake and car_controls.gear == -1) or car_controls.revmatch:
+				car_controls.gaspedal += car_controls.OnThrottleRate / clock_mult
 			else:
-				gaspedal -= OffThrottleRate / clock_mult
-			if brake and not gear == -1 or gas and gear == -1:
-				brakepedal += OnBrakeRate / clock_mult
+				car_controls.gaspedal -= car_controls.OffThrottleRate / clock_mult
+			if (car_controls.brake and not car_controls.gear == -1) or (car_controls.gas and car_controls.gear == -1):
+				car_controls.brakepedal += car_controls.OnBrakeRate / clock_mult
 			else:
-				brakepedal -= OffBrakeRate / clock_mult
+				car_controls.brakepedal -= car_controls.OffBrakeRate / clock_mult
 		else:
 			if GearAssist.assist_level == 0:
-				gasrestricted = false
-				clutchin = false
-				revmatch = false
+				car_controls.gasrestricted = false
+				car_controls.clutchin = false
+				car_controls.revmatch = false
 			
-			if gas and not gasrestricted or revmatch:
-				gaspedal += OnThrottleRate / clock_mult
+			if car_controls.gas and not car_controls.gasrestricted or car_controls.revmatch:
+				car_controls.gaspedal += car_controls.OnThrottleRate / clock_mult
 			else:
-				gaspedal -= OffThrottleRate / clock_mult
+				car_controls.gaspedal -= car_controls.OffThrottleRate / clock_mult
 			
-			if brake:
-				brakepedal += OnBrakeRate / clock_mult
+			if car_controls.brake:
+				car_controls.brakepedal += car_controls.OnBrakeRate / clock_mult
 			else:
-				brakepedal -= OffBrakeRate / clock_mult
+				car_controls.brakepedal -= car_controls.OffBrakeRate / clock_mult
 		
-		if handbrake:
-			handbrakepull += OnHandbrakeRate / clock_mult
+		if car_controls.handbrake:
+			car_controls.handbrakepull += car_controls.OnHandbrakeRate / clock_mult
 		else:
-			handbrakepull -= OffHandbrakeRate / clock_mult
+			car_controls.handbrakepull -= car_controls.OffHandbrakeRate / clock_mult
 		
 		var siding:float = abs(velocity.x)
 		
 		#Based on the syntax, I'm unsure if this is doing what it "should" do...?
-		if (velocity.x > 0 and steer2 > 0) or (velocity.x < 0 and steer2 < 0):
+		if (velocity.x > 0 and car_controls.steer2 > 0) or (velocity.x < 0 and car_controls.steer2 < 0):
 			siding = 0.0
 		
 		var going:float = velocity.z / (siding + 1.0)
 		going = maxf(going, 0)
 		
-		if not LooseSteering:
-			if UseMouseSteering:
+		#Steer based on control options
+		if not car_controls.LooseSteering:
+			
+			if car_controls.UseMouseSteering:
 				var mouseposx:float = 0.0
 				if get_viewport().size.x > 0.0:
 					mouseposx = get_viewport().get_mouse_position().x / get_viewport().size.x
 				
-				#steer2 = (mouseposx - 0.5) * 2.0
-				#steer2 *= SteerSensitivity
 				
-				#steer2 = clampf(steer2, -1.0, 1.0)
+				car_controls.steer2 = (mouseposx - 0.5) * 2.0
+				car_controls.steer2 *= car_controls.SteerSensitivity
 				
-				#var s:float = abs(steer2) * 1.0 + 0.5
-				#s = minf(s, 1.0)
+				car_controls.steer2 = clampf(car_controls.steer2, -1.0, 1.0)
 				
-				#steer2 *= s
-				mouseposx = (mouseposx) * 2.0
-				steer2 = control_steer_analog(mouseposx)
+				var s:float = abs(car_controls.steer2) * 1.0 + 0.5
+				s = minf(s, 1.0)
+				
+				car_controls.steer2 *= s
+				mouseposx = (mouseposx - 0.5) * 2.0
+				#steer2 = control_steer_analog(mouseposx)
 				
 				#steer2 = control_steer_analog(Input.get_joy_axis(0, JOY_AXIS_LEFT_X))
 				
-			elif UseAccelerometreSteering:
-				steer2 = Input.get_accelerometer().x / 10.0
-				steer2 *= SteerSensitivity
+			elif car_controls.UseAccelerometreSteering:
+				car_controls.steer2 = Input.get_accelerometer().x / 10.0
+				car_controls.steer2 *= car_controls.SteerSensitivity
 				
-				steer2 = clampf(steer2, -1.0, 1.0)
+				car_controls.steer2 = clampf(car_controls.steer2, -1.0, 1.0)
 				
-				var s:float = abs(steer2) * 1.0 +0.5
+				var s:float = abs(car_controls.steer2) * 1.0 +0.5
 				s = minf(s, 1.0)
 				
-				steer2 *= s
+				car_controls.steer2 *= s
 			else:
-				if right:
-					if steer2 > 0:
-						steer2 += KeyboardSteerSpeed
+				if car_controls.right:
+					if car_controls.steer2 > 0:
+						car_controls.steer2 += car_controls.KeyboardSteerSpeed
 					else:
-						steer2 += KeyboardCompensateSpeed
-				elif left:
-					if steer2 < 0:
-						steer2 -= KeyboardSteerSpeed
+						car_controls.steer2 += car_controls.KeyboardCompensateSpeed
+				elif car_controls.left:
+					if car_controls.steer2 < 0:
+						car_controls.steer2 -= car_controls.KeyboardSteerSpeed
 					else:
-						steer2 -= KeyboardCompensateSpeed
+						car_controls.steer2 -= car_controls.KeyboardCompensateSpeed
 				else:
-					if steer2 > KeyboardReturnSpeed:
-						steer2 -= KeyboardReturnSpeed
-					elif steer2 < - KeyboardReturnSpeed:
-						steer2 += KeyboardReturnSpeed
+					if car_controls.steer2 > car_controls.KeyboardReturnSpeed:
+						car_controls.steer2 -= car_controls.KeyboardReturnSpeed
+					elif car_controls.steer2 < - car_controls.KeyboardReturnSpeed:
+						car_controls.steer2 += car_controls.KeyboardReturnSpeed
 					else:
-						steer2 = 0.0
-				steer2 = clampf(steer2, -1.0, 1.0)
+						car_controls.steer2 = 0.0
+				car_controls.steer2 = clampf(car_controls.steer2, -1.0, 1.0)
 			
 			
-			if assistance_factor > 0.0:
-				var maxsteer:float = 1.0 / (going * (SteerAmountDecay / assistance_factor) + 1.0)
+			if car_controls.assistance_factor > 0.0:
+				var maxsteer:float = 1.0 / (going * (car_controls.SteerAmountDecay / car_controls.assistance_factor) + 1.0)
 				
 				var assist_commence:float = linear_velocity.length() / 10.0
 				assist_commence = minf(assist_commence, 1.0)
 				
-				steer = (steer2 * maxsteer) -(velocity.normalized().x * assist_commence) * (SteeringAssistance * assistance_factor) + rvelocity.y * (SteeringAssistanceAngular * assistance_factor)
+				car_controls.steer = (car_controls.steer2 * maxsteer) - (velocity.normalized().x * assist_commence) * (car_controls.SteeringAssistance * car_controls.assistance_factor) + rvelocity.y * (car_controls.SteeringAssistanceAngular * car_controls.assistance_factor)
 			else:
-				steer = steer2
+				car_controls.steer = car_controls.steer2
 
 func limits() -> void:
-	gaspedal = clampf(gaspedal, 0.0, MaxThrottle)
-	brakepedal = clampf(brakepedal, 0.0, MaxBrake)
-	handbrakepull = clampf(handbrakepull, 0.0, MaxHandbrake)
-	steer = clampf(steer, -1.0, 1.0)
+	car_controls.gaspedal = clampf(car_controls.gaspedal, 0.0, car_controls.MaxThrottle)
+	car_controls.brakepedal = clampf(car_controls.brakepedal, 0.0, car_controls.MaxBrake)
+	car_controls.handbrakepull = clampf(car_controls.handbrakepull, 0.0, car_controls.MaxHandbrake)
+	car_controls.steer = clampf(car_controls.steer, -1.0, 1.0)
 
 func transmission() -> void:
-	su = Input.is_action_just_pressed("shiftup") and not UseMouseSteering or Input.is_action_just_pressed("shiftup_mouse") and UseMouseSteering
-	sd = Input.is_action_just_pressed("shiftdown") and not UseMouseSteering or Input.is_action_just_pressed("shiftdown_mouse") and UseMouseSteering
+	car_controls.su = (Input.is_action_just_pressed("shiftup") and not car_controls.UseMouseSteering) or (Input.is_action_just_pressed("shiftup_mouse") and car_controls.UseMouseSteering)
+	car_controls.sd = (Input.is_action_just_pressed("shiftdown") and not car_controls.UseMouseSteering) or (Input.is_action_just_pressed("shiftdown_mouse") and car_controls.UseMouseSteering)
 	
 	#var clutch:bool
-	clutch = Input.is_action_pressed("clutch") and not UseMouseSteering or Input.is_action_pressed("clutch_mouse") and UseMouseSteering
+	car_controls.clutch = Input.is_action_pressed("clutch") and not car_controls.UseMouseSteering or Input.is_action_pressed("clutch_mouse") and car_controls.UseMouseSteering
 	if not GearAssist.assist_level == 0:
-		clutch = Input.is_action_pressed("handbrake") and not UseMouseSteering or Input.is_action_pressed("handbrake_mouse") and UseMouseSteering
-	clutch = not clutch
+		car_controls.clutch = Input.is_action_pressed("handbrake") and not car_controls.UseMouseSteering or Input.is_action_pressed("handbrake_mouse") and car_controls.UseMouseSteering
+	car_controls.clutch = not car_controls.clutch
 	
 	if TransmissionType == 0:
-		if clutch and not clutchin:
-			clutchpedalreal -= OffClutchRate / clock_mult
+		if car_controls.clutch and not car_controls.clutchin:
+			clutchpedalreal -= car_controls.OffClutchRate / clock_mult
 		else:
-			clutchpedalreal += OnClutchRate / clock_mult
+			clutchpedalreal += car_controls.OnClutchRate / clock_mult
 		
-		clutchpedalreal = clamp(clutchpedalreal, 0, MaxClutch)
+		clutchpedalreal = clamp(clutchpedalreal, 0, car_controls.MaxClutch)
 		
-		clutchpedal = 1.0 - clutchpedalreal
+		car_controls.clutchpedal = 1.0 - clutchpedalreal
 		
-		if gear > 0:
-			ratio = GearRatios[gear - 1] * FinalDriveRatio * RatioMult
-		elif gear == -1:
+		if car_controls.gear > 0:
+			ratio = GearRatios[car_controls.gear - 1] * FinalDriveRatio * RatioMult
+		elif car_controls.gear == -1:
 			ratio = ReverseRatio*FinalDriveRatio*RatioMult
 		if GearAssist.assist_level == 0:
-			if su:
-				su = false
-				if gear < len(GearRatios):
+			if car_controls.su:
+				car_controls.su = false
+				if car_controls.gear < len(GearRatios):
 					if gearstress < GearGap:
 						actualgear += 1
-			if sd:
-				sd = false
-				if gear > -1:
+			if car_controls.sd:
+				car_controls.sd = false
+				if car_controls.gear > -1:
 					if gearstress < GearGap:
 						actualgear -= 1
 		elif GearAssist.assist_level == 1:
@@ -530,60 +456,60 @@ func transmission() -> void:
 				clutchpedalreal = irga_ca * irga_ca
 				clutchpedalreal = minf(1.0, clutchpedalreal)
 			else:
-				if not gasrestricted and not revmatch:
-					clutchin = false
-			if su:
-				su = false
-				if gear < len(GearRatios):
+				if not car_controls.gasrestricted and not car_controls.revmatch:
+					car_controls.clutchin = false
+			if car_controls.su:
+				car_controls.su = false
+				if car_controls.gear < len(GearRatios):
 					if rpm < GearAssist.clutch_out_RPM:
 						actualgear += 1
 					else:
 						if actualgear < 1:
 							actualgear += 1
 							if rpm > GearAssist.clutch_out_RPM:
-								clutchin = false
+								car_controls.clutchin = false
 						else:
 							if sassistdel > 0:
 								actualgear += 1
 							sassistdel = GearAssist.shift_delay / 2.0
 							sassiststep = -4
 							
-							clutchin = true
-							gasrestricted = true
-			elif sd:
-				sd = false
-				if gear > -1:
+							car_controls.clutchin = true
+							car_controls.gasrestricted = true
+			elif car_controls.sd:
+				car_controls.sd = false
+				if car_controls.gear > -1:
 					if rpm < GearAssist.clutch_out_RPM:
 						actualgear -= 1
 					else:
 						if actualgear == 0 or actualgear == 1:
 							actualgear -= 1
-							clutchin = false
+							car_controls.clutchin = false
 						else:
 							if sassistdel > 0:
 								actualgear -= 1
 							sassistdel = GearAssist.shift_delay / 2.0
 							sassiststep = -2
 							
-							clutchin = true
-							revmatch = true
-							gasrestricted = false
+							car_controls.clutchin = true
+							car_controls.revmatch = true
+							car_controls.gasrestricted = false
 		elif GearAssist.assist_level == 2:
 			var assistshiftspeed:float = (GearAssist.upshift_RPM / ratio) * GearAssist.speed_influence
-			var assistdownshiftspeed:float = (GearAssist.down_RPM / abs((GearRatios[gear - 2] * FinalDriveRatio) * RatioMult)) * GearAssist.speed_influence
-			if gear == 0:
-				if gas:
+			var assistdownshiftspeed:float = (GearAssist.down_RPM / abs((GearRatios[car_controls.gear - 2] * FinalDriveRatio) * RatioMult)) * GearAssist.speed_influence
+			if car_controls.gear == 0:
+				if car_controls.gas:
 					sassistdel -= 1
 					if sassistdel < 0:
 						actualgear = 1
-				elif brake:
+				elif car_controls.brake:
 					sassistdel -= 1
 					if sassistdel < 0:
 						actualgear = -1
 				else:
 					sassistdel = 60
 			elif linear_velocity.length() < 5:
-				if not gas and gear == 1 or not brake and gear == -1:
+				if not car_controls.gas and car_controls.gear == 1 or not car_controls.brake and car_controls.gear == -1:
 					sassistdel = 60
 					actualgear = 0
 			if sassiststep == 0:
@@ -593,134 +519,134 @@ func transmission() -> void:
 					clutchpedalreal = minf(clutchpedalreal, 1.0)
 					
 				else:
-					clutchin = false
-				if not gear == -1:
-					if gear < len(GearRatios) and linear_velocity.length() > assistshiftspeed:
+					car_controls.clutchin = false
+				if not car_controls.gear == -1:
+					if car_controls.gear < len(GearRatios) and linear_velocity.length() > assistshiftspeed:
 						sassistdel = GearAssist.shift_delay / 2.0
 						sassiststep = -4
 						
-						clutchin = true
-						gasrestricted = true
-					if gear > 1 and linear_velocity.length() < assistdownshiftspeed:
+						car_controls.clutchin = true
+						car_controls.gasrestricted = true
+					if car_controls.gear > 1 and linear_velocity.length() < assistdownshiftspeed:
 						sassistdel = GearAssist.shift_delay / 2.0
 						sassiststep = -2
 						
-						clutchin = true
-						gasrestricted = false
-						revmatch = true
+						car_controls.clutchin = true
+						car_controls.gasrestricted = false
+						car_controls.revmatch = true
 		
 		if sassiststep == -4 and sassistdel < 0:
 			sassistdel = GearAssist.shift_delay / 2.0
-			if gear < len(GearRatios):
+			if car_controls.gear < len(GearRatios):
 				actualgear += 1
 			sassiststep = -3
 		elif sassiststep == -3 and sassistdel < 0:
 			if rpm > GearAssist.clutch_out_RPM:
-				clutchin = false
+				car_controls.clutchin = false
 			if sassistdel < - GearAssist.input_delay:
 				sassiststep = 0
-				gasrestricted = false
+				car_controls.gasrestricted = false
 		elif sassiststep == -2 and sassistdel < 0:
 			sassiststep = 0
-			if gear > -1:
+			if car_controls.gear > -1:
 				actualgear -= 1
 			if rpm > GearAssist.clutch_out_RPM:
-				clutchin = false
-			gasrestricted = false
-			revmatch = false
-		gear = actualgear
+				car_controls.clutchin = false
+			car_controls.gasrestricted = false
+			car_controls.revmatch = false
+		car_controls.gear = actualgear
 	
 	elif TransmissionType == 1:
-		clutchpedal = (rpm - float(AutoSettings[3]) * (gaspedal * float(AutoSettings[2]) + (1.0 - float(AutoSettings[2]))) ) / float(AutoSettings[4])
+		car_controls.clutchpedal = (rpm - float(AutoSettings[3]) * (car_controls.gaspedal * float(AutoSettings[2]) + (1.0 - float(AutoSettings[2]))) ) / float(AutoSettings[4])
 		
 		if not GearAssist.assist_level == 2:
-			if su:
-				su = false
-				if gear < 1:
+			if car_controls.su:
+				car_controls.su = false
+				if car_controls.gear < 1:
 					actualgear += 1
-			if sd:
-				sd = false
-				if gear > -1:
+			if car_controls.sd:
+				car_controls.sd = false
+				if car_controls.gear > -1:
 					actualgear -= 1
 		else:
-			if gear == 0:
-				if gas:
+			if car_controls.gear == 0:
+				if car_controls.gas:
 					sassistdel -= 1
 					if sassistdel < 0:
 						actualgear = 1
-				elif brake:
+				elif car_controls.brake:
 					sassistdel -= 1
 					if sassistdel < 0:
 						actualgear = -1
 				else:
 					sassistdel = 60
 			elif linear_velocity.length()<5:
-				if not gas and gear == 1 or not brake and gear == -1:
+				if not car_controls.gas and car_controls.gear == 1 or not car_controls.brake and car_controls.gear == -1:
 					sassistdel = 60
 					actualgear = 0
 				
 		if actualgear == -1:
 			ratio = ReverseRatio * FinalDriveRatio * RatioMult
 		else:
-			ratio = GearRatios[gear - 1] * FinalDriveRatio * RatioMult
+			ratio = GearRatios[car_controls.gear - 1] * FinalDriveRatio * RatioMult
 		if actualgear > 0:
-			var lastratio:float = GearRatios[gear - 2] * FinalDriveRatio * RatioMult
-			su = false
-			sd = false
+			var lastratio:float = GearRatios[car_controls.gear - 2] * FinalDriveRatio * RatioMult
+			car_controls.su = false
+			car_controls.sd = false
 			for i:ViVeWheel in c_pws:
-				if (i.wv / GearAssist.speed_influence) > (float(AutoSettings[0]) * (gaspedal *float(AutoSettings[2]) + (1.0 - float(AutoSettings[2])))) / ratio:
-					su = true
-				elif (i.wv / GearAssist.speed_influence) < ((float(AutoSettings[0]) - float(AutoSettings[1])) * (gaspedal * float(AutoSettings[2]) + (1.0 - float(AutoSettings[2])))) / lastratio:
-					sd = true
+				if (i.wv / GearAssist.speed_influence) > (float(AutoSettings[0]) * (car_controls.gaspedal *float(AutoSettings[2]) + (1.0 - float(AutoSettings[2])))) / ratio:
+					car_controls.su = true
+				elif (i.wv / GearAssist.speed_influence) < ((float(AutoSettings[0]) - float(AutoSettings[1])) * (car_controls.gaspedal * float(AutoSettings[2]) + (1.0 - float(AutoSettings[2])))) / lastratio:
+					car_controls.sd = true
 					
-			if su:
-				gear += 1
-			elif sd:
-				gear -= 1
+			if car_controls.su:
+				car_controls.gear += 1
+			elif car_controls.sd:
+				car_controls.gear -= 1
 			
-			gear = clampi(gear, 1, len(GearRatios))
+			car_controls.gear = clampi(car_controls.gear, 1, len(GearRatios))
 			
 		else:
-			gear = actualgear
+			car_controls.gear = actualgear
 	elif TransmissionType == 2:
 		
-		clutchpedal = (rpm - float(AutoSettings[3]) * (gaspedal * float(AutoSettings[2]) + (1.0 - float(AutoSettings[2]))) ) / float(AutoSettings[4])
+		car_controls.clutchpedal = (rpm - float(AutoSettings[3]) * (car_controls.gaspedal * float(AutoSettings[2]) + (1.0 - float(AutoSettings[2]))) ) / float(AutoSettings[4])
 		
 			#clutchpedal = 1
 		
 		if not GearAssist.assist_level == 2:
-			if su:
-				su = false
-				if gear < 1:
+			if car_controls.su:
+				car_controls.su = false
+				if car_controls.gear < 1:
 					actualgear += 1
-			if sd:
-				sd = false
-				if gear > -1:
+			if car_controls.sd:
+				car_controls.sd = false
+				if car_controls.gear > -1:
 					actualgear -= 1
 		else:
-			if gear == 0:
-				if gas:
+			if car_controls.gear == 0:
+				if car_controls.gas:
 					sassistdel -= 1
 					if sassistdel < 0:
 						actualgear = 1
-				elif brake:
+				elif car_controls.brake:
 					sassistdel -= 1
 					if sassistdel < 0:
 						actualgear = -1
 				else:
 					sassistdel = 60
 			elif linear_velocity.length() < 5:
-				if not gas and gear == 1 or not brake and gear == -1:
+				if not car_controls.gas and car_controls.gear == 1 or not car_controls.brake and car_controls.gear == -1:
 					sassistdel = 60
 					actualgear = 0
 		
-		gear = actualgear
+		car_controls.gear = actualgear
 		var wv:float = 0.0
 		
 		for i:ViVeWheel in c_pws:
 			wv += i.wv / len(c_pws)
 		
-		cvtaccel -= (cvtaccel - (gaspedal * CVTSettings.throt_eff_thresh + (1.0 - CVTSettings.throt_eff_thresh))) * CVTSettings.accel_rate
+		cvtaccel -= (cvtaccel - (car_controls.gaspedal * CVTSettings.throt_eff_thresh + (1.0 - CVTSettings.throt_eff_thresh))) * CVTSettings.accel_rate
 		
 		var a:float = CVTSettings.iteration_3 / ((abs(wv) / 10.0) * cvtaccel + 1.0)
 		
@@ -732,188 +658,50 @@ func transmission() -> void:
 		ratio = minf(ratio, CVTSettings.iteration_2)
 	
 	elif TransmissionType == 3:
-		clutchpedal = (rpm - float(AutoSettings[3]) * (gaspedal * float(AutoSettings[2]) + (1.0 - float(AutoSettings[2]))) ) /float(AutoSettings[4])
+		car_controls.clutchpedal = (rpm - float(AutoSettings[3]) * (car_controls.gaspedal * float(AutoSettings[2]) + (1.0 - float(AutoSettings[2]))) ) /float(AutoSettings[4])
 		
-		if gear > 0:
-			ratio = GearRatios[gear - 1] * FinalDriveRatio * RatioMult
-		elif gear == -1:
+		if car_controls.gear > 0:
+			ratio = GearRatios[car_controls.gear - 1] * FinalDriveRatio * RatioMult
+		elif car_controls.gear == -1:
 			ratio = ReverseRatio * FinalDriveRatio * RatioMult
 		
 		if GearAssist.assist_level < 2:
-			if su:
-				su = false
-				if gear < len(GearRatios):
+			if car_controls.su:
+				car_controls.su = false
+				if car_controls.gear < len(GearRatios):
 					actualgear += 1
-			if sd:
-				sd = false
-				if gear > -1:
+			if car_controls.sd:
+				car_controls.sd = false
+				if car_controls.gear > -1:
 					actualgear -= 1
 		else:
 			var assistshiftspeed:float = (GearAssist.upshift_RPM / ratio) * GearAssist.speed_influence
-			var assistdownshiftspeed:float = (GearAssist.down_RPM / abs((GearRatios[gear - 2] * FinalDriveRatio) * RatioMult)) * GearAssist.speed_influence
-			if gear == 0:
-				if gas:
+			var assistdownshiftspeed:float = (GearAssist.down_RPM / abs((GearRatios[car_controls.gear - 2] * FinalDriveRatio) * RatioMult)) * GearAssist.speed_influence
+			if car_controls.gear == 0:
+				if car_controls.gas:
 					sassistdel -= 1
 					if sassistdel < 0:
 						actualgear = 1
-				elif brake:
+				elif car_controls.brake:
 					sassistdel -= 1
 					if sassistdel < 0:
 						actualgear = -1
 				else:
 					sassistdel = 60
 			elif linear_velocity.length()<5:
-				if not gas and gear == 1 or not brake and gear == -1:
+				if not car_controls.gas and car_controls.gear == 1 or not car_controls.brake and car_controls.gear == -1:
 					sassistdel = 60
 					actualgear = 0
 			if sassiststep == 0:
-				if not gear == -1:
-					if gear < len(GearRatios) and linear_velocity.length() > assistshiftspeed:
+				if not car_controls.gear == -1:
+					if car_controls.gear < len(GearRatios) and linear_velocity.length() > assistshiftspeed:
 						actualgear += 1
-					if gear > 1 and linear_velocity.length() < assistdownshiftspeed:
+					if car_controls.gear > 1 and linear_velocity.length() < assistdownshiftspeed:
 						actualgear -= 1
 		
-		gear = actualgear
+		car_controls.gear = actualgear
 	
-	clutchpedal = clampf(clutchpedal, 0.0, 1.0)
-
-func full_manual_transmission() -> void:
-		if clutch and not clutchin:
-			clutchpedalreal -= OffClutchRate / clock_mult
-		else:
-			clutchpedalreal += OnClutchRate / clock_mult
-		
-		clutchpedalreal = clamp(clutchpedalreal, 0, MaxClutch)
-		
-		clutchpedal = 1.0 - clutchpedalreal
-		
-		
-		if gear > 0:
-			ratio = GearRatios[gear - 1] * FinalDriveRatio * RatioMult
-		elif gear == -1:
-			ratio = ReverseRatio * FinalDriveRatio * RatioMult
-		
-		match GearAssist.assist_level:
-			0:
-				if su:
-					su = false
-					if gear < len(GearRatios):
-						if gearstress < GearGap:
-							actualgear += 1
-				if sd:
-					sd = false
-					if gear > -1:
-						if gearstress < GearGap:
-							actualgear -= 1
-			1:
-				if rpm < GearAssist.clutch_out_RPM:
-					var irga_ca:float = (GearAssist.clutch_out_RPM - rpm) / (GearAssist.clutch_out_RPM - IdleRPM)
-					clutchpedalreal = irga_ca * irga_ca
-					if clutchpedalreal > 1.0:
-						clutchpedalreal = 1.0
-				else:
-					if not gasrestricted and not revmatch:
-						clutchin = false
-				if su:
-					su = false
-					if gear < len(GearRatios):
-						if rpm < GearAssist.clutch_out_RPM:
-							actualgear += 1
-						else:
-							if actualgear < 1:
-								actualgear += 1
-								if rpm > GearAssist.clutch_out_RPM:
-									clutchin = false
-							else:
-								if sassistdel > 0:
-									actualgear += 1
-								sassistdel = GearAssist.shift_delay / 2.0
-								sassiststep = -4
-								
-								clutchin = true
-								gasrestricted = true
-				elif sd:
-					sd = false
-					if gear > -1:
-						if rpm < GearAssist.input_delay:
-							actualgear -= 1
-						else:
-							if actualgear == 0 or actualgear == 1:
-								actualgear -= 1
-								clutchin = false
-							else:
-								if sassistdel > 0:
-									actualgear -= 1
-								sassistdel = GearAssist.shift_delay / 2.0
-								sassiststep = -2
-								
-								clutchin = true
-								revmatch = true
-								gasrestricted = false
-			2:
-				pass
-
-		if GearAssist.assist_level == 2:
-			var assistshiftspeed:float = (GearAssist.upshift_RPM / ratio) * GearAssist.speed_influence
-			var assistdownshiftspeed:float = (GearAssist.down_RPM / abs((GearRatios[gear - 2] * FinalDriveRatio) * RatioMult)) * GearAssist.speed_influence
-			if gear == 0:
-				if gas:
-					sassistdel -= 1
-					if sassistdel < 0:
-						actualgear = 1
-				elif brake:
-					sassistdel -= 1
-					if sassistdel < 0:
-						actualgear = -1
-				else:
-					sassistdel = 60
-			elif linear_velocity.length() < 5:
-				if not gas and gear == 1 or not brake and gear == -1:
-					sassistdel = 60
-					actualgear = 0
-			if sassiststep == 0:
-				if rpm < GearAssist.clutch_out_RPM:
-					var irga_ca:float = (GearAssist.clutch_out_RPM - rpm) / (GearAssist.clutch_out_RPM - IdleRPM)
-					clutchpedalreal = irga_ca * irga_ca
-					if clutchpedalreal > 1.0:
-						clutchpedalreal = 1.0
-				else:
-					clutchin = false
-				if not gear == -1:
-					if gear < len(GearRatios) and linear_velocity.length() > assistshiftspeed:
-						sassistdel = GearAssist.shift_delay / 2.0
-						sassiststep = -4
-						
-						clutchin = true
-						gasrestricted = true
-					if gear > 1 and linear_velocity.length() < assistdownshiftspeed:
-						sassistdel = GearAssist.shift_delay / 2.0
-						sassiststep = -2
-						
-						clutchin = true
-						gasrestricted = false
-						revmatch = true
-		
-		if sassiststep == -4 and sassistdel < 0:
-			sassistdel = GearAssist.shift_delay / 2.0
-			if gear < len(GearRatios):
-				actualgear += 1
-			sassiststep = -3
-		elif sassiststep == -3 and sassistdel < 0:
-			if rpm > GearAssist.clutch_out_RPM:
-				clutchin = false
-			if sassistdel < - GearAssist.input_delay:
-				sassiststep = 0
-				gasrestricted = false
-		elif sassiststep == -2 and sassistdel < 0:
-			sassiststep = 0
-			if gear > -1:
-				actualgear -= 1
-			if rpm > GearAssist.clutch_out_RPM:
-				clutchin = false
-			gasrestricted = false
-			revmatch = false
-		gear = actualgear
+	car_controls.clutchpedal = clampf(car_controls.clutchpedal, 0.0, 1.0)
 
 func drivetrain() -> void:
 	
@@ -921,16 +709,16 @@ func drivetrain() -> void:
 	
 		rpmcs += rpmcsm * ClutchElasticity
 		
-		rpmcs -= rpmcs * (1.0 - clutchpedal)
+		rpmcs -= rpmcs * (1.0 - car_controls.clutchpedal)
 		
-		wob = ClutchWobble * clutchpedal
+		wob = ClutchWobble * car_controls.clutchpedal
 		
 		wob *= ratio * WobbleRate
 		
 		rpmcs -= (rpmcs - resistance) * (1.0 / (wob + 1.0))
 		
 		#torquereadout = multivariate(RiseRPM,TorqueRise,BuildUpTorque,EngineFriction,EngineDrag,OffsetTorque,rpm,DeclineRPM,DeclineRate,FloatRate,turbopsi,TurboAmount,EngineCompressionRatio,TurboEnabled,VVTRPM,VVT_BuildUpTorque,VVT_TorqueRise,VVT_RiseRPM,VVT_OffsetTorque,VVT_FloatRate,VVT_DeclineRPM,VVT_DeclineRate,SuperchargerEnabled,SCRPMInfluence,BlowRate,SCThreshold)
-		if gear < 0:
+		if car_controls.gear < 0:
 			rpm -= ((rpmcs * 1.0) / clock_mult) * (RevSpeed / 1.475)
 		else:
 			rpm += ((rpmcs * 1.0) / clock_mult) * (RevSpeed / 1.475)
@@ -945,7 +733,7 @@ func drivetrain() -> void:
 			Centre_Preload = 1.0
 			ClutchFloatReduction = 0.0
 		
-		gearstress = (abs(resistance) * StressFactor) * clutchpedal
+		gearstress = (abs(resistance) * StressFactor) * car_controls.clutchpedal
 		var stabled:float = ratio * 0.9 + 0.1
 		ds_weight = DSWeight / stabled
 		
@@ -990,14 +778,14 @@ func drivetrain() -> void:
 		else:
 			what = rpm
 			
-		if gear < 0.0:
+		if car_controls.gear < 0.0:
 			dist = maxd.wv + what / ratio
 		else:
 			dist = maxd.wv - what / ratio
 		
-		dist *= (clutchpedal * clutchpedal)
+		dist *= (car_controls.clutchpedal * car_controls.clutchpedal)
 		
-		if gear == 0:
+		if car_controls.gear == 0:
 			dist *= 0.0
 		
 		wv_difference = 0.0
@@ -1005,12 +793,12 @@ func drivetrain() -> void:
 		for i:ViVeWheel in c_pws:
 			drivewheels_size += i.w_size / len(c_pws)
 			i.c_p = i.W_PowerBias
-			wv_difference += ((i.wv - what / ratio) / (len(c_pws))) * (clutchpedal * clutchpedal)
-			if gear < 0:
+			wv_difference += ((i.wv - what / ratio) / (len(c_pws))) * (car_controls.clutchpedal * car_controls.clutchpedal)
+			if car_controls.gear < 0:
 				i.dist = dist * (1 - c_locked) + (i.wv + what / ratio) * c_locked
 			else:
 				i.dist = dist * (1 - c_locked) + (i.wv - what / ratio) * c_locked
-			if gear == 0:
+			if car_controls.gear == 0:
 				i.dist *= 0.0
 		GearAssist.speed_influence = drivewheels_size
 		resistance = 0.0
@@ -1057,20 +845,11 @@ func _physics_process(_delta:float) -> void:
 		for i:float in steering_angles:
 			max_steering_angle = maxf(max_steering_angle,i)
 		
-		assistance_factor = 90.0 / max_steering_angle
+		car_controls.assistance_factor = 90.0 / max_steering_angle
 	steering_angles = []
 	
-	if Use_Global_Control_Settings:
-		UseMouseSteering = VitaVehicleSimulation.UseMouseSteering
-		UseAccelerometreSteering = VitaVehicleSimulation.UseAccelerometreSteering
-		SteerSensitivity = VitaVehicleSimulation.SteerAmountDecay
-		KeyboardSteerSpeed = VitaVehicleSimulation.KeyboardSteerSpeed
-		KeyboardReturnSpeed = VitaVehicleSimulation.KeyboardReturnSpeed
-		KeyboardCompensateSpeed = VitaVehicleSimulation.KeyboardCompensateSpeed
-		
-		SteerAmountDecay = VitaVehicleSimulation.SteerAmountDecay
-		SteeringAssistance = VitaVehicleSimulation.SteeringAssistance
-		SteeringAssistanceAngular = VitaVehicleSimulation.SteeringAssistanceAngular
+	if car_controls.Use_Global_Control_Settings:
+		car_controls = VitaVehicleSimulation.universal_controls
 		
 		GearAssist.assist_level = VitaVehicleSimulation.GearAssistant
 	
@@ -1096,8 +875,14 @@ func _physics_process(_delta:float) -> void:
 #	gforce = global_transform.basis.orthonormalized().xform_inv(gforce)
 	gforce = global_transform.basis.orthonormalized().transposed() * (gforce)
 	
-	#new_controls()
-	controls()
+	car_controls.front_left = front_left
+	car_controls.front_right = front_right
+	car_controls.velocity = velocity
+	car_controls.rvelocity = rvelocity
+	car_controls.linear_velocity = linear_velocity
+	car_controls.GearAssist = GearAssist
+	new_controls()
+	#controls()
 	
 	ratio = 10.0
 	
@@ -1105,16 +890,16 @@ func _physics_process(_delta:float) -> void:
 	
 	transmission()
 	
-	gaspedal = clampf(gaspedal, 0.0, MaxThrottle)
-	brakepedal = clampf(brakepedal, 0.0, MaxBrake)
-	handbrakepull = clampf(handbrakepull, 0.0, MaxHandbrake)
-	steer = clampf(steer, -1.0, 1.0)
+	car_controls.gaspedal = clampf(car_controls.gaspedal, 0.0, car_controls.MaxThrottle)
+	car_controls.brakepedal = clampf(car_controls.brakepedal, 0.0, car_controls.MaxBrake)
+	car_controls.handbrakepull = clampf(car_controls.handbrakepull, 0.0, car_controls.MaxHandbrake)
+	car_controls.steer = clampf(car_controls.steer, -1.0, 1.0)
 	
-	var steeroutput:float = steer
+	var steeroutput:float = car_controls.steer
 	
 	var uhh:float = (max_steering_angle / 90.0) * (max_steering_angle / 90.0)
 	uhh *= 0.5
-	steeroutput *= abs(steer) * (uhh) + (1.0 - uhh)
+	steeroutput *= abs(car_controls.steer) * (uhh) + (1.0 - uhh)
 	
 	if abs(steeroutput) > 0.0:
 		steering_geometry = [ 
@@ -1133,14 +918,14 @@ func _physics_process(_delta:float) -> void:
 	
 	brake_allowed = clampf(brake_allowed, 0.0, 1.0)
 	
-	brakeline = brakepedal * brake_allowed
+	brakeline = car_controls.brakepedal * brake_allowed
 	
 	brakeline = maxf(brakeline, 0.0)
 	
 	limdel -= 1
 	
 	if limdel < 0:
-		throttle -= (throttle - (gaspedal / (tcsweight * clutchpedal + 1.0))) * (ThrottleResponse / clock_mult)
+		throttle -= (throttle - (car_controls.gaspedal / (tcsweight * car_controls.clutchpedal + 1.0))) * (ThrottleResponse / clock_mult)
 	else:
 		throttle -= throttle * (ThrottleResponse / clock_mult)
 	
