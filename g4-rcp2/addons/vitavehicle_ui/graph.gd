@@ -26,28 +26,28 @@ extends Control
 @export var DeclineSharpness = 1.0
 
 #torque @export variable valve timing triggered
-@export var VVT_BuildUpTorque = 0.0
-@export var VVT_TorqueRise = 60.0
-@export var VVT_RiseRPM = 1000.0
+@export var VVT_BuildUpTorque:float = 0.0
+@export var VVT_TorqueRise:float = 60.0
+@export var VVT_RiseRPM:float = 1000.0
 @export var VVT_OffsetTorque = 70
-@export var VVT_FloatRate = 0.1
-@export var VVT_DeclineRate = 2.0
-@export var VVT_DeclineRPM = 5000.0
-@export var VVT_DeclineSharpness = 1.0
+@export var VVT_FloatRate:float = 0.1
+@export var VVT_DeclineRate:float = 2.0
+@export var VVT_DeclineRPM:float = 5000.0
+@export var VVT_DeclineSharpness:float = 1.0
 
-@export var TurboEnabled = false
-@export var MaxPSI = 9.0
+@export var TurboEnabled:bool = false
+@export var MaxPSI:float = 9.0
 @export var TurboAmount = 1 # Turbo power multiplication.
-@export var EngineCompressionRatio = 8.0 # Piston travel distance
-@export var SuperchargerEnabled = false # Enables supercharger
-@export var SCRPMInfluence = 1.0
-@export var BlowRate = 35.0
-@export var SCThreshold = 6.0
+@export var EngineCompressionRatio:float = 8.0 # Piston travel distance
+@export var SuperchargerEnabled:bool = false # Enables supercharger
+@export var SCRPMInfluence:float = 1.0
+@export var BlowRate:float = 35.0
+@export var SCThreshold:float = 6.0
 
 
-@export var graph_scale = 0.005
-@export var Generation_Range = 7000.0
-@export var Draw_RPM = 800.0
+@export var graph_scale:float = 0.005
+@export var Generation_Range:float = 7000.0
+@export var Draw_RPM:float = 800.0
 
 var peakhp:Array[float] = [0.0,0.0]
 var peaktq:Array[float] = [0.0,0.0]
@@ -79,8 +79,8 @@ func draw_():
 				3:
 					hp *= 0.7457
 			
-			var tr_p:Vector2 = Vector2((i/Generation_Range)*size.x,size.y -(tr*size.y)*graph_scale)
-			var hp_p:Vector2 = Vector2((i/Generation_Range)*size.x,size.y -(hp*size.y)*graph_scale)
+			var tr_p:Vector2 = Vector2((i / Generation_Range) * size.x,size.y - (tr * size.y) * graph_scale)
+			var hp_p:Vector2 = Vector2((i / Generation_Range) * size.x,size.y - (hp * size.y) * graph_scale)
 			
 			if hp > peakhp[0]:
 				peakhp = [hp,i]

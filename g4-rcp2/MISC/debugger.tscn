@@ -809,7 +809,6 @@ text = "0.0"
 vertical_alignment = 2
 
 [node name="inform" type="Control" parent="."]
-visible = false
 anchors_preset = 0
 anchor_left = 0.102539
 anchor_top = 0.12
@@ -865,7 +864,12 @@ Q = Shift Down
 Shift = Handbrake
 
 Gamepad:
-NOT CONFIGURED
+Right trigger = Accelerator
+Left Trigger = Brake
+Left stick = Steer
+Xbox X = Shift Down
+Xbox Y = Shift Up
+Xbox B = Handbrake
 
 Joystick:
 NOT CONFIGURED
@@ -909,6 +913,7 @@ layout_mode = 2
 text = "Contributors:
 devHrytsan
 r0401 (aka raghid) - Godot 4 Port
+c08oprkiua - Godot 4.2 optimizations
 
 Car Designers:
 shotman_16 - Eclipse SRC

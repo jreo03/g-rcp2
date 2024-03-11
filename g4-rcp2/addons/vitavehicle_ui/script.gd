@@ -1,11 +1,11 @@
 @tool
 extends EditorPlugin
 
-const MainPanel = preload("res://addons/vitavehicle_ui/interface.tscn")
+const MainPanel:PackedScene = preload("res://addons/vitavehicle_ui/interface.tscn")
 
 var undo_redo = get_undo_redo()
 
-var main_panel_instance
+var main_panel_instance:Control
 
 static func set_canvas_item_light_mask_value(canvas_item: CanvasItem, layer_number: int, value: bool) -> void:
 	assert(layer_number >= 1 and layer_number <= 20, "layer_number must be between 1 and 20 inclusive")
@@ -14,7 +14,7 @@ static func set_canvas_item_light_mask_value(canvas_item: CanvasItem, layer_numb
 	else:
 		canvas_item.light_mask &= ~(1 << (layer_number - 1))
 
-func _enter_tree():
+func _enter_tree() -> void:
 	main_panel_instance = MainPanel.instantiate()
 	
 	get_editor_interface().get_editor_main_screen().add_child(main_panel_instance)
@@ -22,22 +22,23 @@ func _enter_tree():
 	_make_visible(false)
 
 
-func _exit_tree():
+func _exit_tree() -> void:
 	if main_panel_instance:
 		main_panel_instance.queue_free()
 
 
-func _has_main_screen():
+func _has_main_screen() -> bool:
 	return true
 
 
-func _make_visible(visible):
+func _make_visible(visible:bool) -> void:
 	if main_panel_instance:
 		main_panel_instance.visible = visible
 
 
-func _get_plugin_name():
+func _get_plugin_name() -> String:
 	return "VitaVehicle Interface"
+
 
 func _get_plugin_icon():
 	# Must return some kind of Texture for the icon.

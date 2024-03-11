@@ -1,7 +1,3 @@
 res://default_env.tres
 res://world.tscn
 res://MISC/debugger.tscn
-res://MISC/scene swapper/scenes/Test Scene/scene.tscn
-res://base car.tscn
-res://MAIN/misc/tyre smoke/smoke.tscn
-res://MAIN/wheel.tscn

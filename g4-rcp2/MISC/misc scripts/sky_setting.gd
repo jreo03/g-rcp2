@@ -1,10 +1,9 @@
 extends WorldEnvironment
 
-var current_sky = environment
-var default_sky = load("res://default_env.tres")
+var current_sky:Environment = environment
+var default_sky:Environment = load("res://default_env.tres")
 
-func _process(delta):
-	
+func _process(_delta) -> void:
 	if misc_graphics_settings.use_procedual_sky:
 		environment = current_sky
 	else:

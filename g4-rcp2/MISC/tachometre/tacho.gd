@@ -55,24 +55,25 @@ func _ready() -> void:
 			
 			d = $tacho/minor.duplicate(true)
 			$tacho.add_child(d)
-			d.rotation_degrees = lowangle*(1.0-dist3) + highangle*dist3
+			d.rotation_degrees = lowangle * (1.0 - dist3) + highangle * dist3
 			d.visible = true
 			generated.append(d)
-			if float(i+0.5)>red:
+			if float(i + 0.5) > red:
 				d.color = Color(1,0,0)
 			
 			d = $tacho/minor.duplicate(true)
 			$tacho.add_child(d)
-			d.rotation_degrees = lowangle*(1.0-dist4) + highangle*dist4
+			d.rotation_degrees = lowangle * (1.0 - dist4) + highangle * dist4
 			d.visible = true
 			generated.append(d)
-			if float(i+0.75)>red:
+			if float(i + 0.75) > red:
 				d.color = Color(1,0,0)
 
 func _process(_delta:float) -> void:
-	$tacho/needle.rotation_degrees = -120.0 +240.0*(abs(currentrpm)/RPM_Range)
+	$tacho/needle.rotation_degrees = - 120.0 + 240.0 * (abs(currentrpm) / RPM_Range)
 	
-	$turbo/needle.rotation_degrees = -90.0 +180.0*(currentpsi/Max_PSI)
+	$turbo/needle.rotation_degrees = - 90.0 + 180.0 * (currentpsi / Max_PSI)
 	
-	if $turbo/needle.rotation_degrees<-90.0:
-		$turbo/needle.rotation_degrees = -90.0
+	$turbo/needle.rotation_degrees = maxf($turbo/needle.rotation_degrees, - 90.0)
+#	if $turbo/needle.rotation_degrees < - 90.0:
+#		$turbo/needle.rotation_degrees = - 90.0

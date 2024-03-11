@@ -48,11 +48,13 @@ func _ready() -> void:
 			var car:ViVeCar = ViVeCar.new()
 			#we do a little loop magic to make my job easier
 			const carstats:PackedStringArray = [
-			"EngineFriction","EngineDrag","RPM",
-			"FloatRate","PSI","TurboAmount",
-			"EngineCompressionRatio","TEnabled","VVTRPM"
-			,"SCEnabled","SCRPMInfluence","BlowRate",
-			"SCThreshold",
+			"EngineFriction","EngineDrag",
+			"TurboAmount", "EngineCompressionRatio",
+			"SCRPMInfluence","BlowRate", "SCThreshold",
+			
+			"RPM", "VVTRPM", "FloatRate", #ViVeCarTorque
+			"SCEnabled","PSI","TEnabled", #Unknown
+			
 			]
 			for stat in carstats:
 				if (car.get(stat) != null) and (self.get(stat) != null):
@@ -62,13 +64,13 @@ func _ready() -> void:
 			if car.get("torque_vvt") != null:
 				car.set("torque_vvt", TorqueVVT)
 			
-			var tr:float = VitaVehicleSimulation.multivariate(car)
-			var hp:float = (i / 5252.0) * tr
+			var trq:float = VitaVehicleSimulation.multivariate(car)
+			var hp:float = (i / 5252.0) * trq
 			
 			if Torque_Unit == 1:
-				tr *= 1.3558179483
+				trq *= 1.3558179483
 			elif Torque_Unit == 2:
-				tr *= 0.138255
+				trq *= 0.138255
 			
 			match Power_Unit:
 				1:
@@ -78,15 +80,15 @@ func _ready() -> void:
 				3:
 					hp *= 0.7457
 			
-			var tr_p:Vector2 = Vector2((i / Generation_Range) * size.x, size.y - (tr * size.y) * draw_scale)
+			var tr_p:Vector2 = Vector2((i / Generation_Range) * size.x, size.y - (trq * size.y) * draw_scale)
 			var hp_p:Vector2 = Vector2((i / Generation_Range) * size.x, size.y - (hp * size.y) * draw_scale)
 			
 			if hp > peakhp[0]:
-				peakhp = [hp,i]
+				peakhp = [hp, i]
 				$power/peak.position = hp_p
 			
-			if tr > peaktq[0]:
-				peaktq = [tr,i]
+			if trq > peaktq[0]:
+				peaktq = [trq, i]
 				$torque/peak.position = tr_p
 			
 			skip -= 1

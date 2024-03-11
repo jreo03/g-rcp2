@@ -59,7 +59,7 @@ func _physics_process(_delta:float) -> void:
 	total = maxf(total, 1.0)
 	
 	var mult:float = (get_parent().linear_velocity.length() / 5000.0 + 1.0)
-#	$roll0.pitch_scale = 1.0    /(get_parent().linear_velocity.length()/500.0 +1.0)
+#	$roll0.pitch_scale = 1.0 / (get_parent().linear_velocity.length() / 500.0 +1.0)
 	$roll1.pitch_scale = 1.0 / mult
 	$roll2.pitch_scale = 1.0 / mult
 	$peel0.pitch_scale = 0.95 + length / 8.0 / mult
