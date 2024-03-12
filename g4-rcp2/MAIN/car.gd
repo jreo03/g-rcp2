@@ -19,7 +19,8 @@ var c_pws:Array[ViVeWheel]
 
 @export_group("Controls")
 @export var car_controls:ViVeCarControls = ViVeCarControls.new()
-
+var car_controls_cache:ViVeCarControls.ControlType = ViVeCarControls.ControlType.CONTROLS_KEYBOARD_MOUSE
+var control_func:Callable = car_controls.controls_keyboard_mouse
 
 @export var GearAssist:ViVeGearAssist = ViVeGearAssist.new()
 
@@ -233,17 +234,29 @@ func get_powered_wheels() -> Array[ViVeWheel]:
 		return_this.append(get_node(wheels))
 	return return_this
 
-func new_controls() -> void:
+
+
+func mouse_wrapper() -> void:
+	var mouseposx:float = 0.0
+	if get_viewport().size.x > 0.0:
+		mouseposx = get_viewport().get_mouse_position().x / get_viewport().size.x
+	car_controls.controls_keyboard_mouse(mouseposx)
+
+func decide_controls() -> Callable:
 	match car_controls.control_type as ViVeCarControls.ControlType:
 		ViVeCarControls.ControlType.CONTROLS_KEYBOARD_MOUSE:
-			var mouseposx:float = 0.0
-			if get_viewport().size.x > 0.0:
-				mouseposx = get_viewport().get_mouse_position().x / get_viewport().size.x
-			car_controls.controls_keyboard_mouse(mouseposx)
+			return mouse_wrapper
 		ViVeCarControls.ControlType.CONTROLS_TOUCH:
-			car_controls.controls_touchscreen()
+			return car_controls.controls_touchscreen
 		ViVeCarControls.ControlType.CONTROLS_JOYPAD:
-			car_controls.controls_joypad()
+			return car_controls.controls_joypad
+	return mouse_wrapper
+
+func new_controls() -> void:
+	if car_controls.control_type != car_controls_cache:
+		control_func = await decide_controls()
+		car_controls_cache = car_controls.control_type as ViVeCarControls.ControlType
+	control_func.call()
 
 func controls() -> void:
 	

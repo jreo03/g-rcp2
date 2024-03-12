@@ -809,6 +809,7 @@ text = "0.0"
 vertical_alignment = 2
 
 [node name="inform" type="Control" parent="."]
+visible = false
 anchors_preset = 0
 anchor_left = 0.102539
 anchor_top = 0.12
