@@ -254,7 +254,7 @@ func decide_controls() -> Callable:
 
 func new_controls() -> void:
 	if car_controls.control_type != car_controls_cache:
-		control_func = await decide_controls()
+		control_func = decide_controls()
 		car_controls_cache = car_controls.control_type as ViVeCarControls.ControlType
 	control_func.call()
 
@@ -434,7 +434,7 @@ func transmission() -> void:
 		if car_controls.gear > 0:
 			ratio = GearRatios[car_controls.gear - 1] * FinalDriveRatio * RatioMult
 		elif car_controls.gear == -1:
-			ratio = ReverseRatio*FinalDriveRatio*RatioMult
+			ratio = ReverseRatio * FinalDriveRatio * RatioMult
 		if GearAssist.assist_level == 0:
 			if car_controls.su:
 				car_controls.su = false
@@ -449,7 +449,7 @@ func transmission() -> void:
 		elif GearAssist.assist_level == 1:
 			if rpm < GearAssist.clutch_out_RPM:
 				var irga_ca:float = (GearAssist.clutch_out_RPM - rpm) / (GearAssist.clutch_out_RPM - IdleRPM)
-				clutchpedalreal = irga_ca * irga_ca
+				clutchpedalreal = pow(irga_ca, 2)
 				clutchpedalreal = minf(1.0, clutchpedalreal)
 			else:
 				if not car_controls.gasrestricted and not car_controls.revmatch:

@@ -1,6 +1,15 @@
 res://default_env.tres
-res://MISC/debugger.tscn
 res://world.tscn
-res://MAIN/wheel.gd
+res://MISC/debugger.tscn
+res://MISC/graph/display.tscn
+res://MISC/tachometre/tacho.tscn
+res://MISC/visual gravity system/vgs.tscn
+res://MISC/scene swapper/scene swapper.gd
+res://MISC/misc scripts/debug.gd
+res://MISC/car swapper/car swapper.gd
+res://MAIN/misc/mechanical sounds/other_sounds.tscn
+res://MAIN/misc/mechanical sounds/other_sounds.gd
+res://MAIN/misc/tyre sounds/tyres.tscn
+res://MAIN/misc/tyre sounds/tyres.gd
 res://base car.tscn
-res://MAIN/car.gd
+res://MAIN/misc/tyre sounds/vars.gd

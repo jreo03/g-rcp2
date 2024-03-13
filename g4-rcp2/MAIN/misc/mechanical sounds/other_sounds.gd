@@ -50,7 +50,7 @@ func play() -> void:
 		$scwhine.play()
 
 func stop() -> void:
-	for i in get_children():
+	for i:AudioStreamPlayer3D in get_children():
 		i.stop()
 
 func _ready() -> void:
@@ -67,7 +67,7 @@ func _physics_process(_delta:float) -> void:
 	if has_node(engine_sound):
 		get_node(engine_sound).pitch_influence -= (get_node(engine_sound).pitch_influence - 1.0) * 0.5
 	
-	if get_parent().rpm>get_parent().DeadRPM:
+	if get_parent().rpm > get_parent().DeadRPM:
 		if fueltrace > randf_range(air * backfire_BackfirePrevention + backfire_BackfireThreshold, 60.0 / backfire_BackfireRate):
 			rand = 0.1
 			var ft:float = maxf(fueltrace, 10.0)
@@ -132,6 +132,7 @@ func _physics_process(_delta:float) -> void:
 	
 	$whistle.volume_db = whistle
 	$whistle.max_db = $whistle.volume_db
+	
 	var wps:float = 1.0
 	if get_parent().turbopsi > 0.0:
 		wps = blowvol * BlowOffPitch2 + get_parent().turbopsi * 0.05 + BlowOffPitch1

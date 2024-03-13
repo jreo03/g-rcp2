@@ -43,14 +43,16 @@ func append_wheel(node:ViVeWheel) -> void:
 
 func _physics_process(_delta:float) -> void:
 	for i:ViVeDebugWheel in appended:
-		i.position = size / 2
+		if i.node == null:
+			continue
+		i.position = size * 0.5
 		i.position += ((i.pos * (64.0 / vgs_scale)) / 9.806)
 		
 		i.slippage.scale.y = (i.node.slip_percpre) * 0.8
 		
-		i.rotation_degrees = -i.node.rotation_degrees.y
+		i.rotation_degrees = - i.node.rotation_degrees.y
 		
-		i.self_modulate = Color(1,1,1)
+		i.self_modulate = Color.WHITE
 		
 		i.slippage.scale.y = clampf(i.slippage.scale.y, 0.0, 0.8)
 		if i.slippage.scale.y == 0.8:
@@ -58,15 +60,17 @@ func _physics_process(_delta:float) -> void:
 				i.self_modulate = Color(1,0,0)
 			
 	
-	glength = Vector2(abs(gforce.x), abs(gforce.y)).length() / vgs_scale - 1.0
-	if Vector2(abs(gforce.x), abs(gforce.y)).length() > MaxG:
-		$centre/Circle.modulate = Color(1.0,1.0,0.5,1.0)
+	var vector_cache:float = Vector2(abs(gforce.x), abs(gforce.y)).length()
+	#glength = vector_cache / vgs_scale - 1.0
+	glength = maxf(vector_cache / vgs_scale - 1.0, 0.0)
+	if vector_cache > MaxG:
+		$centre/Circle.modulate = Color.KHAKI #Color(1.0, 1.0, 0.5, 1.0)
 	else:
-		$centre/Circle.modulate = Color(1.0,0.75,0.0,1.0)
+		$centre/Circle.modulate = Color.GOLD #Color(1.0, 0.75, 0.0, 1.0)
 	
-	glength = maxf(glength, 0.0)
+	#glength = maxf(glength, 0.0)
 	
-	gforce /= glength +1.0
+	gforce /= glength + 1.0
 	
 	$centre.position = size / 2 + gforce * (64.0 / vgs_scale)
 	$field.position = size / 2

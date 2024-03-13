@@ -7,12 +7,11 @@
 [ext_resource type="Script" path="res://MAIN/misc/mechanical sounds/other_sounds.gd" id="5"]
 [ext_resource type="AudioStream" uid="uid://dknq0s5ifqnau" path="res://MAIN/misc/mechanical sounds/backfire.ogg" id="6"]
 
-[node name="other_sounds" type="Spatial"]
+[node name="other_sounds" type="Node3D"]
 script = ExtResource("5")
 
 [node name="scwhine" type="AudioStreamPlayer3D" parent="."]
 stream = ExtResource("1")
-unit_db = -80.0
 unit_size = 50.0
 max_db = -24.0
 pitch_scale = 0.01
@@ -21,7 +20,6 @@ attenuation_filter_db = 0.0
 
 [node name="whistle" type="AudioStreamPlayer3D" parent="."]
 stream = ExtResource("1")
-unit_db = -80.0
 unit_size = 50.0
 max_db = -24.0
 pitch_scale = 0.01
@@ -30,7 +28,6 @@ attenuation_filter_db = 0.0
 
 [node name="blow" type="AudioStreamPlayer3D" parent="."]
 stream = ExtResource("2")
-unit_db = -80.0
 unit_size = 50.0
 max_db = -24.0
 pitch_scale = 0.01
@@ -39,7 +36,6 @@ attenuation_filter_db = 0.0
 
 [node name="backfire" type="AudioStreamPlayer3D" parent="."]
 stream = ExtResource("6")
-unit_db = -80.0
 unit_size = 50.0
 max_db = -24.0
 pitch_scale = 0.01
@@ -48,7 +44,6 @@ attenuation_filter_db = 0.0
 
 [node name="spool" type="AudioStreamPlayer3D" parent="."]
 stream = ExtResource("4")
-unit_db = -80.0
 unit_size = 50.0
 max_db = -24.0
 pitch_scale = 0.01
@@ -57,7 +52,6 @@ attenuation_filter_db = 0.0
 
 [node name="whigh" type="AudioStreamPlayer3D" parent="."]
 stream = ExtResource("3")
-unit_db = -80.0
 unit_size = 50.0
 max_db = -24.0
 pitch_scale = 0.01
@@ -66,7 +60,6 @@ attenuation_filter_db = 0.0
 
 [node name="wlow" type="AudioStreamPlayer3D" parent="."]
 stream = ExtResource("1")
-unit_db = -80.0
 unit_size = 50.0
 max_db = -24.0
 pitch_scale = 0.01

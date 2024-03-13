@@ -59,10 +59,8 @@ func _ready() -> void:
 			for stat in carstats:
 				if (car.get(stat) != null) and (self.get(stat) != null):
 					car.set(stat, self.get(stat))
-			if car.get("torque_norm") != null:
-				car.set("torque_norm", TorqueNormal)
-			if car.get("torque_vvt") != null:
-				car.set("torque_vvt", TorqueVVT)
+			car.torque_norm = TorqueNormal
+			car.torque_vvt = TorqueVVT
 			
 			var trq:float = VitaVehicleSimulation.multivariate(car)
 			var hp:float = (i / 5252.0) * trq

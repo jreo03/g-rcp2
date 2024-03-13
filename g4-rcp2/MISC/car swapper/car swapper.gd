@@ -1,6 +1,6 @@
-extends Control
+extends ScrollContainer
 
-@onready var button:Button = $scroll/container/_DEFAULT.duplicate()
+@onready var button:Button = $container/_DEFAULT.duplicate()
 
 const pathh:String = "res://MISC/car swapper/"
 var canclick:bool = true
@@ -35,20 +35,22 @@ func load_and_cache(path:String) -> PackedScene:
 	loaded = literal_cache[path]
 	return loaded
 
-@onready var default_position:Vector3 = get_parent().get_parent().get_node("car").global_position
+@onready var default_position:Vector3 = get_tree().current_scene.get_node("car").global_position
+
 
 func swapcar(naem:String) -> void:
 	visible = false
-	get_parent().get_node("swap car").visible = false
+	#get_parent().get_node("swap car").visible = false
 	if canclick:
 		canclick = false
-		get_parent().get_node("vgs").clear()
 		
-		default_position = get_parent().get_node(get_parent().car).global_position
+		#TODO: reimplement
+		#get_parent().get_node("vgs").clear()
 		
-		get_parent().get_node(get_parent().car).queue_free()
+		#default_position = get_parent().get_node(get_parent().car).global_position
+		default_position = ViVeEnvironment.singleton.car.global_position
 		
-		get_parent().car = ""
+		ViVeEnvironment.singleton.car.queue_free()
 		
 		await get_tree().create_timer(1.0).timeout
 		
@@ -60,66 +62,48 @@ func swapcar(naem:String) -> void:
 		else:
 			d = load_and_cache(pathh + "cars/"+ naem + "/scene.tscn").instantiate()
 		
-		get_parent().get_parent().add_child(d)
+		ViVeEnvironment.singleton.add_child(d)
+		ViVeEnvironment.singleton.car = d
 		
 		d.global_position = default_position + Vector3(0,5,0)
 		
+		var debug_child:Control = ViVeDebug.singleton.get_node("power_graph")
+		ViVeDebug.singleton._ready()
 		
-		get_parent().car = NodePath("../"+str(d.name))
+		debug_child.Generation_Range = float(int(float(d.RPMLimit / 1000.0)) * 1000 + 1000)
+		debug_child.Draw_RPM = d.IdleRPM
 		
-		get_parent()._ready()
-		get_parent().get_node("controls manipulator").setcar()
+		debug_child._ready()
 		
-		get_parent().get_node("power_graph").Generation_Range = float(int(float(get_parent().get_node(get_parent().car).RPMLimit/1000.0))*1000 +1000)
-		get_parent().get_node("power_graph").Draw_RPM = get_parent().get_node(get_parent().car).IdleRPM
+		var peak:float = max(debug_child.peaktq[0], debug_child.peakhp[0])
 		
-		get_parent().get_node("power_graph")._ready()
+		debug_child.draw_scale = 1.0 / peak
 		
-		var peak:float = max(get_parent().get_node("power_graph").peaktq[0], get_parent().get_node("power_graph").peakhp[0])
+		debug_child._ready()
 		
-		get_parent().get_node("power_graph").draw_scale = 1.0 / peak
+		debug_child = ViVeDebug.singleton.get_node("tacho")
 		
-		get_parent().get_node("power_graph")._ready()
+		debug_child.Redline = int(float(d.RPMLimit / 1000.0)) * 1000
+		debug_child.RPM_Range = int(float(d.RPMLimit / 1000.0)) * 1000 + 2000
+		debug_child.Turbo_Visible = d.TurboEnabled
+		debug_child.Max_PSI = d.MaxPSI * d.TurboAmount
 		
-		get_parent().get_node("tacho").Redline = int(float(get_parent().get_node(get_parent().car).RPMLimit/1000.0))*1000
-		get_parent().get_node("tacho").RPM_Range = int(float(get_parent().get_node(get_parent().car).RPMLimit/1000.0))*1000 +2000
-		get_parent().get_node("tacho").Turbo_Visible = get_parent().get_node(get_parent().car).TurboEnabled
-		get_parent().get_node("tacho").Max_PSI = get_parent().get_node(get_parent().car).MaxPSI*get_parent().get_node(get_parent().car).TurboAmount
-		
-		get_parent().get_node("tacho")._ready()
+		debug_child._ready()
 		
 		
 		canclick = true
-	get_parent().get_node("swap car").visible = true
-
+#	get_parent().get_node("swap car").visible = true
 
 func _ready() -> void:
 	var d:PackedStringArray = list_files_in_directory(pathh + "cars")
 	
 	for i:String in d:
 		var but:Button = button.duplicate()
-		$scroll/container.add_child(but)
+		$container.add_child(but)
 		but.get_node("carname").text = i
 		but.get_node("icon").texture = load(pathh + "cars/" + i + "/thumbnail.png")
 #		but.connect("pressed", self, "swapcar",[i])
 		but.pressed.connect(swapcar.bind(i))
-		
+	
 #	$scroll/container/_DEFAULT.connect("pressed", self, "swapcar",["_DEFAULT_CAR_"])
-	$scroll/container/_DEFAULT.pressed.connect(swapcar.bind("_DEFAULT_CAR_"))
-
-func _input(_event:InputEvent) -> void:
-	if Input.is_action_just_pressed("ui_cancel"):
-		visible = false
-
-func _on_swap_car_pressed() -> void:
-	get_parent().get_node("swap car").release_focus()
-	if visible:
-		visible = false
-	else:
-		Input.action_press("ui_cancel")
-		await get_tree().create_timer(0.1).timeout
-		
-		Input.action_release("ui_cancel")
-		visible = true
-
-
+	$container/_DEFAULT.pressed.connect(swapcar.bind("_DEFAULT_CAR_"))

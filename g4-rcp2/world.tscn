@@ -1,6 +1,7 @@
-[gd_scene load_steps=8 format=3 uid="uid://cl5riv3giscom"]
+[gd_scene load_steps=9 format=3 uid="uid://cl5riv3giscom"]
 
 [ext_resource type="PackedScene" uid="uid://crtwme8ggggra" path="res://base car.tscn" id="1"]
+[ext_resource type="Script" path="res://MISC/misc scripts/world_root.gd" id="1_ki5xn"]
 [ext_resource type="Script" path="res://MAIN/misc/camera.gd" id="2"]
 [ext_resource type="PackedScene" uid="uid://b77dj0608nvq0" path="res://MISC/debugger.tscn" id="3"]
 [ext_resource type="PackedScene" uid="uid://diafjore21wn" path="res://MISC/scene swapper/scenes/Test Scene/scene.tscn" id="6"]
@@ -9,6 +10,7 @@
 [ext_resource type="Texture2D" uid="uid://b315i7ikjj32c" path="res://logo.png" id="13"]
 
 [node name="world" type="Node3D"]
+script = ExtResource("1_ki5xn")
 
 [node name="watermark" type="TextureRect" parent="."]
 anchors_preset = -1

@@ -1,12 +1,11 @@
-extends Control
+extends ScrollContainer
 
-@onready var button:Button = $scroll/container/_DEFAULT.duplicate()
+@onready var button:Button = $container/_DEFAULT.duplicate()
+@onready var world:Node3D = get_tree().current_scene
 
 const pathh:String = "res://MISC/scene swapper/"
 var canclick:bool = true
 var literal_cache:Dictionary = {}
-
-@export var current_map:NodePath = NodePath()
 
 func list_files_in_directory(path:String) -> PackedStringArray:
 	
@@ -25,7 +24,6 @@ func list_files_in_directory(path:String) -> PackedStringArray:
 	dir.list_dir_end()
 	
 	return files
-	
 
 func load_and_cache(path:String) -> PackedScene:
 	var loaded:PackedScene = null
@@ -39,47 +37,35 @@ func load_and_cache(path:String) -> PackedScene:
 	return loaded
 
 func swapmap(naem:String) -> void:
-	visible = false
-	get_node(current_map).queue_free()
+	
+	#world.get_node(current_map).queue_free()
+	ViVeEnvironment.singleton.scene.queue_free()
 	
 	var d:Node = load_and_cache(pathh + "scenes/" + naem + "/scene.tscn").instantiate()
 	
-	get_parent().get_parent().add_child(d)
-	
-	current_map = "../../"+str(d.name)
+	ViVeEnvironment.singleton.add_child(d)
+	ViVeEnvironment.singleton.scene = d
 	
 	await get_tree().create_timer(0.1).timeout
-	get_parent().get_node(get_parent().car).global_position *= 0
-	get_parent().get_node(get_parent().car).global_rotation *= 0
-	get_parent().get_node(get_parent().car).linear_velocity *= 0
-	get_parent().get_node(get_parent().car).angular_velocity *= 0
+	ViVeEnvironment.singleton.car.global_position *= 0
+	ViVeEnvironment.singleton.car.global_rotation *= 0
+	ViVeEnvironment.singleton.car.linear_velocity *= 0
+	ViVeEnvironment.singleton.car.angular_velocity *= 0
 
 
 func _ready() -> void:
-	$scroll/container/_DEFAULT.queue_free()
+	$container/_DEFAULT.queue_free()
 	
 	var d:PackedStringArray = list_files_in_directory(pathh + "scenes")
 	
 	for i:String in d:
 		var but:Node = button.duplicate()
-		$scroll/container.add_child(but)
+		$container.add_child(but)
 		but.get_node("mapname").text = i
 		but.get_node("icon").texture = load(pathh + "scenes/" + i + "/thumbnail.png")
 #		but.connect("pressed", self, "swapmap",[i])
 		but.pressed.connect(swapmap.bind(i))
-	
 
 func _input(_event:InputEvent) -> void:
 	if Input.is_action_just_pressed("ui_cancel"):
 		visible = false
-
-func _on_swap_map_pressed() -> void:
-	get_parent().get_node("swap map").release_focus()
-	if visible:
-		visible = false
-	else:
-		Input.action_press("ui_cancel")
-		await get_tree().create_timer(0.1).timeout
-		Input.action_release("ui_cancel")
-		visible = true
-

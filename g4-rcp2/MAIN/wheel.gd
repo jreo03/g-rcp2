@@ -191,7 +191,6 @@ func _physics_process(_delta:float) -> void:
 		
 		if car.car_controls.steer > 0.0:
 			rotate_object_local(Vector3(0, 1, 0), - deg_to_rad(90.0))
-		
 		else:
 			rotate_object_local(Vector3(0, 1, 0), deg_to_rad(90.0))
 		
@@ -352,7 +351,7 @@ func _physics_process(_delta:float) -> void:
 		stress = grip
 		const rigidity:float = 0.67
 		
-		var distw:float = velocity2.z - wv * w_size
+		#var distw:float = velocity2.z - wv * w_size
 		wv += (wheelpower * (1.0 - (1.0 / tyre_stiffness)))
 		var disty:float = velocity2.z - wv * w_size
 		
@@ -373,7 +372,7 @@ func _physics_process(_delta:float) -> void:
 		distx -= (grav_incline * (compensate2 / tyre_stiffness)) * 1.1
 		
 		disty *= tyre_stiffness
-		distw *= tyre_stiffness
+		#distw *= tyre_stiffness
 		distx *= tyre_stiffness
 		
 		distx -= atan2(abs(wv), 1.0) * ((angle * 10.0) * w_size)
@@ -582,13 +581,9 @@ func suspension() -> float:
 	
 	incline /= 1 - A_InclineArea
 	
-	incline -= A_InclineArea
+	incline = maxf(incline - A_InclineArea, 0.0)
 	
-	incline = maxf(incline, 0.0)
-	
-	incline *= A_ImpactForce
-	
-	incline = minf(incline, 1.0)
+	incline = minf(incline * A_ImpactForce, 1.0)
 	
 	geometry.position.y = minf(geometry.position.y, - g_range + S_MaxCompression * (1.0 - incline))
 	
@@ -622,6 +617,4 @@ func suspension() -> float:
 	
 	rd = compressed
 	
-	suspforce = maxf(suspforce, 0.0)
-	
-	return suspforce
+	return maxf(suspforce, 0.0)
