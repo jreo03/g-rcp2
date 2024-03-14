@@ -6,7 +6,7 @@ var stats:ViVeCarSS = ViVeCarSS.new()
 
 var c_pws:Array[ViVeWheel]
 
-##An array containing the name of the nodes acting as powered wheels of the car.
+##A set of wheels that are powered parented under the vehicle.
 @export var Powered_Wheels:PackedStringArray = ["fl", "fr"]
 
 @onready var front_left:ViVeWheel = $"fl"
@@ -26,7 +26,7 @@ var c_pws:Array[ViVeWheel]
 @export_group("Controls")
 @export var car_controls:ViVeCarControls = ViVeCarControls.new()
 var car_controls_cache:ViVeCarControls.ControlType = ViVeCarControls.ControlType.CONTROLS_KEYBOARD_MOUSE
-var control_func:Callable = car_controls.controls_keyboard_mouse
+var _control_func:Callable = car_controls.controls_keyboard_mouse
 
 @export var GearAssist:ViVeGearAssist = ViVeGearAssist.new()
 
@@ -34,11 +34,15 @@ var control_func:Callable = car_controls.controls_keyboard_mouse
 @export var Controlled:bool = true
 
 @export_group("Chassis")
+##Vehicle weight in kilograms.
 @export var Weight:float = 900.0 # kg
 
 @export_group("Body")
+##Up-pitch force based on the car’s velocity.
 @export var LiftAngle:float = 0.1
+##A force moving opposite in relation to the car’s velocity.
 @export var DragCoefficient:float = 0.25
+##A force moving downwards in relation to the car’s velocity.
 @export var Downforce:float = 0.0
 
 @export_group("Steering")
@@ -64,8 +68,10 @@ var control_func:Callable = car_controls.controls_keyboard_mouse
 ## Leave this be, unless you know what you're doing.
 @export var DSWeight:float = 150.0
 
+##The [ViVeCar.TransmissionTypes] used for this car.
 @export_enum("Fully Manual", "Automatic", "Continuously Variable", "Semi-Auto") var TransmissionType:int = 0
 
+##Selection of transmission types that are implemented in VitaVehicle.
 enum TransmissionTypes {
 	full_manual = 0,
 	auto = 1,
@@ -73,15 +79,15 @@ enum TransmissionTypes {
 	semi_auto = 3
 }
 
-
+##Transmission automation settings (for Automatic, CVT and Semi-Auto).
 class newAutoSettings:
 	extends Resource
 	## Shift rpm (auto).
 	@export var shift_rpm:float = 6500.0
 	## Downshift threshold (auto).
 	@export var downshift_thresh:float = 300.0
-	## Throttle efficiency threshold (range: 0 - 1) (auto/dct).
-	@export var throt_eff_thresh:float = 0.5
+	## Throttle efficiency threshold (auto/dct).
+	@export_range(0, 1) var throt_eff_thresh:float = 0.5
 	## Engagement rpm threshold (auto/dct/cvt).
 	@export var engage_rpm_thresh:float = 0.0
 	## Engagement rpm (auto/dct/cvt).
@@ -104,27 +110,43 @@ class newAutoSettings:
 @export var TTCS:ViVeTTCS = ViVeTTCS.new()
 
 @export_group("Differentials")
+## Locks differential under acceleration.
 @export var Locking:float = 0.1
+## Locks differential under deceleration.
 @export var CoastLocking:float = 0.0
-@export var Preload:float = 0.0
-
+## Static differential locking.
+@export_range(0.0, 1.0) var Preload:float = 0.0
+## Locks centre differential under acceleration.
 @export var Centre_Locking:float = 0.5
+## Locks centre differential under deceleration.
 @export var Centre_CoastLocking:float = 0.5
-@export var Centre_Preload:float = 0.0
+## Static centre differential locking.
+@export_range(0.0, 1.0) var Centre_Preload:float = 0.0
 
 @export_group("Engine")
-@export var RevSpeed:float = 2.0 # Flywheel lightness
+## Flywheel lightness.
+@export var RevSpeed:float = 2.0 
+## Chance of stalling.
 @export var EngineFriction:float = 18000.0
+## Rev drop rate.
 @export var EngineDrag:float = 0.006
-@export var ThrottleResponse:float = 0.5
+## How instant the engine corresponds with throttle input.
+@export_range(0.0, 1.0) var ThrottleResponse:float = 0.5
+## RPM below this threshold would stall the engine.
 @export var DeadRPM:float = 100.0
 
 @export_group("ECU")
+
 @export var RPMLimit:float = 7000.0
+
 @export var LimiterDelay:float = 4
+
 @export var IdleRPM:float = 800.0
+
 @export var ThrottleLimit:float = 0.0
+
 @export var ThrottleIdle:float = 0.25
+
 @export var VVTRPM:float = 4500.0 # set this beyond the rev range to disable it, set it to 0 to use this vvt state permanently
 
 @export_group("Torque normal state")
@@ -162,6 +184,8 @@ class newAutoSettings:
 @export var SCRPMInfluence:float = 1.0
 @export var BlowRate:float = 35.0
 @export var SCThreshold:float = 6.0
+
+#TODO: Prepend any non-exported variables with a "_" so they are hidden from docs.
 
 var rpm:float = 0.0
 var rpmspeed:float = 0.0
@@ -252,28 +276,28 @@ func get_powered_wheels() -> Array[ViVeWheel]:
 		return_this.append(get_node(wheels))
 	return return_this
 
-##An extra function to pass the mouse's X position to the car's [ViVeCarControls]
-func mouse_wrapper() -> void:
+func _mouse_wrapper() -> void:
 	var mouseposx:float = 0.0
 	if get_viewport().size.x > 0.0:
 		mouseposx = get_viewport().get_mouse_position().x / get_viewport().size.x
 	car_controls.controls_keyboard_mouse(mouseposx)
 
+##Check which [Callable] to use for the car's controls.
 func decide_controls() -> Callable:
 	match car_controls.control_type as ViVeCarControls.ControlType:
 		ViVeCarControls.ControlType.CONTROLS_KEYBOARD_MOUSE:
-			return mouse_wrapper
+			return _mouse_wrapper
 		ViVeCarControls.ControlType.CONTROLS_TOUCH:
 			return car_controls.controls_touchscreen
 		ViVeCarControls.ControlType.CONTROLS_JOYPAD:
 			return car_controls.controls_joypad
-	return mouse_wrapper
+	return _mouse_wrapper
 
 func new_controls() -> void:
 	if car_controls.control_type != car_controls_cache:
-		control_func = decide_controls()
+		_control_func = decide_controls()
 		car_controls_cache = car_controls.control_type as ViVeCarControls.ControlType
-	control_func.call()
+	_control_func.call()
 
 func controls() -> void:
 	

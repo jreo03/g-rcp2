@@ -24,3 +24,5 @@ res://MISC/misc scripts/world_root.gd
 res://MISC/visual gravity system/vgs.gd
 res://MAIN/car.gd
 res://MAIN/wheel.gd
+res://MAIN/car_stats/torque.gd
+res://MAIN/car_stats/tyre_settings.gd

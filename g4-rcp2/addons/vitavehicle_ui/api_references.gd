@@ -43,28 +43,14 @@ var controls:Dictionary = {
 }
 
 var chassis:Dictionary = {
-	"Weight": ["Vehicle weight in kilograms.",0.0],
 }
 var body:Dictionary = {
-	"LiftAngle": ["Up-pitch force based on the car’s velocity.",0.0],
-	"DragCoefficient": ["A force moving opposite in relation to the car’s velocity.",0.0],
-	"Downforce": ["A force moving downwards in relation to the car’s velocity.",0.0],
+
 }
 var steering:Dictionary = {
-	"AckermanPoint": ["The longitudinal pivot point from the car’s geometry (measured in default unit scale).",0.0],
-	"Steer_Radius": ["Minimum turning circle (measured in default unit scale).",0.0],
 }
+
 var dt:Dictionary = {
-	"Powered_Wheels": ["A set of wheels that are powered parented under the vehicle.",PackedStringArray()],
-	"DSWeight": ["Leave this.",PackedStringArray()],
-	"FinalDriveRatio": ['"Final Drive Ratio refers to the last set of gears that connect a vehicle%ss engine to the driving axle."' % "'",0.0],
-	"GearRatios": ['A set of gears a vehicle%ss transmission has in order. "A gear ratio is the ratio of the number of rotations of a driver gear to the number of rotations of a driven gear."' % "'",PackedFloat32Array()],
-	"ReverseRatio": ["The reversed equivalent to GearRatios, only containing one gear.",0.0],
-	"RatioMult": ["Similar to FinalDriveRatio, but this should not relate to any real-life data. You may keep the value as it is.",0.0],
-	"StressFactor": ["The amount of stress put into the transmission (as in accelerating or decelerating) to restrict clutchless gear shifting.",0.0],
-	"GearGap": ["A space between the teeth of all gears to perform clutchless gear shifts. Higher values means more noise. Compensate with StressFactor.",0.0],
-	"TransmissionType": ["Selection of transmission types that are implemented in VitaVehicle.",0],
-	"AutoSettings": ["Transmission automation settings (for Automatic, CVT and Semi-Auto).",[]],
 	"AutoSettings[0]": ["Upshift RPM",0.0],
 	"AutoSettings[1]": ["Downshift Threshold",0.0],
 	"AutoSettings[2]": ["",0.0],
@@ -78,6 +64,7 @@ var dt:Dictionary = {
 	"CVTSettings[4]": ["",0.0],
 	"CVTSettings[5]": ["",0.0],
 }
+
 var stab:Dictionary = {
 	"ABS": ["Anti-lock Braking System (see below)",[]],
 	"ABS[0]": ["Threshold",0.0],
@@ -89,21 +76,10 @@ var stab:Dictionary = {
 	"TTCS": ["Prevents wheel slippage by partially closing the throttle.\n\nCURRENTLY DOESN'T WORK",[]],
 }
 var diff:Dictionary = {
-	"Locking": ["Locks differential under acceleration.",0.0],
-	"CoastLocking": ["Locks differential under deceleration.",0.0],
-	"Preload": ["Static differential locking. (0.0 - 1.0)",0.0],
-
-	"Centre_Locking": ["Locks centre differential under acceleration.",0.0],
-	"Centre_CoastLocking": ["Locks centre differential under deceleration.",0.0],
-	"Centre_Preload": ["Static centre differential locking. (0.0 - 1.0)",0.0],
 }
 var engine:Dictionary = {
-	"RevSpeed": ["Flywheel Lightness",0.0],
-	"EngineFriction": ["Chance of stalling.",0.0],
-	"EngineDrag": ["Rev drop rate.",0.0],
-	"ThrottleResponse": ["How instant the engine corresponds with throttle input. (0.0 - 1.0)",0.0],
-	"DeadRPM": ["RPM below this threshold would stall the engine.",0.0],
 }
+
 var ecu:Dictionary = {
 	"RPMLimit": ["Throttle Cutoff RPM",0.0],
 	"LimiterDelay": ["Throttle cutoff time",0],
@@ -111,6 +87,7 @@ var ecu:Dictionary = {
 	"ThrottleIdle": ["Throttle intake on idle. (0.0 - 1.0)",0.0],
 	"VVTRPM": ["Timing on RPM.",0.0],
 }
+
 var v1:Dictionary = {
 	"BuildUpTorque": ["Torque buildup relative to RPM.",0.0],
 	"TorqueRise": ["Sqrt torque buildup relative to RPM.",0.0],
@@ -135,7 +112,6 @@ var clutch:Dictionary = {
 	"ThresholdStable": ["Fix correlated to GearRatioRatioThreshold. Keep this value as it is.",0.0],
 	"ClutchGrip": ["Clutch Capacity (nm)",0.0],
 	"ClutchFloatReduction": ['Prevents RPM "Floating". This gives a better sensation on accelerating. Setting it too high would reverse the "floating". Setting it to 0 would turn it off.',0.0],
-
 	"ClutchWobble": ["",0.0],
 	"ClutchElasticity": ["",0.0],
 	"WobbleRate": ["",0.0],
@@ -159,53 +135,25 @@ var forced:Dictionary = {
 }
 
 var wheel:Dictionary = {
-	"Steer": ["Allows this wheel to steer.",0.0],
-	"Differed_Wheel": ["Finds a wheel to correct itself to another, in favour of differential mechanics. (both wheels need to have their properties proposed to each other)",0.0],
-	"W_PowerBias": ["Power Bias (when driven)",0.0],
-	"TyrePressure": ["Tyre Pressure PSI (hypothetical)",0.0],
-	"Camber": ["Camber Angle.",0.0],
-	"Caster": ["Caster Angle.",0.0],
-	"Toe": ["Toe-in Angle.",0.0],
-	"SwayBarConnection": ["Connects a sway bar to the opposing axle. (both wheels should have their properties proposed to each other)",0.0],
-	"S_Stiffness": ["Spring Force",0.0],
-	"S_Damping": ["Compression Dampening",0.0],
-	"S_ReboundDamping": ["Rebound Dampening",0.0],
-	"S_RestLength": ["Suspension Deadzone",0.0],
-	"S_MaxCompression": ["Compression Barrier",0.0],
 	"A_InclineArea": ["",0.0],
 	"A_ImpactForce": ["",0.0],
-	"AR_Stiff": ["Anti-roll Stiffness",0.0],
-	"AR_Elast": ["Anti-roll Reformation Rate",0.0],
-	"B_Torque": ["Brake Force",0.0],
-	"B_Bias": ["Brake Bias",0.0],
-	"HB_Bias": ["Handbrake Bias",0.0],
-	"A_Geometry": ["Axle Vertical Mounting Position",0.0],
-	"A_Geometry2": ["Camber Gain Factor",0.0],
-	"A_Geometry3": ["Axle lateral mounting position, affecting camber gain. High negative values may mount them outside.",0.0],
 	"A_Geometry4": ["",0.0],
-	"ContactABS": ["Allows the Anti-lock Braking System to monitor this wheel.",0.0],
 	"ESP_Role": ["",0.0],
 	"ContactBTCS": ["",0.0],
 	"ContactTTCS": ["",0.0],
 }
 
 var cs:Dictionary = {
-	"OptimumTemp": ["Optimum tyre temperature for maximum grip effect. (currently isn't used)",0.0],
+	"Note": ["See TyreCompoundSettings in ViVeWheel", 0.0],
 	"Stiffness": ["",0.0],
-	"TractionFactor": ["Higher value would reduce grip.",0.0],
 	"DeformFactor": ["",0.0],
 	"ForeFriction": ["",0.0],
 	"ForeStiffness": ["",0.0],
 	"GroundDragAffection": ["",0.0],
-	"BuildupAffection": ["Increase in grip on loose surfaces.",0.0],
-	"CoolRate": ["Tyre Cooldown Rate. (currently isn't used)",0.0],
 }
 
 var tyreset:Dictionary = {
-	"GripInfluence": ["Grip and traction amplification",0.0],
-	"Width (mm)": ["",0.0],
-	"Aspect Ratio": ["%sAspect ratios are delivered in percentages. Tire makers calculate the aspect ratio by dividing a tire's height off the rim by its width. If a tire has an aspect ratio of 70, it means the tire's height is 70%s of its width.%s" % ['"',"%",'"'],0.0],
-	"Rim Size (in)": ["", 0.0],
+	"Note": ["See ViVeTyreSettings in the in-engine docs (search it up).", 0.0],
 }
 
 func _type(n):

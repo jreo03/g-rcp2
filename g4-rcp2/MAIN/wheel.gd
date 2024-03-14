@@ -1,32 +1,47 @@
 extends RayCast3D
+##A class representing the wheel of a [ViVeCar].
+##Each wheel independently calculates its suspension and other values every physics process frame.
 class_name ViVeWheel
 
 @export var RealismOptions:Dictionary = {
 }
-
+##Allows this wheel to steer.
 @export var Steer:bool = true
+##Finds a wheel to correct itself to another, in favour of differential mechanics. 
+##Both wheels need to have their properties proposed to each other.
 @export var Differed_Wheel:NodePath = ""
+##Connects a sway bar to the opposing axle. 
+##Both wheels should have their properties proposed to each other.
 @export var SwayBarConnection:NodePath = ""
 
+##Power Bias (when driven).
 @export var W_PowerBias:float = 1.0
 
 @export var TyreSettings:ViVeTyreSettings = ViVeTyreSettings.new()
-
+##Tyre Pressure PSI (hypothetical).
 @export var TyrePressure:float = 30.0
+##Camber Angle.
 @export var Camber:float = 0.0
+##Caster Angle.
 @export var Caster:float = 0.0
+##Toe-in Angle.
 @export var Toe:float = 0.0
 
+##Compound settings for tires.
 class TyreCompoundSettings:
 	extends Resource
+	##@experimental Optimum tyre temperature for maximum grip effect. (Currently isn't used).
 	var OptimumTemp:float = 50.0
 	var Stiffness:float = 1.0
+	##Higher value would reduce grip.
 	var TractionFactor:float = 1.0
 	var DeformFactor:float = 1.0
 	var ForeFriction:float = 0.125
 	var ForeStiffness:float = 0.0
 	var GroundDragAffection:float = 1.0
+	##Increase in grip on loose surfaces.
 	var BuildupAffection:float = 1.0
+	##@experimental Tyre Cooldown Rate. (Currently isn't used).
 	var CoolRate:float = 0.000075
 
 #@export var _CompoundSettings:Dictionary = {
@@ -41,28 +56,49 @@ class TyreCompoundSettings:
 #	"CoolRate": 0.000075}
 
 @export var CompoundSettings:TyreCompoundSettings = TyreCompoundSettings.new()
-
+##Spring Force.
 @export var S_Stiffness:float = 47.0
+##Compression Dampening.
 @export var S_Damping:float = 3.5
+##Rebound Dampening.
 @export var S_ReboundDamping:float = 3.5
+##Suspension Deadzone.
 @export var S_RestLength:float = 0.0
+##Compression Barrier.
 @export var S_MaxCompression:float = 0.5
 @export var A_InclineArea:float = 0.2
 @export var A_ImpactForce:float = 1.5
+##Anti-roll Stiffness.
 @export var AR_Stiff:float = 0.5
+##Anti-roll Reformation Rate.
 @export var AR_Elast:float = 0.1
+##Brake Force.
 @export var B_Torque:float = 15.0
+##Brake Bias.
 @export var B_Bias:float = 1.0
-@export var B_Saturation:float = 1.0 # leave this at 1.0 unless you have a heavy vehicle with large wheels, set it higher depending on how big it is
+##
+##Leave this at 1.0 unless you have a heavy vehicle with large wheels, set it higher depending on how big it is.
+@export var B_Saturation:float = 1.0
+##Handbrake Bias.
 @export var HB_Bias:float = 0.0
+##Axle Vertical Mounting Position.
 @export var A_Geometry1:float = 1.15
+##Camber Gain Factor.
 @export var A_Geometry2:float = 1.0
+##Axle lateral mounting position, affecting camber gain. 
+##High negative values may mount them outside.
 @export var A_Geometry3:float = 0.0
+
 @export var A_Geometry4:float = 0.0
+
 @export var Solidify_Axles:NodePath = NodePath()
+##Allows the Anti-lock Braking System to monitor this wheel.
 @export var ContactABS:bool = true
+
 @export var ESP_Role:String = ""
+
 @export var ContactBTCS:bool = false
+
 @export var ContactTTCS:bool = false
 
 @onready var car:ViVeCar = get_parent()
