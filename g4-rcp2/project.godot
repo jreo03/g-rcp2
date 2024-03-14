@@ -32,6 +32,7 @@ gdscript/warnings/untyped_declaration=1
 
 window/size/viewport_width=1024
 window/size/viewport_height=600
+window/vsync/vsync_mode=0
 window/vsync/use_vsync=false
 
 [editor_plugins]

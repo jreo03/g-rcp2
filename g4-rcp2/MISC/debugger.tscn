@@ -384,6 +384,7 @@ text = "change scene"
 [node name="Window" type="Window" parent="."]
 initial_position = 1
 size = Vector2i(700, 300)
+visible = false
 wrap_controls = true
 transparent = true
 popup_window = true
@@ -634,27 +635,28 @@ script = ExtResource("8")
 [node name="container" type="VBoxContainer" parent="Window/TabContainer/Control Config"]
 layout_mode = 2
 
-[node name="HSlider7" type="HSlider" parent="Window/TabContainer/Control Config/container"]
+[node name="gear_assist" type="HSlider" parent="Window/TabContainer/Control Config/container"]
 custom_minimum_size = Vector2(240, 60)
 layout_mode = 2
 max_value = 2.0
 script = ExtResource("7")
 var_name = "GEAR_ASSIST"
+treat_as_int = true
 
-[node name="text" type="Label" parent="Window/TabContainer/Control Config/container/HSlider7"]
+[node name="text" type="Label" parent="Window/TabContainer/Control Config/container/gear_assist"]
 layout_mode = 0
 anchor_right = 1.0
 anchor_bottom = 1.0
 text = "Shift Assist Level"
 
-[node name="amount" type="Label" parent="Window/TabContainer/Control Config/container/HSlider7"]
+[node name="amount" type="Label" parent="Window/TabContainer/Control Config/container/gear_assist"]
 layout_mode = 0
 anchor_right = 1.0
 anchor_bottom = 1.0
 text = "0.0"
 vertical_alignment = 2
 
-[node name="HSlider16" type="HSlider" parent="Window/TabContainer/Control Config/container"]
+[node name="steer_sensitivity" type="HSlider" parent="Window/TabContainer/Control Config/container"]
 custom_minimum_size = Vector2(240, 60)
 layout_mode = 2
 min_value = 1.0
@@ -664,39 +666,39 @@ value = 1.0
 script = ExtResource("7")
 var_name = "SteerSensitivity"
 
-[node name="text" type="Label" parent="Window/TabContainer/Control Config/container/HSlider16"]
+[node name="text" type="Label" parent="Window/TabContainer/Control Config/container/steer_sensitivity"]
 layout_mode = 0
 anchor_right = 1.0
 anchor_bottom = 1.0
 text = "Steering Sensitivity"
 
-[node name="amount" type="Label" parent="Window/TabContainer/Control Config/container/HSlider16"]
+[node name="amount" type="Label" parent="Window/TabContainer/Control Config/container/steer_sensitivity"]
 layout_mode = 0
 anchor_right = 1.0
 anchor_bottom = 1.0
 text = "0.0"
 vertical_alignment = 2
 
-[node name="CheckBox" type="CheckBox" parent="Window/TabContainer/Control Config/container"]
+[node name="mouse_steering" type="CheckBox" parent="Window/TabContainer/Control Config/container"]
 custom_minimum_size = Vector2(240, 60)
 layout_mode = 2
 script = ExtResource("9")
 var_name = "UseMouseSteering"
 
-[node name="text" type="Label" parent="Window/TabContainer/Control Config/container/CheckBox"]
+[node name="text" type="Label" parent="Window/TabContainer/Control Config/container/mouse_steering"]
 layout_mode = 0
 anchor_right = 1.0
 anchor_bottom = 1.0
 text = "Use Mouse Steering"
 
-[node name="amount" type="Label" parent="Window/TabContainer/Control Config/container/CheckBox"]
+[node name="amount" type="Label" parent="Window/TabContainer/Control Config/container/mouse_steering"]
 layout_mode = 0
 anchor_right = 1.0
 anchor_bottom = 1.0
 text = "false"
 vertical_alignment = 2
 
-[node name="OptionButton" type="OptionButton" parent="Window/TabContainer/Control Config/container"]
+[node name="input_options" type="OptionButton" parent="Window/TabContainer/Control Config/container"]
 layout_mode = 2
 item_count = 3
 selected = 0
@@ -708,7 +710,7 @@ popup/item_2/text = "Joypad"
 popup/item_2/id = 2
 script = ExtResource("12_ofvnx")
 
-[node name="HSlider4" type="HSlider" parent="Window/TabContainer/Control Config/container"]
+[node name="steer_decay" type="HSlider" parent="Window/TabContainer/Control Config/container"]
 custom_minimum_size = Vector2(240, 60)
 layout_mode = 2
 max_value = 0.2
@@ -716,21 +718,21 @@ step = 0.001
 script = ExtResource("7")
 var_name = "SteerAmountDecay"
 
-[node name="text" type="Label" parent="Window/TabContainer/Control Config/container/HSlider4"]
+[node name="text" type="Label" parent="Window/TabContainer/Control Config/container/steer_decay"]
 layout_mode = 0
 anchor_right = 1.0
 anchor_bottom = 1.0
 offset_bottom = 3.0
 text = "Steer Amount Decay"
 
-[node name="amount" type="Label" parent="Window/TabContainer/Control Config/container/HSlider4"]
+[node name="amount" type="Label" parent="Window/TabContainer/Control Config/container/steer_decay"]
 layout_mode = 0
 anchor_right = 1.0
 anchor_bottom = 1.0
 text = "0.0"
 vertical_alignment = 2
 
-[node name="HSlider5" type="HSlider" parent="Window/TabContainer/Control Config/container"]
+[node name="steer_assist" type="HSlider" parent="Window/TabContainer/Control Config/container"]
 custom_minimum_size = Vector2(240, 60)
 layout_mode = 2
 max_value = 2.0
@@ -738,20 +740,20 @@ step = 0.001
 script = ExtResource("7")
 var_name = "SteeringAssistance"
 
-[node name="text" type="Label" parent="Window/TabContainer/Control Config/container/HSlider5"]
+[node name="text" type="Label" parent="Window/TabContainer/Control Config/container/steer_assist"]
 layout_mode = 0
 anchor_right = 1.0
 anchor_bottom = 1.0
 text = "Steering Assistance"
 
-[node name="amount" type="Label" parent="Window/TabContainer/Control Config/container/HSlider5"]
+[node name="amount" type="Label" parent="Window/TabContainer/Control Config/container/steer_assist"]
 layout_mode = 0
 anchor_right = 1.0
 anchor_bottom = 1.0
 text = "0.0"
 vertical_alignment = 2
 
-[node name="HSlider6" type="HSlider" parent="Window/TabContainer/Control Config/container"]
+[node name="s_assist_angular" type="HSlider" parent="Window/TabContainer/Control Config/container"]
 custom_minimum_size = Vector2(240, 60)
 layout_mode = 2
 max_value = 1.0
@@ -759,20 +761,20 @@ step = 0.001
 script = ExtResource("7")
 var_name = "SteeringAssistanceAngular"
 
-[node name="text" type="Label" parent="Window/TabContainer/Control Config/container/HSlider6"]
+[node name="text" type="Label" parent="Window/TabContainer/Control Config/container/s_assist_angular"]
 layout_mode = 0
 anchor_right = 1.0
 anchor_bottom = 1.0
 text = "Steering Assistance Angular"
 
-[node name="amount" type="Label" parent="Window/TabContainer/Control Config/container/HSlider6"]
+[node name="amount" type="Label" parent="Window/TabContainer/Control Config/container/s_assist_angular"]
 layout_mode = 0
 anchor_right = 1.0
 anchor_bottom = 1.0
 text = "0.0"
 vertical_alignment = 2
 
-[node name="HSlider8" type="HSlider" parent="Window/TabContainer/Control Config/container"]
+[node name="on_throttle" type="HSlider" parent="Window/TabContainer/Control Config/container"]
 custom_minimum_size = Vector2(240, 60)
 layout_mode = 2
 max_value = 1.0
@@ -780,20 +782,20 @@ step = 0.001
 script = ExtResource("7")
 var_name = "OnThrottleRate"
 
-[node name="text" type="Label" parent="Window/TabContainer/Control Config/container/HSlider8"]
+[node name="text" type="Label" parent="Window/TabContainer/Control Config/container/on_throttle"]
 layout_mode = 0
 anchor_right = 1.0
 anchor_bottom = 1.0
 text = "On Throttle Rate"
 
-[node name="amount" type="Label" parent="Window/TabContainer/Control Config/container/HSlider8"]
+[node name="amount" type="Label" parent="Window/TabContainer/Control Config/container/on_throttle"]
 layout_mode = 0
 anchor_right = 1.0
 anchor_bottom = 1.0
 text = "0.0"
 vertical_alignment = 2
 
-[node name="HSlider9" type="HSlider" parent="Window/TabContainer/Control Config/container"]
+[node name="off_throttle" type="HSlider" parent="Window/TabContainer/Control Config/container"]
 custom_minimum_size = Vector2(240, 60)
 layout_mode = 2
 max_value = 1.0
@@ -801,20 +803,20 @@ step = 0.001
 script = ExtResource("7")
 var_name = "OffThrottleRate"
 
-[node name="text" type="Label" parent="Window/TabContainer/Control Config/container/HSlider9"]
+[node name="text" type="Label" parent="Window/TabContainer/Control Config/container/off_throttle"]
 layout_mode = 0
 anchor_right = 1.0
 anchor_bottom = 1.0
 text = "Off Throttle Rate"
 
-[node name="amount" type="Label" parent="Window/TabContainer/Control Config/container/HSlider9"]
+[node name="amount" type="Label" parent="Window/TabContainer/Control Config/container/off_throttle"]
 layout_mode = 0
 anchor_right = 1.0
 anchor_bottom = 1.0
 text = "0.0"
 vertical_alignment = 2
 
-[node name="HSlider10" type="HSlider" parent="Window/TabContainer/Control Config/container"]
+[node name="on_brake" type="HSlider" parent="Window/TabContainer/Control Config/container"]
 custom_minimum_size = Vector2(240, 60)
 layout_mode = 2
 max_value = 1.0
@@ -822,20 +824,20 @@ step = 0.001
 script = ExtResource("7")
 var_name = "OnBrakeRate"
 
-[node name="text" type="Label" parent="Window/TabContainer/Control Config/container/HSlider10"]
+[node name="text" type="Label" parent="Window/TabContainer/Control Config/container/on_brake"]
 layout_mode = 0
 anchor_right = 1.0
 anchor_bottom = 1.0
 text = "On Brake Rate"
 
-[node name="amount" type="Label" parent="Window/TabContainer/Control Config/container/HSlider10"]
+[node name="amount" type="Label" parent="Window/TabContainer/Control Config/container/on_brake"]
 layout_mode = 0
 anchor_right = 1.0
 anchor_bottom = 1.0
 text = "0.0"
 vertical_alignment = 2
 
-[node name="HSlider11" type="HSlider" parent="Window/TabContainer/Control Config/container"]
+[node name="off_brake" type="HSlider" parent="Window/TabContainer/Control Config/container"]
 custom_minimum_size = Vector2(240, 60)
 layout_mode = 2
 max_value = 1.0
@@ -843,20 +845,20 @@ step = 0.001
 script = ExtResource("7")
 var_name = "OffBrakeRate"
 
-[node name="text" type="Label" parent="Window/TabContainer/Control Config/container/HSlider11"]
+[node name="text" type="Label" parent="Window/TabContainer/Control Config/container/off_brake"]
 layout_mode = 0
 anchor_right = 1.0
 anchor_bottom = 1.0
 text = "Off Brake Rate"
 
-[node name="amount" type="Label" parent="Window/TabContainer/Control Config/container/HSlider11"]
+[node name="amount" type="Label" parent="Window/TabContainer/Control Config/container/off_brake"]
 layout_mode = 0
 anchor_right = 1.0
 anchor_bottom = 1.0
 text = "0.0"
 vertical_alignment = 2
 
-[node name="HSlider12" type="HSlider" parent="Window/TabContainer/Control Config/container"]
+[node name="on_handbrake" type="HSlider" parent="Window/TabContainer/Control Config/container"]
 custom_minimum_size = Vector2(240, 60)
 layout_mode = 2
 max_value = 1.0
@@ -864,20 +866,20 @@ step = 0.001
 script = ExtResource("7")
 var_name = "OnHandbrakeRate"
 
-[node name="text" type="Label" parent="Window/TabContainer/Control Config/container/HSlider12"]
+[node name="text" type="Label" parent="Window/TabContainer/Control Config/container/on_handbrake"]
 layout_mode = 0
 anchor_right = 1.0
 anchor_bottom = 1.0
 text = "On Handbrake Rate"
 
-[node name="amount" type="Label" parent="Window/TabContainer/Control Config/container/HSlider12"]
+[node name="amount" type="Label" parent="Window/TabContainer/Control Config/container/on_handbrake"]
 layout_mode = 0
 anchor_right = 1.0
 anchor_bottom = 1.0
 text = "0.0"
 vertical_alignment = 2
 
-[node name="HSlider13" type="HSlider" parent="Window/TabContainer/Control Config/container"]
+[node name="off_handbrake" type="HSlider" parent="Window/TabContainer/Control Config/container"]
 custom_minimum_size = Vector2(240, 60)
 layout_mode = 2
 max_value = 1.0
@@ -885,20 +887,20 @@ step = 0.001
 script = ExtResource("7")
 var_name = "OffHandbrakeRate"
 
-[node name="text" type="Label" parent="Window/TabContainer/Control Config/container/HSlider13"]
+[node name="text" type="Label" parent="Window/TabContainer/Control Config/container/off_handbrake"]
 layout_mode = 0
 anchor_right = 1.0
 anchor_bottom = 1.0
 text = "Off Handbrake Rate"
 
-[node name="amount" type="Label" parent="Window/TabContainer/Control Config/container/HSlider13"]
+[node name="amount" type="Label" parent="Window/TabContainer/Control Config/container/off_handbrake"]
 layout_mode = 0
 anchor_right = 1.0
 anchor_bottom = 1.0
 text = "0.0"
 vertical_alignment = 2
 
-[node name="HSlider14" type="HSlider" parent="Window/TabContainer/Control Config/container"]
+[node name="on_clutch" type="HSlider" parent="Window/TabContainer/Control Config/container"]
 custom_minimum_size = Vector2(240, 60)
 layout_mode = 2
 max_value = 1.0
@@ -906,20 +908,20 @@ step = 0.001
 script = ExtResource("7")
 var_name = "OnClutchRate"
 
-[node name="text" type="Label" parent="Window/TabContainer/Control Config/container/HSlider14"]
+[node name="text" type="Label" parent="Window/TabContainer/Control Config/container/on_clutch"]
 layout_mode = 0
 anchor_right = 1.0
 anchor_bottom = 1.0
 text = "On Clutch Rate"
 
-[node name="amount" type="Label" parent="Window/TabContainer/Control Config/container/HSlider14"]
+[node name="amount" type="Label" parent="Window/TabContainer/Control Config/container/on_clutch"]
 layout_mode = 0
 anchor_right = 1.0
 anchor_bottom = 1.0
 text = "0.0"
 vertical_alignment = 2
 
-[node name="HSlider15" type="HSlider" parent="Window/TabContainer/Control Config/container"]
+[node name="off_clutch" type="HSlider" parent="Window/TabContainer/Control Config/container"]
 custom_minimum_size = Vector2(240, 60)
 layout_mode = 2
 max_value = 1.0
@@ -927,20 +929,20 @@ step = 0.001
 script = ExtResource("7")
 var_name = "OffClutchRate"
 
-[node name="text" type="Label" parent="Window/TabContainer/Control Config/container/HSlider15"]
+[node name="text" type="Label" parent="Window/TabContainer/Control Config/container/off_clutch"]
 layout_mode = 0
 anchor_right = 1.0
 anchor_bottom = 1.0
 text = "Off Clutch Rate"
 
-[node name="amount" type="Label" parent="Window/TabContainer/Control Config/container/HSlider15"]
+[node name="amount" type="Label" parent="Window/TabContainer/Control Config/container/off_clutch"]
 layout_mode = 0
 anchor_right = 1.0
 anchor_bottom = 1.0
 text = "0.0"
 vertical_alignment = 2
 
-[node name="HSlider17" type="HSlider" parent="Window/TabContainer/Control Config/container"]
+[node name="max_throttle" type="HSlider" parent="Window/TabContainer/Control Config/container"]
 custom_minimum_size = Vector2(240, 60)
 layout_mode = 2
 max_value = 1.0
@@ -948,20 +950,20 @@ step = 0.001
 script = ExtResource("7")
 var_name = "MaxThrottle"
 
-[node name="text" type="Label" parent="Window/TabContainer/Control Config/container/HSlider17"]
+[node name="text" type="Label" parent="Window/TabContainer/Control Config/container/max_throttle"]
 layout_mode = 0
 anchor_right = 1.0
 anchor_bottom = 1.0
 text = "Max Throttle"
 
-[node name="amount" type="Label" parent="Window/TabContainer/Control Config/container/HSlider17"]
+[node name="amount" type="Label" parent="Window/TabContainer/Control Config/container/max_throttle"]
 layout_mode = 0
 anchor_right = 1.0
 anchor_bottom = 1.0
 text = "0.0"
 vertical_alignment = 2
 
-[node name="HSlider18" type="HSlider" parent="Window/TabContainer/Control Config/container"]
+[node name="max_brake" type="HSlider" parent="Window/TabContainer/Control Config/container"]
 custom_minimum_size = Vector2(240, 60)
 layout_mode = 2
 max_value = 1.0
@@ -969,20 +971,20 @@ step = 0.001
 script = ExtResource("7")
 var_name = "MaxBrake"
 
-[node name="text" type="Label" parent="Window/TabContainer/Control Config/container/HSlider18"]
+[node name="text" type="Label" parent="Window/TabContainer/Control Config/container/max_brake"]
 layout_mode = 0
 anchor_right = 1.0
 anchor_bottom = 1.0
 text = "Max Brake"
 
-[node name="amount" type="Label" parent="Window/TabContainer/Control Config/container/HSlider18"]
+[node name="amount" type="Label" parent="Window/TabContainer/Control Config/container/max_brake"]
 layout_mode = 0
 anchor_right = 1.0
 anchor_bottom = 1.0
 text = "0.0"
 vertical_alignment = 2
 
-[node name="HSlider19" type="HSlider" parent="Window/TabContainer/Control Config/container"]
+[node name="max_handbrake" type="HSlider" parent="Window/TabContainer/Control Config/container"]
 custom_minimum_size = Vector2(240, 60)
 layout_mode = 2
 max_value = 1.0
@@ -990,20 +992,20 @@ step = 0.001
 script = ExtResource("7")
 var_name = "MaxHandbrake"
 
-[node name="text" type="Label" parent="Window/TabContainer/Control Config/container/HSlider19"]
+[node name="text" type="Label" parent="Window/TabContainer/Control Config/container/max_handbrake"]
 layout_mode = 0
 anchor_right = 1.0
 anchor_bottom = 1.0
 text = "Max Handbrake"
 
-[node name="amount" type="Label" parent="Window/TabContainer/Control Config/container/HSlider19"]
+[node name="amount" type="Label" parent="Window/TabContainer/Control Config/container/max_handbrake"]
 layout_mode = 0
 anchor_right = 1.0
 anchor_bottom = 1.0
 text = "0.0"
 vertical_alignment = 2
 
-[node name="HSlider20" type="HSlider" parent="Window/TabContainer/Control Config/container"]
+[node name="max_clutch" type="HSlider" parent="Window/TabContainer/Control Config/container"]
 custom_minimum_size = Vector2(240, 60)
 layout_mode = 2
 max_value = 1.0
@@ -1011,20 +1013,20 @@ step = 0.001
 script = ExtResource("7")
 var_name = "MaxClutch"
 
-[node name="text" type="Label" parent="Window/TabContainer/Control Config/container/HSlider20"]
+[node name="text" type="Label" parent="Window/TabContainer/Control Config/container/max_clutch"]
 layout_mode = 0
 anchor_right = 1.0
 anchor_bottom = 1.0
 text = "Max Clutch"
 
-[node name="amount" type="Label" parent="Window/TabContainer/Control Config/container/HSlider20"]
+[node name="amount" type="Label" parent="Window/TabContainer/Control Config/container/max_clutch"]
 layout_mode = 0
 anchor_right = 1.0
 anchor_bottom = 1.0
 text = "0.0"
 vertical_alignment = 2
 
-[node name="HSlider" type="HSlider" parent="Window/TabContainer/Control Config/container"]
+[node name="key_steer_speed" type="HSlider" parent="Window/TabContainer/Control Config/container"]
 custom_minimum_size = Vector2(240, 60)
 layout_mode = 2
 max_value = 1.0
@@ -1032,20 +1034,20 @@ step = 0.001
 script = ExtResource("7")
 var_name = "KeyboardSteerSpeed"
 
-[node name="text" type="Label" parent="Window/TabContainer/Control Config/container/HSlider"]
+[node name="text" type="Label" parent="Window/TabContainer/Control Config/container/key_steer_speed"]
 layout_mode = 0
 anchor_right = 1.0
 anchor_bottom = 1.0
 text = "Keyboard Steer Speed"
 
-[node name="amount" type="Label" parent="Window/TabContainer/Control Config/container/HSlider"]
+[node name="amount" type="Label" parent="Window/TabContainer/Control Config/container/key_steer_speed"]
 layout_mode = 0
 anchor_right = 1.0
 anchor_bottom = 1.0
 text = "0.0"
 vertical_alignment = 2
 
-[node name="HSlider2" type="HSlider" parent="Window/TabContainer/Control Config/container"]
+[node name="key_ret_speed" type="HSlider" parent="Window/TabContainer/Control Config/container"]
 custom_minimum_size = Vector2(240, 60)
 layout_mode = 2
 max_value = 1.0
@@ -1053,20 +1055,20 @@ step = 0.001
 script = ExtResource("7")
 var_name = "KeyboardReturnSpeed"
 
-[node name="text" type="Label" parent="Window/TabContainer/Control Config/container/HSlider2"]
+[node name="text" type="Label" parent="Window/TabContainer/Control Config/container/key_ret_speed"]
 layout_mode = 0
 anchor_right = 1.0
 anchor_bottom = 1.0
 text = "Keyboard Return Speed"
 
-[node name="amount" type="Label" parent="Window/TabContainer/Control Config/container/HSlider2"]
+[node name="amount" type="Label" parent="Window/TabContainer/Control Config/container/key_ret_speed"]
 layout_mode = 0
 anchor_right = 1.0
 anchor_bottom = 1.0
 text = "0.0"
 vertical_alignment = 2
 
-[node name="HSlider3" type="HSlider" parent="Window/TabContainer/Control Config/container"]
+[node name="key_comp_speed" type="HSlider" parent="Window/TabContainer/Control Config/container"]
 custom_minimum_size = Vector2(240, 60)
 layout_mode = 2
 max_value = 1.0
@@ -1074,13 +1076,13 @@ step = 0.001
 script = ExtResource("7")
 var_name = "KeyboardCompensateSpeed"
 
-[node name="text" type="Label" parent="Window/TabContainer/Control Config/container/HSlider3"]
+[node name="text" type="Label" parent="Window/TabContainer/Control Config/container/key_comp_speed"]
 layout_mode = 0
 anchor_right = 1.0
 anchor_bottom = 1.0
 text = "Keyboard Compensate Speed"
 
-[node name="amount" type="Label" parent="Window/TabContainer/Control Config/container/HSlider3"]
+[node name="amount" type="Label" parent="Window/TabContainer/Control Config/container/key_comp_speed"]
 layout_mode = 0
 anchor_right = 1.0
 anchor_bottom = 1.0

@@ -1,10 +1,12 @@
 extends RigidBody3D
+##A class representing a car in VitaVehicle.
 class_name ViVeCar
 
 var stats:ViVeCarSS = ViVeCarSS.new()
 
 var c_pws:Array[ViVeWheel]
 
+##An array containing the name of the nodes acting as powered wheels of the car.
 @export var Powered_Wheels:PackedStringArray = ["fl", "fr"]
 
 @onready var front_left:ViVeWheel = $"fl"
@@ -12,9 +14,13 @@ var c_pws:Array[ViVeWheel]
 @onready var back_left:ViVeWheel = $"rl"
 @onready var back_right:ViVeWheel = $"rr"
 
+##An array containing the front wheels of the car.
 @onready var front_wheels:Array[ViVeWheel] = [front_left, front_right]
+##An array containing the rear wheels of the car.
 @onready var rear_wheels:Array[ViVeWheel] = [back_left, back_right]
 
+##Whether or not debug mode is active. [br]
+##TODO: Make this do more than just hide weight distribution.
 @export var Debug_Mode :bool = false
 
 @export_group("Controls")
@@ -36,17 +42,27 @@ var control_func:Callable = car_controls.controls_keyboard_mouse
 @export var Downforce:float = 0.0
 
 @export_group("Steering")
+##The longitudinal pivot point from the car’s geometry (measured in default unit scale).
 @export var AckermannPoint:float = -3.8
+##Minimum turning circle (measured in default unit scale).
 @export var Steer_Radius:float = 13.0
 
 @export_group("Drivetrain")
+##Final Drive Ratio refers to the last set of gears that connect a vehicle's engine to the driving axle.
 @export var FinalDriveRatio:float = 4.250
+##A set of gears a vehicle%ss transmission has in order. [br]
+##A gear ratio is the ratio of the number of rotations of a driver gear to the number of rotations of a driven gear.
 @export var GearRatios :Array[float] = [ 3.250, 1.894, 1.259, 0.937, 0.771 ]
+##The reversed equivalent to GearRatios, only containing one gear.
 @export var ReverseRatio:float = 3.153
+##Similar to FinalDriveRatio, but this should not relate to any real-life data. You may keep the value as it is.
 @export var RatioMult:float = 9.5
+##The amount of stress put into the transmission (as in accelerating or decelerating) to restrict clutchless gear shifting.
 @export var StressFactor:float = 1.0
+##A space between the teeth of all gears to perform clutchless gear shifts. Higher values means more noise. Compensate with StressFactor.
 @export var GearGap:float = 60.0
-@export var DSWeight:float = 150.0 # Leave this be, unless you know what you're doing.
+## Leave this be, unless you know what you're doing.
+@export var DSWeight:float = 150.0
 
 @export_enum("Fully Manual", "Automatic", "Continuously Variable", "Semi-Auto") var TransmissionType:int = 0
 
@@ -57,12 +73,18 @@ enum TransmissionTypes {
 	semi_auto = 3
 }
 
+
 class newAutoSettings:
 	extends Resource
+	## Shift rpm (auto).
 	@export var shift_rpm:float = 6500.0
+	## Downshift threshold (auto).
 	@export var downshift_thresh:float = 300.0
+	## Throttle efficiency threshold (range: 0 - 1) (auto/dct).
 	@export var throt_eff_thresh:float = 0.5
+	## Engagement rpm threshold (auto/dct/cvt).
 	@export var engage_rpm_thresh:float = 0.0
+	## Engagement rpm (auto/dct/cvt).
 	@export var engage_rpm:float = 4000.0
 
 @export var AutoSettings:Array[float] = [
@@ -202,12 +224,6 @@ var rvelocity:Vector3 = Vector3(0,0,0)
 
 var stalled:float = 0.0
 
-#added in for compatibility
-var SCEnabled:bool
-var TEnabled:bool
-var PSI:float
-var RPM:float #should be identical to its little case brother
-
 func bullet_fix() -> void:
 	var offset:Vector3 = $DRAG_CENTRE.position
 	stats.AckermannPoint -= offset.z
@@ -225,17 +241,18 @@ func _ready() -> void:
 		c_pws.append(wh)
 	emit_signal("wheels_ready")
 
+##Get the wheels of the car.
 func get_wheels() -> Array[ViVeWheel]:
 	return [front_left, front_right, back_left, back_right]
 
+##Get the powered wheels of the car.
 func get_powered_wheels() -> Array[ViVeWheel]:
 	var return_this:Array[ViVeWheel] = []
 	for wheels:String in Powered_Wheels:
 		return_this.append(get_node(wheels))
 	return return_this
 
-
-
+##An extra function to pass the mouse's X position to the car's [ViVeCarControls]
 func mouse_wrapper() -> void:
 	var mouseposx:float = 0.0
 	if get_viewport().size.x > 0.0:

@@ -1,27 +1,39 @@
 extends Resource
+##A class that handles and controls the car's control options.
 class_name ViVeCarControls
 
+##Which control type the car is going to be associated with.
 enum ControlType {
+	##Use the keyboard and mouse for control.
 	CONTROLS_KEYBOARD_MOUSE,
+	##Use the touchscreen and accelerometer for control.
 	CONTROLS_TOUCH,
+	##Use a connected game controller for control.
 	CONTROLS_JOYPAD,
 }
-
+##Which ControlType is being used.
 @export_enum("Keyboard and Mouse", "Keyboard", "Touch controls (Gyro)", "Joypad") var control_type:int = 0
 
 @export var Use_Global_Control_Settings:bool = false
+##Use mouse steering if keyboard and mouse controls are active.
 @export var UseMouseSteering:bool = false
+##Use accelerometer steering if touch controls are active.
 @export var UseAccelerometreSteering :bool = false
+
 @export var SteerSensitivity:float = 1.0
+
 @export var KeyboardSteerSpeed:float = 0.025
+
 @export var KeyboardReturnSpeed:float = 0.05
+
 @export var KeyboardCompensateSpeed:float = 0.1
 
 @export var SteerAmountDecay:float = 0.015 # understeer help
 @export var SteeringAssistance:float = 1.0
 @export var SteeringAssistanceAngular:float = 0.12
 
-@export var LooseSteering :bool = false #simulate rack and pinion steering physics (EXPERIMENTAL)
+##@experimental Simulate rack and pinion steering physics.
+@export var LooseSteering :bool = false
 
 @export var OnThrottleRate:float = 0.2
 @export var OffThrottleRate:float = 0.2
@@ -55,7 +67,6 @@ var steer2:float = 0.0
 var steer_velocity:float = 0.0
 var assistance_factor:float = 0.0
 
-
 var su:bool = false
 var sd:bool = false
 var gas:bool = false
@@ -74,6 +85,15 @@ var linear_velocity:Vector3
 var front_left:ViVeWheel
 var front_right:ViVeWheel
 
+##Apply a natural shift curve for digital inputs on analog values, such as gas and brake.
+func digital_button_curve(digital:bool, analog:float, on_rate:float, off_rate:float) -> float:
+	if digital:
+		analog += on_rate / clock_mult
+	else:
+		analog -= off_rate / clock_mult
+	return analog
+
+##Apply loose steering effects.
 func loose_steering() -> void:
 	steer += steer_velocity
 
@@ -92,6 +112,7 @@ func loose_steering() -> void:
 		
 		steer_velocity /= i.stress / (i.slip_percpre * (i.slip_percpre * 100.0) + 1.0) + 1.0
 
+##Apply gear shifting assistance.
 func apply_gear_assist() -> void:
 	match GearAssist.assist_level:
 		2:
@@ -121,6 +142,7 @@ func apply_gear_assist() -> void:
 			brakepedal = digital_button_curve(brake, brakepedal, OnBrakeRate, OffBrakeRate)
 	handbrakepull = digital_button_curve(handbrake, handbrakepull, OnHandbrakeRate, OffHandbrakeRate)
 
+##Apply the steering assistance in an input implementation 
 func apply_assistance_factor(going:float) -> void:
 	if assistance_factor > 0.0:
 		var maxsteer:float = 1.0 / (going * (SteerAmountDecay / assistance_factor) + 1.0)
@@ -132,6 +154,7 @@ func apply_assistance_factor(going:float) -> void:
 	else:
 		steer = steer2
 
+##Apply calculations on digital inputs for steering, so that steering is smooth.
 func steer_digital_curve() -> void:
 	if right:
 		if steer2 > 0:
@@ -152,6 +175,7 @@ func steer_digital_curve() -> void:
 			steer2 = 0.0
 	steer2 = clampf(steer2, -1.0, 1.0)
 
+##Apply calculations on an analog input for steering.
 func steer_analog(input_axis:float) -> void:
 	steer2 = input_axis
 	
@@ -164,17 +188,12 @@ func steer_analog(input_axis:float) -> void:
 	
 	steer2 *= s
 
-func digital_button_curve(digital:bool, analog:float, on_rate:float, off_rate:float) -> float:
-	if digital:
-		analog += on_rate / clock_mult
-	else:
-		analog -= off_rate / clock_mult
-	return analog
-
+##The control implementation for touchscreen + accelerometer
 func controls_touchscreen() -> void:
 	steer_analog(Input.get_accelerometer().x / 10.0)
 	
 
+##The control implementation for game controllers (joypads)
 func controls_joypad() -> void:
 	const joypad_index:int = 0 #This can be switched to anything else later on for splitscreen
 	
@@ -190,8 +209,6 @@ func controls_joypad() -> void:
 		steer_velocity -= 0.01
 	elif right:
 		steer_velocity += 0.01
-	
-	
 	
 	gasrestricted = false
 	clutchin = false
@@ -216,6 +233,8 @@ func controls_joypad() -> void:
 	
 	apply_assistance_factor(going)
 
+##The control implementation for keyboard and mouse.
+##This handles both keyboard alone, and keyboard with mouse steering.
 func controls_keyboard_mouse(mouseposx:float = 0.0) -> void:
 	if UseMouseSteering:
 		gas = Input.is_action_pressed("gas_mouse")

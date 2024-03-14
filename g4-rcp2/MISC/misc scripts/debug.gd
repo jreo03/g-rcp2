@@ -1,6 +1,8 @@
 extends Control
+##A class representing the root of the in-game debug panel.
 class_name ViVeDebug
 
+##The debug panel singleton
 static var singleton:ViVeDebug = null
 
 var changed_graph_size:Vector2 = Vector2(0,0)
@@ -8,8 +10,11 @@ var changed_graph_size:Vector2 = Vector2(0,0)
 @onready var car_node:ViVeCar
 
 @onready var tacho_gear:Label = $tacho/gear
+
 @onready var tacho_rpm:Label = $tacho/rpm
+
 @onready var power_graph:Control = $power_graph
+
 @onready var vgs:ViVeVGS = $vgs
 
 func _ready() -> void:
@@ -30,12 +35,14 @@ func setup() -> void:
 		vgs.append_wheel(d)
 	
 	#What in the world-
-	for i:Dictionary in $power_graph.get_script().get_script_property_list():
-		const blacklist:PackedStringArray = ["peakhp", "tr", "hp", "skip", "scale"]
-		#if not i["name"] == "peakhp" and not i["name"] == "tr" and not i["name"] == "tr" and not i["name"] == "hp" and not i["name"] == "skip" and not i["name"] == "scale":
-		if not blacklist.has(i.get("name")):
-			if i["name"] in car_node:
-				$power_graph.set(i["name"], car_node.get(i["name"]))
+	
+#	for i:Dictionary in $power_graph.get_script().get_script_property_list():
+#		print(i)
+#		const blacklist:PackedStringArray = ["peakhp", "tr", "hp", "skip", "scale"]
+#		#if not i["name"] == "peakhp" and not i["name"] == "tr" and not i["name"] == "tr" and not i["name"] == "hp" and not i["name"] == "skip" and not i["name"] == "scale":
+#		if not blacklist.has(i.get("name")):
+#			if i["name"] in car_node:
+#				$power_graph.set(i["name"], car_node.get(i["name"]))
 
 func _process(delta:float) -> void:
 	if car_node == null:
@@ -120,6 +127,7 @@ func _physics_process(_delta:float) -> void:
 	$tacho/tcs.visible = car_node.tcsflash
 	$tacho/esp.visible = car_node.espflash
 
+##Restarts the car's engine. Needed if the RPM dips to low and it "dies".
 func engine_restart() -> void:
 	if car_node != null:
 		car_node.rpm = car_node.IdleRPM

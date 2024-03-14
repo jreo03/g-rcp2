@@ -11,19 +11,19 @@ extends Control
 @export var EngineDrag = 0.006
 
 #ECU
-@export var IdleRPM = 800.0 # set this beyond the rev range to disable it, set it to 0 to use this vvt state permanently
-@export var RPMLimit = 7000.0 # set this beyond the rev range to disable it, set it to 0 to use this vvt state permanently
-@export var VVTRPM = 4500.0 # set this beyond the rev range to disable it, set it to 0 to use this vvt state permanently
+@export var IdleRPM:float = 800.0 # set this beyond the rev range to disable it, set it to 0 to use this vvt state permanently
+@export var RPMLimit:float = 7000.0 # set this beyond the rev range to disable it, set it to 0 to use this vvt state permanently
+@export var VVTRPM:float = 4500.0 # set this beyond the rev range to disable it, set it to 0 to use this vvt state permanently
 
 #torque normal state
-@export var BuildUpTorque = 0.0035
-@export var TorqueRise = 30.0
-@export var RiseRPM = 1000.0
+@export var BuildUpTorque:float = 0.0035
+@export var TorqueRise:float = 30.0
+@export var RiseRPM:float = 1000.0
 @export var OffsetTorque = 110
-@export var FloatRate = 0.1
-@export var DeclineRate = 1.5
-@export var DeclineRPM = 3500.0
-@export var DeclineSharpness = 1.0
+@export var FloatRate:float = 0.1
+@export var DeclineRate:float = 1.5
+@export var DeclineRPM:float = 3500.0
+@export var DeclineSharpness:float = 1.0
 
 #torque @export variable valve timing triggered
 @export var VVT_BuildUpTorque:float = 0.0
@@ -61,8 +61,9 @@ func draw_():
 	$power.clear_points()
 	var skip:int = 0
 	for i in range(Generation_Range):
-		if i>Draw_RPM:
+		if i > Draw_RPM:
 			#var tr = VitaVehicleSimulation.multivariate(RiseRPM,TorqueRise,BuildUpTorque,EngineFriction,EngineDrag,OffsetTorque,i,DeclineRPM,DeclineRate,FloatRate,MaxPSI,TurboAmount,EngineCompressionRatio,TurboEnabled,VVTRPM,VVT_BuildUpTorque,VVT_TorqueRise,VVT_RiseRPM,VVT_OffsetTorque,VVT_FloatRate,VVT_DeclineRPM,VVT_DeclineRate,SuperchargerEnabled,SCRPMInfluence,BlowRate,SCThreshold,DeclineSharpness,VVT_DeclineSharpness)
+			car.RPM = i
 			var tr:float = VitaVehicleSimulation.multivariate(car)
 			var hp:float = (i / 5252.0) * tr
 			
@@ -79,8 +80,8 @@ func draw_():
 				3:
 					hp *= 0.7457
 			
-			var tr_p:Vector2 = Vector2((i / Generation_Range) * size.x,size.y - (tr * size.y) * graph_scale)
-			var hp_p:Vector2 = Vector2((i / Generation_Range) * size.x,size.y - (hp * size.y) * graph_scale)
+			var tr_p:Vector2 = Vector2((i / Generation_Range) * size.x, size.y - (tr * size.y) * graph_scale)
+			var hp_p:Vector2 = Vector2((i / Generation_Range) * size.x, size.y - (hp * size.y) * graph_scale)
 			
 			if hp > peakhp[0]:
 				peakhp = [hp,i]

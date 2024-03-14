@@ -216,6 +216,7 @@ func _physics_process(_delta:float) -> void:
 		rotation_degrees = Vector3(0,- ((Toe * x_pos - Toe * x_neg)),0)
 	
 	translation = last_translation
+	
 	assert(position < Vector3(4.0, 4.0, 4.0), "IT BLEW UP!!!")
 	
 	c_camber = Camber + Caster * rotation.y * float(translation.x > 0.0) -Caster * rotation.y * float(translation.x < 0.0)
@@ -560,6 +561,7 @@ func _physics_process(_delta:float) -> void:
 #	car.apply_impulse(geometry.global_transform.origin-car.global_transform.origin +$velocity2.global_transform.basis.orthonormalized().xform(Vector3(0,0,1)),$velocity2.global_transform.basis.orthonormalized().xform(Vector3(0,1,0))*torqed)
 #	car.apply_impulse(geometry.global_transform.origin-car.global_transform.origin -$velocity2.global_transform.basis.orthonormalized().xform(Vector3(0,0,1)),$velocity2.global_transform.basis.orthonormalized().xform(Vector3(0,1,0))*-torqed)
 
+##Calculate suspension.
 func suspension() -> float:
 	rolldist_clamped = clampf(rolldist, -1.0, 1.0)
 	var g_range:float = abs(target_position.y)

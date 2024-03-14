@@ -39,7 +39,6 @@ func load_and_cache(path:String) -> PackedScene:
 
 
 func swapcar(naem:String) -> void:
-	visible = false
 	#get_parent().get_node("swap car").visible = false
 	if canclick:
 		canclick = false
@@ -67,21 +66,7 @@ func swapcar(naem:String) -> void:
 		
 		d.global_position = default_position + Vector3(0,5,0)
 		
-		var debug_child:Control = ViVeDebug.singleton.get_node("power_graph")
-		ViVeDebug.singleton._ready()
-		
-		debug_child.Generation_Range = float(int(float(d.RPMLimit / 1000.0)) * 1000 + 1000)
-		debug_child.Draw_RPM = d.IdleRPM
-		
-		debug_child._ready()
-		
-		var peak:float = max(debug_child.peaktq[0], debug_child.peakhp[0])
-		
-		debug_child.draw_scale = 1.0 / peak
-		
-		debug_child._ready()
-		
-		debug_child = ViVeDebug.singleton.get_node("tacho")
+		var debug_child:Control = ViVeDebug.singleton.get_node("tacho")
 		
 		debug_child.Redline = int(float(d.RPMLimit / 1000.0)) * 1000
 		debug_child.RPM_Range = int(float(d.RPMLimit / 1000.0)) * 1000 + 2000

@@ -1,13 +1,13 @@
 @tool
 extends VBoxContainer
 
-var generated = false
+var generated:bool = false
 
-@onready var vari = $vari.duplicate()
-@onready var desc = $desc.duplicate()
-@onready var type = $type.duplicate()
-@onready var cat1 = $category1.duplicate()
-@onready var cat2 = $category2.duplicate()
+@onready var vari:Button = $vari.duplicate()
+@onready var desc:Label = $desc.duplicate()
+@onready var type:Label = $type.duplicate()
+@onready var cat1:Button = $category1.duplicate()
+@onready var cat2:Button = $category2.duplicate()
 
 var controls:Dictionary = {
 	"Use_Global_Control_Settings": ["Applies all control settings globally. This also affects cars that were already spawned.",false],
@@ -200,6 +200,7 @@ var cs:Dictionary = {
 	"BuildupAffection": ["Increase in grip on loose surfaces.",0.0],
 	"CoolRate": ["Tyre Cooldown Rate. (currently isn't used)",0.0],
 }
+
 var tyreset:Dictionary = {
 	"GripInfluence": ["Grip and traction amplification",0.0],
 	"Width (mm)": ["",0.0],
@@ -209,13 +210,13 @@ var tyreset:Dictionary = {
 
 func _type(n):
 	const builtin_type_names = ["nil", "bool", "int", "float", "string", "vector2", "rect2", "vector3", "maxtrix32", "plane", "quat", "aabb",  "matrix3", "transform", "color", "image", "nodepath", "rid", null, "array", "dictionary", "array", "floatarray", "stringarray", "realarray", "stringarray", "vector2array", "vector3array", "colorarray", "unknown"]
-
+	
 	return builtin_type_names[n]
 
-func add(categ,catname,descr):
-	var cat = cat2.duplicate()
+func add(categ:Dictionary, catname:String, descr:String) -> Button:
+	var cat:Button = cat2.duplicate()
 	add_child(cat)
-	cat.text = catname+str(" +")
+	cat.text = catname + str(" +")
 	cat.default_text = catname
 	cat.visible = false
 	var desc1 = desc.duplicate()
@@ -239,7 +240,7 @@ func add(categ,catname,descr):
 		d.visible = false
 		t.visible = false
 		cat.nodes.append(v)
-
+	
 	return cat
 
 func generate():
@@ -249,8 +250,8 @@ func generate():
 		$type.queue_free()
 		$category1.queue_free()
 		$category2.queue_free()
-
-		var car = cat1.duplicate()
+		
+		var car:Button = cat1.duplicate()
 		add_child(car)
 		car.text = "car.gd +"
 		car.default_text = "car.gd"
@@ -269,7 +270,7 @@ func generate():
 			add(forced,"Forced Inductions (BETA)", ""),
 			]
 		
-		var wheels = cat1.duplicate()
+		var wheels:Button = cat1.duplicate()
 		add_child(wheels)
 		wheels.text = "wheel.gd +"
 		wheels.default_text = "wheel.gd"
@@ -278,7 +279,5 @@ func generate():
 			add(tyreset,"TyreSettings", ""),
 			add(cs,"CompoundSettings", ""),
 			]
-		
-		
 		
 		generated = true

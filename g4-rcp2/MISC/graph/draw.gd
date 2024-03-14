@@ -3,13 +3,6 @@ extends Control
 @export_enum("ft⋅lb", "nm", "kg/m") var Torque_Unit:int = 1
 @export_enum("hp", "bhp", "ps", "kW") var Power_Unit:int = 0
 
-
-#engine
-@export var RevSpeed:float = 2.0 # Flywheel lightness
-@export var EngineFriction:float = 18000.0
-@export var EngineDrag:float = 0.006
-@export var ThrottleResponse:float = 0.5
-
 #ECU
 @export var IdleRPM:float = 800.0 # set this beyond the rev range to disable it, set it to 0 to use this vvt state permanently
 @export var RPMLimit:float = 7000.0 # set this beyond the rev range to disable it, set it to 0 to use this vvt state permanently
@@ -21,15 +14,6 @@ extends Control
 @export var TorqueVVT:ViVeCarTorque = ViVeCarTorque.new("VVT")
 #torque @export variable valve timing triggered
 
-@export var TurboEnabled:bool = false
-@export var MaxPSI:float = 8.0
-@export var TurboAmount:float = 1 # Turbo power multiplication.
-@export var EngineCompressionRatio:float = 8.0 # Piston travel distance
-@export var SuperchargerEnabled:bool = false # Enables supercharger
-@export var SCRPMInfluence:float = 1.0
-@export var BlowRate:float = 35.0
-@export var SCThreshold:float = 6.0
-
 @export var draw_scale:float = 0.005
 @export var Generation_Range:float = 7000.0
 @export var Draw_RPM:float = 800.0
@@ -37,7 +21,20 @@ extends Control
 var peakhp:Array[float] = [0.0,0.0]
 var peaktq:Array[float] = [0.0,0.0]
 
+var car:ViVeCar = ViVeCar.new()
+
 func _ready() -> void:
+	ViVeEnvironment.singleton.connect("car_changed", draw_graph)
+
+func draw_graph() -> void:
+	car = ViVeEnvironment.singleton.car
+	Generation_Range = float(int(car.RPMLimit / 1000.0) * 1000 + 1000) #???
+	Draw_RPM = car.IdleRPM
+	calculate()
+	draw_scale = 1.0 / max(peaktq[0], peakhp[0])
+	calculate()
+
+func calculate() -> void:
 	peakhp = [0.0,0.0]
 	peaktq = [0.0,0.0]
 	$torque.clear_points()
@@ -45,23 +42,7 @@ func _ready() -> void:
 	var skip:int = 0
 	for i in range(Generation_Range):
 		if i > Draw_RPM:
-			var car:ViVeCar = ViVeCar.new()
-			#we do a little loop magic to make my job easier
-			const carstats:PackedStringArray = [
-			"EngineFriction","EngineDrag",
-			"TurboAmount", "EngineCompressionRatio",
-			"SCRPMInfluence","BlowRate", "SCThreshold",
-			
-			"RPM", "VVTRPM", "FloatRate", #ViVeCarTorque
-			"SCEnabled","PSI","TEnabled", #Unknown
-			
-			]
-			for stat in carstats:
-				if (car.get(stat) != null) and (self.get(stat) != null):
-					car.set(stat, self.get(stat))
-			car.torque_norm = TorqueNormal
-			car.torque_vvt = TorqueVVT
-			
+			car.RPM = i
 			var trq:float = VitaVehicleSimulation.multivariate(car)
 			var hp:float = (i / 5252.0) * trq
 			

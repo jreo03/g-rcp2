@@ -1,14 +1,14 @@
 @tool
 extends Button
 
-var unfolded = false
+var unfolded:bool = false
 var nodes = []
-var default_text = ""
+var default_text:String = ""
 
 func hide_all():
 	text = default_text +str(" +")
 	unfolded = false
-
+	
 	for i in nodes:
 		i.visible = unfolded
 
@@ -19,7 +19,7 @@ func _on_vari_pressed():
 	else:
 		text = default_text +str(" +")
 		unfolded = false
-
+	
 	for i in nodes:
 		i.visible = unfolded
 		if "nodes" in i:

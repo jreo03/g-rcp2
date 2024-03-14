@@ -1,6 +1,5 @@
 extends Window
 
-
 @onready var tabs:TabContainer = $"TabContainer"
 
 func _on_info_pressed() -> void:

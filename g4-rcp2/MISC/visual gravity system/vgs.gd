@@ -1,4 +1,5 @@
 extends Control
+
 class_name ViVeVGS
 
 @export var vgs_scale:float = 1.0
@@ -14,8 +15,6 @@ var appended:Array[ViVeDebugWheel] = []
 
 func _ready() -> void:
 	$wheel.queue_free()
-
-
 
 func clear() -> void:
 	for i:ViVeDebugWheel in appended:

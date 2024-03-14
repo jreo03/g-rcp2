@@ -2,11 +2,11 @@
 extends Control
 var engine_enabled = false
 
-var ed = EditorPlugin.new()
+var ed:EditorPlugin = EditorPlugin.new()
 
-var undo_redo = UndoRedo.new()
+var undo_redo:UndoRedo = UndoRedo.new()
 
-var eds = ed.get_editor_interface().get_selection()
+var eds:EditorSelection = ed.get_editor_interface().get_selection()
 
 func entered_engine():
 	for i in $Engine_Tuner/tune/container.get_children():
@@ -26,7 +26,7 @@ func refresh():
 	if peak>0:
 		$Engine_Tuner/power_graph.graph_scale = 1.0/peak
 	$Engine_Tuner/power_graph.draw_()
-
+	
 	var hpunit = "hp"
 	if $Engine_Tuner/power_graph.Power_Unit == 1:
 		hpunit = "bhp"
@@ -43,7 +43,7 @@ func refresh():
 		tqunit = "kg/m"
 	$Engine_Tuner/tq.text = "Torque: %s%s @ %s RPM" % [str( int($Engine_Tuner/power_graph.peaktq[0]*10.0)/10.0 ), tqunit ,str( int($Engine_Tuner/power_graph.peaktq[1]*10.0)/10.0 )]
 
-var changed_graph_size = Vector2(0.0,0.0)
+var changed_graph_size:Vector2 = Vector2(0.0,0.0)
 
 func _process(delta):
 	if not changed_graph_size == $Engine_Tuner/power_graph.size and engine_enabled:
@@ -63,7 +63,7 @@ func _process(delta):
 					$Engine_Tuner/power_graph.set(i.var_name, i.button_pressed)
 					refresh()
 
-var nods_buffer = []
+var nods_buffer:Array[Node] = []
 
 func press(state):
 	$Engine_Tuner/alert.dialog_text = ""
@@ -73,11 +73,11 @@ func press(state):
 	$Engine_Tuner/confirm.dialog_text = ""
 	$Engine_Tuner/confirm.position.y = size.y/2.0 +$Engine_Tuner/confirm.size.y/2.0
 	$Engine_Tuner/confirm.size = Vector2(83,58)
-
+	
 	$Engine_Tuner/confirm_append.dialog_text = ""
 	$Engine_Tuner/confirm_append.position.y = size.y/2.0 +$Engine_Tuner/confirm_append.size.y/2.0
 	$Engine_Tuner/confirm_append.size = Vector2(83,58)
-
+	
 	if state == "unit_tq":
 		$Engine_Tuner/power_graph.Torque_Unit += 1
 		if $Engine_Tuner/power_graph.Torque_Unit>2:
@@ -138,8 +138,8 @@ func press(state):
 					for i_nods in nods:
 						if not i.var_name in i_nods:
 							missing.append(i.var_name)
-
-
+			
+			
 			$Engine_Tuner/confirm.dialog_text = "This configuration will be applied to the following nodes: \n"
 			for i in nods:
 				$Engine_Tuner/confirm.dialog_text += str("-") +str(i.name) +str("\n")
