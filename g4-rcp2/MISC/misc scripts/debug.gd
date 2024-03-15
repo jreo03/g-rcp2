@@ -63,12 +63,12 @@ func _process(delta:float) -> void:
 		changed_graph_size = power_graph.size
 		power_graph._ready()
 	
-	$"fix engine".visible = car_node.rpm < car_node.DeadRPM
+	$"fix engine".visible = car_node._rpm < car_node.DeadRPM
 	
 	$throttle.bar_scale = car_node.car_controls.gaspedal
 	$brake.bar_scale = car_node.car_controls.brakepedal
 	$handbrake.bar_scale = car_node.car_controls.handbrakepull
-	$clutch.bar_scale = car_node.clutchpedalreal
+	$clutch.bar_scale = car_node._clutchpedalreal
 	
 	$tacho/speedk.text = "KM/PH: " +str(int(car_node.linear_velocity.length() * 1.10130592))
 	$tacho/speedm.text = "MPH: " +str(int((car_node.linear_velocity.length() * 1.10130592) / 1.609 ) )
@@ -94,16 +94,16 @@ func _process(delta:float) -> void:
 		tqunit = "kg/m"
 	$tq.text = "Torque: %s%s @ %s RPM" % [str(int(power_graph.peaktq[0] * 10.0) / 10.0 ), tqunit, str(int(power_graph.peaktq[1] * 10.0) / 10.0)]
 	
-	$power_graph/rpm.position.x = (car_node.rpm/power_graph.Generation_Range) * power_graph.size.x - 1.0
+	$power_graph/rpm.position.x = (car_node._rpm/power_graph.Generation_Range) * power_graph.size.x - 1.0
 	$power_graph/redline.position.x = (car_node.RPMLimit/power_graph.Generation_Range) * power_graph.size.x - 1.0
 	
-	$g.text = "Gs:\nx%s,\ny%s,\nz%s" % [str(int(car_node.gforce.x * 100.0) / 100.0),str(int(car_node.gforce.y * 100.0) / 100.0), str(int(car_node.gforce.z * 100.0) / 100.0)]
+	$g.text = "Gs:\nx%s,\ny%s,\nz%s" % [str(int(car_node._gforce.x * 100.0) / 100.0), str(int(car_node._gforce.y * 100.0) / 100.0), str(int(car_node._gforce.z * 100.0) / 100.0)]
 	
-	$tacho.currentpsi = car_node.turbopsi * (car_node.TurboAmount)
-	$tacho.currentrpm = car_node.rpm
-	tacho_rpm.text = str(int(car_node.rpm))
+	$tacho.currentpsi = car_node._turbopsi * (car_node.TurboAmount)
+	$tacho.currentrpm = car_node._rpm
+	tacho_rpm.text = str(int(car_node._rpm))
 	
-	if car_node.rpm < 0:
+	if car_node._rpm < 0:
 		tacho_rpm.self_modulate = Color(1,0,0)
 	else:
 		tacho_rpm.self_modulate = Color(1,1,1)
@@ -121,16 +121,16 @@ func _process(delta:float) -> void:
 func _physics_process(_delta:float) -> void:
 	if car_node == null:
 		return
-	vgs.gforce -= (vgs.gforce - Vector2(car_node.gforce.x, car_node.gforce.z)) * 0.5
+	vgs.gforce -= (vgs.gforce - Vector2(car_node._gforce.x, car_node._gforce.z)) * 0.5
 	
-	$tacho/abs.visible = car_node.abspump > 0 and car_node.car_controls.brakepedal > 0.1
-	$tacho/tcs.visible = car_node.tcsflash
-	$tacho/esp.visible = car_node.espflash
+	$tacho/abs.visible = car_node._abspump > 0 and car_node.car_controls.brakepedal > 0.1
+	$tacho/tcs.visible = car_node._tcsflash
+	$tacho/esp.visible = car_node._espflash
 
 ##Restarts the car's engine. Needed if the RPM dips to low and it "dies".
 func engine_restart() -> void:
 	if car_node != null:
-		car_node.rpm = car_node.IdleRPM
+		car_node._rpm = car_node._IdleRPM
 
 func toggle_forces() -> void:
 	Input.action_press("toggle_debug_mode")

@@ -337,7 +337,7 @@ layout_mode = 0
 anchor_left = 0.849609
 anchor_right = 0.998047
 anchor_bottom = 0.08
-focus_mode = 1
+focus_mode = 0
 text = "control config"
 
 [node name="fix engine" type="Button" parent="."]
@@ -346,7 +346,7 @@ anchor_left = 0.852539
 anchor_top = 0.1
 anchor_right = 0.995117
 anchor_bottom = 0.19
-focus_mode = 1
+focus_mode = 0
 text = "fix engine"
 
 [node name="open graphics" type="Button" parent="."]
@@ -354,7 +354,7 @@ layout_mode = 0
 anchor_left = 0.451172
 anchor_right = 0.609375
 anchor_bottom = 0.08
-focus_mode = 1
+focus_mode = 0
 text = "graphics config"
 
 [node name="info" type="Button" parent="."]
@@ -362,7 +362,7 @@ layout_mode = 0
 anchor_left = 0.325195
 anchor_right = 0.444336
 anchor_bottom = 0.08
-focus_mode = 1
+focus_mode = 0
 text = "information"
 
 [node name="swap car" type="Button" parent="."]
@@ -370,7 +370,7 @@ layout_mode = 0
 anchor_left = 0.74707
 anchor_right = 0.844727
 anchor_bottom = 0.08
-focus_mode = 1
+focus_mode = 0
 text = "swap car"
 
 [node name="swap map" type="Button" parent="."]
@@ -378,7 +378,7 @@ layout_mode = 0
 anchor_left = 0.613281
 anchor_right = 0.742188
 anchor_bottom = 0.08
-focus_mode = 1
+focus_mode = 0
 text = "change scene"
 
 [node name="Window" type="Window" parent="."]

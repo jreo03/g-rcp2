@@ -57,8 +57,9 @@ func _ready() -> void:
 	play()
 
 func _physics_process(_delta:float) -> void:
-	fueltrace += (get_parent().throttle) * backfire_FuelRichness
-	air = (get_parent().throttle * get_parent().rpm) * backfire_Air +get_parent().turbopsi
+	var car:ViVeCar = ViVeEnvironment.get_singleton().car
+	fueltrace += (car._throttle) * backfire_FuelRichness
+	air = (car._throttle * car._rpm) * backfire_Air + car._turbopsi
 	
 	fueltrace -= fueltrace * backfire_FuelDecay
 	
@@ -67,7 +68,7 @@ func _physics_process(_delta:float) -> void:
 	if has_node(engine_sound):
 		get_node(engine_sound).pitch_influence -= (get_node(engine_sound).pitch_influence - 1.0) * 0.5
 	
-	if get_parent().rpm > get_parent().DeadRPM:
+	if car._rpm > car.DeadRPM:
 		if fueltrace > randf_range(air * backfire_BackfirePrevention + backfire_BackfireThreshold, 60.0 / backfire_BackfireRate):
 			rand = 0.1
 			var ft:float = maxf(fueltrace, 10.0)
@@ -86,7 +87,7 @@ func _physics_process(_delta:float) -> void:
 			for i in exhaust_particles:
 				get_node(i).emitting = false
 	
-	var wh:float = abs(get_parent().rpm / 10000.0) * WhinePitch
+	var wh:float = abs(car._rpm / 10000.0) * WhinePitch
 	wh = maxf(wh, 0.0)
 	
 	if wh > 0.01:
@@ -96,23 +97,23 @@ func _physics_process(_delta:float) -> void:
 	else:
 		$scwhine.volume_db = linear_to_db(0.0)
 	
-	var dist:float = blow_psi - get_parent().turbopsi
-	blow_psi -= (blow_psi - get_parent().turbopsi) * BlowOffWhineReduction
-	blow_inertia += blow_psi - get_parent().turbopsi
-	blow_inertia -= (blow_inertia - (blow_psi - get_parent().turbopsi)) * BlowDamping
+	var dist:float = blow_psi - car._turbopsi
+	blow_psi -= (blow_psi - car._turbopsi) * BlowOffWhineReduction
+	blow_inertia += blow_psi - car._turbopsi
+	blow_inertia -= (blow_inertia - (blow_psi - car._turbopsi)) * BlowDamping
 	blow_psi -= blow_inertia * BlowOffBounceSpeed
 	
-	blow_psi = minf(blow_psi, get_parent().MaxPSI)
+	blow_psi = minf(blow_psi, car.MaxPSI)
 	
 	var blowvol:float = dist
 	
 	blowvol = clampf(blowvol, 0.0, 1.0)
 	
-	var spoolvol:float = get_parent().turbopsi / 10.0
+	var spoolvol:float = car._turbopsi / 10.0
 	
 	spoolvol = clampf(spoolvol, 0.0, 1.0)
 	
-	spoolvol += (abs(get_parent().rpm) * (TurboNoiseRPMAffection / 1000.0)) * spoolvol
+	spoolvol += (abs(car._rpm) * (TurboNoiseRPMAffection / 1000.0)) * spoolvol
 	
 	var blow:float = linear_to_db(volume * (blowvol * BlowOffVolume2))
 	blow = maxf(blow, -60.0)
@@ -134,8 +135,8 @@ func _physics_process(_delta:float) -> void:
 	$whistle.max_db = $whistle.volume_db
 	
 	var wps:float = 1.0
-	if get_parent().turbopsi > 0.0:
-		wps = blowvol * BlowOffPitch2 + get_parent().turbopsi * 0.05 + BlowOffPitch1
+	if car._turbopsi > 0.0:
+		wps = blowvol * BlowOffPitch2 + car._turbopsi * 0.05 + BlowOffPitch1
 	else:
 		wps = blowvol * BlowOffPitch2 + BlowOffPitch1
 	wps = minf(wps, MaxWhinePitch)
@@ -144,23 +145,23 @@ func _physics_process(_delta:float) -> void:
 	$spool.pitch_scale = SpoolPitch + spoolvol * 0.5
 	$blow.pitch_scale = BlowPitch
 	
-	var h:float = get_parent().whinepitch / 200.0
+	var h:float = car._whinepitch / 200.0
 	h = clampf(h, 0.5, 1.0)
 	
-	var wlow:float = linear_to_db(((get_parent().gearstress * get_parent().GearGap) / 160000.0) * ((1.0 - h) * 0.5))
+	var wlow:float = linear_to_db(((car._gearstress * car.GearGap) / 160000.0) * ((1.0 - h) * 0.5))
 	wlow = maxf(wlow, -60.0)
 	
 	$wlow.volume_db = wlow
 	$wlow.max_db = $wlow.volume_db
-	if get_parent().whinepitch / 50.0 > 0.0001:
-		$wlow.pitch_scale = get_parent().whinepitch / 50.0
-	var whigh:float = linear_to_db(((get_parent().gearstress*get_parent().GearGap) / 80000.0) * 0.5)
+	if car._whinepitch / 50.0 > 0.0001:
+		$wlow.pitch_scale = car._whinepitch / 50.0
+	var whigh:float = linear_to_db(((car._gearstress * car.GearGap) / 80000.0) * 0.5)
 	whigh = maxf(whigh, -60.0)
 	
 	$whigh.volume_db = whigh
 	$whigh.max_db = $whigh.volume_db
-	if get_parent().whinepitch / 100.0 > 0.0001:
-		$whigh.pitch_scale = get_parent().whinepitch / 100.0
+	if car._whinepitch / 100.0 > 0.0001:
+		$whigh.pitch_scale = car._whinepitch / 100.0
 
 
 

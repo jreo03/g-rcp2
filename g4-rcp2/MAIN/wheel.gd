@@ -161,7 +161,7 @@ func _ready() -> void:
 
 func power() -> void:
 	if not c_p == 0:
-		dist *= pow(car.car_controls.clutchpedal, 2) / (car.currentstable)
+		dist *= pow(car.car_controls.clutchpedal, 2) / (car._currentstable)
 		var dist_cache:float = dist
 		
 		var tol:float = (0.1475 / 1.3558) * car.ClutchGrip
@@ -170,22 +170,22 @@ func power() -> void:
 		
 		var dist2:float = dist_cache
 		
-		car.dsweight += c_p
-		car.stress += stress * c_p
+		car._dsweight += c_p
+		car._stress += stress * c_p
 		
-		if car.dsweightrun > 0.0:
-			if car.rpm > car.DeadRPM:
-				wheelpower -= (((dist2 / car.ds_weight) / (car.dsweightrun / 2.5)) * c_p) / w_weight
-			car.resistance += (((dist_cache * (10.0)) / car.dsweightrun) * c_p)
+		if car._dsweightrun > 0.0:
+			if car._rpm > car.DeadRPM:
+				wheelpower -= (((dist2 / car._ds_weight) / (car._dsweightrun / 2.5)) * c_p) / w_weight
+			car._resistance += (((dist_cache * (10.0)) / car._dsweightrun) * c_p)
 
 func diffs() -> void:
-	if car.locked > 0.0:
+	if car._locked > 0.0:
 		if Differed_Wheel: #Non "" NodePath evaluates true
 			var d_w:ViVeWheel = car.get_node(Differed_Wheel)
-			snap = abs(d_w.wheelpower_global) / (car.locked * 16.0) + 1.0
+			snap = abs(d_w.wheelpower_global) / (car._locked * 16.0) + 1.0
 			absolute_wv = output_wv+(offset*snap)
-			var distanced2:float = abs(absolute_wv - d_w.absolute_wv_diff) / (car.locked * 16.0)
-			distanced2 += abs(d_w.wheelpower_global) / (car.locked * 16.0)
+			var distanced2:float = abs(absolute_wv - d_w.absolute_wv_diff) / (car._locked * 16.0)
+			distanced2 += abs(d_w.wheelpower_global) / (car._locked * 16.0)
 			distanced2 = maxf(distanced2, snap)
 			
 			distanced2 += 1.0 / cache_tyrestiffness
@@ -219,7 +219,7 @@ func _physics_process(_delta:float) -> void:
 		#var form2 :float = car.steering_geometry[1] -translation.x
 		var lasttransform:Transform3D = global_transform
 		
-		look_at_from_position(translation, Vector3(car.steering_geometry[0], 0.0, car.steering_geometry[1]))
+		look_at_from_position(translation, Vector3(car._steering_geometry[0], 0.0, car._steering_geometry[1]))
 		
 		
 		# just making this use origin fixed it. lol
@@ -232,7 +232,7 @@ func _physics_process(_delta:float) -> void:
 		
 		var roter:float = global_rotation.y
 		
-		look_at_from_position(translation, Vector3(car.Steer_Radius, 0 ,car.steering_geometry[1]))
+		look_at_from_position(translation, Vector3(car.Steer_Radius, 0 ,car._steering_geometry[1]))
 		
 		
 		# this one too
@@ -240,7 +240,7 @@ func _physics_process(_delta:float) -> void:
 		
 		rotate_object_local(Vector3(0,1,0), deg_to_rad(90.0))
 		
-		get_parent().steering_angles.append(rad_to_deg(global_rotation.y))
+		get_parent()._steering_angles.append(rad_to_deg(global_rotation.y))
 		
 		rotation_degrees = Vector3(0, 0, 0)
 		rotation = Vector3(0, 0, 0)
@@ -330,17 +330,17 @@ func _physics_process(_delta:float) -> void:
 	
 	wheelpower = 0.0
 	
-	var braked:float = car.brakeline * B_Bias + car.car_controls.handbrakepull * HB_Bias
+	var braked:float = car._brakeline * B_Bias + car.car_controls.handbrakepull * HB_Bias
 	braked = minf(braked, 1.0)
 	var bp:float = (B_Torque * braked) / w_weight_read
 	
-	if not car.actualgear == 0:
-		if car.dsweightrun > 0.0:
-			bp += ((car.stalled * (c_p / car.ds_weight)) * car.car_controls.clutchpedal) * (((500.0 / (car.RevSpeed * 100.0)) / (car.dsweightrun / 2.5)) / w_weight_read)
+	if not car._actualgear == 0:
+		if car._dsweightrun > 0.0:
+			bp += ((car._stalled * (c_p / car._ds_weight)) * car.car_controls.clutchpedal) * (((500.0 / (car.RevSpeed * 100.0)) / (car._dsweightrun / 2.5)) / w_weight_read)
 	if bp > 0.0:
 		if abs(absolute_wv) > 0.0:
 			var distanced:float = abs(absolute_wv) / bp
-			distanced -= car.brakeline
+			distanced -= car._brakeline
 			distanced = maxf(distanced, snap * (w_size_read / B_Saturation))
 			wheelpower += -absolute_wv / distanced
 		else:
@@ -392,7 +392,7 @@ func _physics_process(_delta:float) -> void:
 		wv += (wheelpower * (1.0 - (1.0 / tyre_stiffness)))
 		var disty:float = velocity2.z - wv * w_size
 		
-		offset = disty/w_size
+		offset = disty / w_size
 		
 		offset = clampf(offset, -grip, grip)
 		
@@ -434,9 +434,9 @@ func _physics_process(_delta:float) -> void:
 			var forcex:float = - distx / (slip + 1.0)
 			
 			if abs(disty) / (tyre_stiffness / 3.0) > (car.ABS.threshold / grip) * pow(surface_vars.ground_friction, 2) and car.ABS.enabled and abs(velocity.z) > car.ABS.speed_pre_active and ContactABS:
-				car.abspump = car.ABS.pump_time
+				car._abspump = car.ABS.pump_time
 				if abs(distx) / (tyre_stiffness/3.0) > (car.ABS.lat_thresh / grip) * pow(surface_vars.ground_friction, 2):
-					car.abspump = car.ABS.lat_pump_time
+					car._abspump = car.ABS.lat_pump_time
 			
 			var yesx:float =  minf(abs(forcex), 1.0)
 			
@@ -509,7 +509,7 @@ func _physics_process(_delta:float) -> void:
 		var disty:float = velocity2.z - (wv * w_size) / (surface_vars.drag + 1.0)
 		if  Differed_Wheel: #NodePath will return true if it's not ""
 			var d_w:ViVeWheel = car.get_node(Differed_Wheel)
-			disty = velocity2.z - ((wv * (1.0 - get_parent().locked) +d_w.wv_diff * get_parent().locked) * w_size) / (surface_vars.drag + 1)
+			disty = velocity2.z - ((wv * (1.0 - get_parent()._locked) +d_w.wv_diff * get_parent()._locked) * w_size) / (surface_vars.drag + 1)
 		
 		var distx:float = velocity2.x
 		

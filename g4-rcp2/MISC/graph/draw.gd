@@ -23,6 +23,7 @@ var peaktq:Array[float] = [0.0,0.0]
 
 var car:ViVeCar = ViVeCar.new()
 
+#This keeps getting re-called somewhere when it shouldn't be, when swapping cars
 func _ready() -> void:
 	ViVeEnvironment.singleton.connect("car_changed", draw_graph)
 
@@ -42,7 +43,7 @@ func calculate() -> void:
 	var skip:int = 0
 	for i in range(Generation_Range):
 		if i > Draw_RPM:
-			car.RPM = i
+			car._rpm = i
 			var trq:float = VitaVehicleSimulation.multivariate(car)
 			var hp:float = (i / 5252.0) * trq
 			

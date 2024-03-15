@@ -34,19 +34,19 @@ func _ready() -> void:
 	maxfades = float(childcount-1.0)
 
 func _physics_process(_delta:float) -> void:
+	var car:ViVeCar = ViVeEnvironment.get_singleton().car
+	pitch = abs(car._rpm * pitch_influence) / pitch_calibrate
 	
-	pitch = abs(get_parent().rpm*pitch_influence)/pitch_calibrate
-	
-	volume = 0.5 +get_parent().throttle*0.5
-	fade = (get_node("100500").pitch_scale - 0.22222) * (crossfade_influence + float(get_parent().throttle) * crossfade_throttle + float(get_parent().vvt) * crossfade_vvt)
+	volume = 0.5 + car._throttle * 0.5
+	fade = (get_node("100500").pitch_scale - 0.22222) * (crossfade_influence + car._throttle * crossfade_throttle + float(car._vvt) * crossfade_vvt)
 	
 	fade = clampf(fade, childcount - 1, 0.0)
 	 
-	vacuum = (get_parent().car_controls.gaspedal - get_parent().throttle) * 4
+	vacuum = (car.car_controls.gaspedal - car._throttle) * 4
 	
 	vacuum = clampf(vacuum, 0, 1)
 	
-	var sfk:float = 1.0-(vacuum*get_parent().throttle)
+	var sfk:float = 1.0 - (vacuum * car._throttle)
 	
 	sfk = maxf(sfk, vacuum_crossfade)
 	
@@ -71,8 +71,7 @@ func _physics_process(_delta:float) -> void:
 		
 		i.volume_db = db
 		i.max_db = i.volume_db
-		var pit:float = abs(pitch * maxpitch)
-		pit = clampf(pit, 0.01, 5.0)
+		var pit:float = clampf(abs(pitch * maxpitch), 0.01, 5.0)
 		
 		i.pitch_scale = pit
 

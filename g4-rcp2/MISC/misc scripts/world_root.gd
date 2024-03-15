@@ -3,6 +3,7 @@ extends Node3D
 class_name ViVeEnvironment
 
 ##The ViVeEnvironment singleton
+##NOTE:Using this is considered unsafe in comparison to calling [method ViVeEnvironment.get_singleton]
 static var singleton:ViVeEnvironment = null
 
 ##The currently active player car.

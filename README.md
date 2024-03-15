@@ -25,8 +25,7 @@ Help can be found in the VitaVehicle Interface once you've opened the project fi
 
 ### Current Acknowledged Issues
 
-* Car engine is a little more glitchy and needs to be "fixed" more often.
-* In-app documentation is not updated to the most recent changes.
+* In-app documentation is not updated to the most recent changes (being worked on).
 * Controls are buggy:
   * Touch/accelerometer controls need to be re-implemented.
   * On Android, analog trigger values (taken from a DualShock 4) rest at 50% instead of 0%. This issue is not present on Linux.

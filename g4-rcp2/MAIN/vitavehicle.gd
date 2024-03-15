@@ -27,6 +27,7 @@ const multivariation_inputs:PackedStringArray = [
 ]
 
 func multivariate(car:ViVeCar) -> float:
+	#car uses _turbopsi for PSI, this may be inaccurate to other uses of the function
 	
 	var value:float = 0.0
 	
@@ -35,34 +36,37 @@ func multivariate(car:ViVeCar) -> float:
 	var f:float = 0.0
 	var j:float = 0.0
 	
-	if car.SCEnabled:
-		maxpsi = car.PSI
-		scrpm = car.RPM * car.SCRPMInfluence
-		car.PSI = (scrpm / 10000.0) * car.BlowRate - car.SCThreshold
-		car.PSI = clampf(car.PSI, 0.0, maxpsi)
+	#if car.SCEnabled:
+	if car.SuperchargerEnabled:
+		maxpsi = car._turbopsi
+		scrpm = car._rpm * car.SCRPMInfluence
+		car._turbopsi = (scrpm / 10000.0) * car.BlowRate - car.SCThreshold
+		car._turbopsi = clampf(car._turbopsi, 0.0, maxpsi)
 	
-	if not car.SCEnabled and not car.TEnabled:
-		car.PSI = 0.0
+	#if not car.SCEnabled and not car.TEnabled:
+	if not car.SuperchargerEnabled and not car.TurboEnabled:
+		#car._turbopsi = 0.0
+		pass
 	
 	var torque_local:ViVeCarTorque 
-	if car.RPM > car.VVTRPM:
+	if car._rpm > car.VVTRPM:
 		torque_local = car.torque_vvt
 	else:
 		torque_local = car.torque_norm
 	
-	value = (car.RPM * torque_local.BuildUpTorque + torque_local.OffsetTorque) + ( (car.PSI * car.TurboAmount) * (car.EngineCompressionRatio * 0.609) )
-	f = car.RPM - torque_local.RiseRPM
+	value = (car._rpm * torque_local.BuildUpTorque + torque_local.OffsetTorque) + ( (car._turbopsi * car.TurboAmount) * (car.EngineCompressionRatio * 0.609) )
+	f = car._rpm - torque_local.RiseRPM
 	f = maxf(f, 0.0)
 	
 	value += (f * f) * (torque_local.TorqueRise / 10000000.0)
-	j = car.RPM - torque_local.DeclineRPM
+	j = car._rpm - torque_local.DeclineRPM
 	j = maxf(j, 0.0)
 	
 	value /= (j * (j * torque_local.DeclineSharpness + (1.0 - torque_local.DeclineSharpness))) * (torque_local.DeclineRate / 10000000.0) + 1.0
-	value /= (car.RPM * car.RPM) * (torque_local.FloatRate / 10000000.0) + 1.0
+	value /= (car._rpm * car._rpm) * (torque_local.FloatRate / 10000000.0) + 1.0
 	
-	value -= car.RPM / ((abs(car.RPM * car.RPM)) / car.EngineFriction + 1.0)
-	value -= car.RPM * car.EngineDrag
+	value -= car._rpm / ((abs(car._rpm * car._rpm)) / car.EngineFriction + 1.0)
+	value -= car._rpm * car.EngineDrag
 	
 	return value
 
