@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3 uid="uid://b4j8prwa2veg8"]
+[gd_scene load_steps=7 format=3 uid="uid://b4j8prwa2veg8"]
 
 [ext_resource type="Texture2D" uid="uid://b315i7ikjj32c" path="res://logo.png" id="2"]
 [ext_resource type="Script" path="res://addons/vitavehicle_ui/graph.gd" id="3"]
@@ -6,8 +6,6 @@
 [ext_resource type="Script" path="res://addons/vitavehicle_ui/tune_vars.gd" id="5"]
 [ext_resource type="FontFile" uid="uid://btyvoi7jkhec0" path="res://FONT/DroidSans.ttf" id="5_f53yw"]
 [ext_resource type="FontFile" uid="uid://luy46vxwmlu4" path="res://FONT/DroidSans-Bold.ttf" id="5_lt6mm"]
-[ext_resource type="Script" path="res://addons/vitavehicle_ui/api_references.gd" id="6"]
-[ext_resource type="Script" path="res://addons/vitavehicle_ui/folds.gd" id="7"]
 
 [node name="Control" type="Control"]
 layout_mode = 3
@@ -26,18 +24,14 @@ anchors_preset = 0
 anchor_right = 1.0
 anchor_bottom = 1.0
 
-[node name="power_graph" type="Control" parent="Engine_Tuner"]
+[node name="power_graph" type="Control" parent="Engine_Tuner" node_paths=PackedStringArray("car")]
 anchors_preset = 0
 anchor_left = 0.0478516
 anchor_top = 0.0866667
 anchor_right = 0.601563
 anchor_bottom = 0.591667
 script = ExtResource("3")
-BuildUpTorque = 0.004
-OffsetTorque = 110.0
-VVT_OffsetTorque = 70.0
-MaxPSI = 8.0
-TurboAmount = 1.0
+car = NodePath("")
 
 [node name="torque" type="Line2D" parent="Engine_Tuner/power_graph"]
 points = PackedVector2Array(64.8811, 173.589, 72.9811, 170.753, 81.0811, 168.609, 89.1811, 166.946, 97.2811, 165.604, 105.381, 164.502, 113.481, 163.578, 121.581, 162.791, 129.681, 162.105, 137.781, 161.495, 145.881, 160.941, 153.981, 160.427, 162.081, 159.942, 170.181, 159.474, 178.281, 159.017, 186.381, 158.564, 194.481, 158.109, 202.581, 157.649, 210.681, 157.18, 218.781, 156.7, 226.881, 156.207, 234.981, 155.698, 243.081, 155.174, 251.181, 154.632, 259.281, 154.073, 267.381, 153.495, 275.481, 152.9, 283.581, 152.286, 291.681, 151.947, 299.781, 152.167, 307.881, 152.943, 315.981, 154.264, 324.081, 156.108, 332.181, 158.446, 340.281, 161.244, 348.381, 164.461, 356.481, 168.053, 364.581, 169.136, 372.681, 165.944, 380.781, 162.699, 388.881, 159.404, 396.981, 156.061, 405.081, 152.674, 413.181, 149.664, 421.281, 147.459, 429.381, 146.085, 437.481, 145.544, 445.581, 145.821, 453.681, 146.884, 461.781, 148.686, 469.881, 151.168, 477.981, 154.261, 486.081, 157.894, 494.181, 161.992, 502.281, 166.481, 510.381, 171.289, 518.481, 176.352, 526.581, 181.605, 534.681, 186.995, 542.781, 192.471, 550.881, 197.992, 558.981, 203.52)
@@ -1031,86 +1025,6 @@ theme_override_fonts/font = ExtResource("5_f53yw")
 theme_override_font_sizes/font_size = 20
 text = "Back"
 
-[node name="refer" type="Control" parent="."]
-visible = false
-anchors_preset = 0
-anchor_right = 1.0
-anchor_bottom = 1.0
-
-[node name="ColorRect" type="ColorRect" parent="refer"]
-show_behind_parent = true
-layout_mode = 0
-anchor_left = 0.0292969
-anchor_top = 0.103333
-anchor_right = 0.833008
-anchor_bottom = 0.946667
-color = Color(0, 0, 0, 0.184314)
-
-[node name="yes" type="ScrollContainer" parent="refer"]
-layout_mode = 0
-anchor_left = 0.0292969
-anchor_top = 0.103333
-anchor_right = 0.833008
-anchor_bottom = 0.946667
-
-[node name="container" type="VBoxContainer" parent="refer/yes"]
-layout_mode = 2
-size_flags_horizontal = 3
-script = ExtResource("6")
-
-[node name="category1" type="Button" parent="refer/yes/container"]
-custom_minimum_size = Vector2(0, 82)
-layout_mode = 2
-theme_override_fonts/font = ExtResource("5_f53yw")
-theme_override_font_sizes/font_size = 64
-text = "Text"
-alignment = 0
-clip_text = true
-script = ExtResource("7")
-
-[node name="category2" type="Button" parent="refer/yes/container"]
-custom_minimum_size = Vector2(0, 44)
-layout_mode = 2
-theme_override_fonts/font = ExtResource("5_f53yw")
-theme_override_font_sizes/font_size = 32
-text = "Text"
-alignment = 0
-clip_text = true
-script = ExtResource("7")
-
-[node name="vari" type="Button" parent="refer/yes/container"]
-custom_minimum_size = Vector2(0, 25)
-layout_mode = 2
-theme_override_fonts/font = ExtResource("5_f53yw")
-text = "Text"
-alignment = 0
-clip_text = true
-script = ExtResource("7")
-
-[node name="desc" type="Label" parent="refer/yes/container"]
-layout_mode = 2
-theme_override_fonts/font = ExtResource("5_f53yw")
-text = "
-Text
-"
-
-[node name="type" type="Label" parent="refer/yes/container"]
-custom_minimum_size = Vector2(0, 41)
-layout_mode = 2
-theme_override_fonts/font = ExtResource("5_f53yw")
-text = "Text
-"
-
-[node name="back" type="Button" parent="refer"]
-layout_mode = 0
-anchor_left = 0.859375
-anchor_top = 0.886667
-anchor_right = 0.988282
-anchor_bottom = 0.966667
-theme_override_fonts/font = ExtResource("5_f53yw")
-theme_override_font_sizes/font_size = 20
-text = "Back"
-
 [node name="menu" type="Control" parent="."]
 anchors_preset = 0
 anchor_right = 1.0
@@ -1264,7 +1178,8 @@ layout_mode = 2
 theme_override_fonts/font = ExtResource("5_f53yw")
 text = "Contributors:
 devHrytsan
-r0401 (aka raghid) - Godot 4 Port"
+r0401 (aka raghid) - Godot 4 Port
+c08oprkiua - Godot 4.2 rewrite and optimizations"
 
 [node name="watermark" type="TextureRect" parent="inform"]
 layout_mode = 0
@@ -1310,10 +1225,6 @@ text = "Back"
 [connection signal="pressed" from="tutors/yes/container/button4" to="." method="press" binds= ["itch.io"]]
 [connection signal="pressed" from="tutors/yes/container/button5" to="." method="press" binds= ["discord"]]
 [connection signal="pressed" from="tutors/back" to="." method="press" binds= ["back"]]
-[connection signal="pressed" from="refer/yes/container/category1" to="refer/yes/container/category1" method="_on_vari_pressed"]
-[connection signal="pressed" from="refer/yes/container/category2" to="refer/yes/container/category2" method="_on_vari_pressed"]
-[connection signal="pressed" from="refer/yes/container/vari" to="refer/yes/container/vari" method="_on_vari_pressed"]
-[connection signal="pressed" from="refer/back" to="." method="press" binds= ["back"]]
 [connection signal="pressed" from="menu/tune_engine" to="." method="press" binds= ["engine"]]
 [connection signal="pressed" from="menu/dist" to="." method="press" binds= ["weight_dist"]]
 [connection signal="pressed" from="menu/button" to="." method="press" binds= ["api"]]

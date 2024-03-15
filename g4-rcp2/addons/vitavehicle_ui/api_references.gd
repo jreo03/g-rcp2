@@ -10,38 +10,7 @@ var generated:bool = false
 @onready var cat2:Button = $category2.duplicate()
 
 var controls:Dictionary = {
-	"Use_Global_Control_Settings": ["Applies all control settings globally. This also affects cars that were already spawned.",false],
-	"UseMouseSteering": ["Uses your cursor to steer the vehicle.",false],
-	"UseAccelerometreSteering": ["Uses your accelerometre to steer, typically on mobile devices that have them.",false],
-	"SteerSensitivity": ["Steering amplification on mouse and accelerometre steering.",0.0],
-
-	"KeyboardSteerSpeed": ["Keyboard steering response rate.",0.0],
-	"KeyboardReturnSpeed": ["Keyboard steering centring rate.",0.0],
-	"KeyboardCompensateSpeed": ["Return rate when steering from an opposite direction.",0.0],
-	"SteerAmountDecay": ["Reduces steering rate based on the vehicle’s speed.",0.0],
-	"SteeringAssistance": ["Drift Help",0.0],
-	"SteeringAssistanceAngular": ["Drift Stability Help",0.0],
-	"GearAssistant": ["Gear Assistance (see below)",Array([])],
-	"GearAssistant[0]": ["Shift Delay",0],
-	"GearAssistant[1]": ["Assistance Level (0 - 2)",0],
-	"GearAssistant[2]": ["Speed influence relative to wheel sizes. (This will be set automatically)",0.0],
-	"GearAssistant[3]": ["Downshift RPM",0.0],
-	"GearAssistant[4]": ["Upshift RPM",0.0],
-	"GearAssistant[5]": ["Clutch-Out RPM",0.0],
-	"OnThrottleRate": ["Throttle Pressure Rate",0.0],
-	"OffThrottleRate": ["Throttle Depress Rate",0.0],
-	"OnBrakeRate": ["Brake Pressure Rate",0.0],
-	"OffBrakeRate": ["Brake Depress Rate",0.0],
-	"OnHandbrakeRate": ["Handbrake Pull Rate",0.0],
-	"OffHandbrakeRate": ["Handbrake Push Rate",0.0],
-	"OnClutchRate": ["Clutch Release Rate",0.0],
-	"OffClutchRate": ["Clutch Engage Rate",0.0],
-	"MaxThrottle": ["Button Maximum Throttle Amount",0.0],
-	"MaxBrake": ["Button Maximum Brake Amount",0.0],
-	"MaxHandbrake": ["Button Maximum Handbrake Amount",0.0],
-	"MaxClutch": ["Button Maximum Clutch Amount",0.0],
 }
-
 var chassis:Dictionary = {
 }
 var body:Dictionary = {
@@ -51,29 +20,9 @@ var steering:Dictionary = {
 }
 
 var dt:Dictionary = {
-	"AutoSettings[0]": ["Upshift RPM",0.0],
-	"AutoSettings[1]": ["Downshift Threshold",0.0],
-	"AutoSettings[2]": ["",0.0],
-	"AutoSettings[3]": ["",0.0],
-	"AutoSettings[4]": ["",0.0],
-	"CVTSettings": ["Settings for CVT.",[]],
-	"CVTSettings[0]": ["",0.0],
-	"CVTSettings[1]": ["",0.0],
-	"CVTSettings[2]": ["",0.0],
-	"CVTSettings[3]": ["",0.0],
-	"CVTSettings[4]": ["",0.0],
-	"CVTSettings[5]": ["",0.0],
 }
 
 var stab:Dictionary = {
-	"ABS": ["Anti-lock Braking System (see below)",[]],
-	"ABS[0]": ["Threshold",0.0],
-	"ABS[1]": ["Pump Time",0],
-	"ABS[2]": ["Vehicle Speed Before Activation",0.0],
-	"ABS[3]": ["Enabled",false],
-	"ESP": ["Electronic Stability Program.\n\nCURRENTLY DOESN'T WORK",[]],
-	"BTCS": ["Prevents wheel slippage using the brakes.\n\nCURRENTLY DOESN'T WORK",[]],
-	"TTCS": ["Prevents wheel slippage by partially closing the throttle.\n\nCURRENTLY DOESN'T WORK",[]],
 }
 var diff:Dictionary = {
 }
@@ -81,37 +30,13 @@ var engine:Dictionary = {
 }
 
 var ecu:Dictionary = {
-	"RPMLimit": ["Throttle Cutoff RPM",0.0],
-	"LimiterDelay": ["Throttle cutoff time",0],
-	"ThrottleLimit": ["Minimum throttle cutoff. (0.0 - 1.0)",0.0],
-	"ThrottleIdle": ["Throttle intake on idle. (0.0 - 1.0)",0.0],
-	"VVTRPM": ["Timing on RPM.",0.0],
 }
 
 var v1:Dictionary = {
-	"BuildUpTorque": ["Torque buildup relative to RPM.",0.0],
-	"TorqueRise": ["Sqrt torque buildup relative to RPM.",0.0],
-	"RiseRPM": ["Initial RPM for TorqueRise.",0.0],
-	"OffsetTorque": ["Static torque.",0.0],
-	"FloatRate": ["Torque reduction relative to RPM.",0.0],
-	"DeclineRate": ["Rapid reduction of torque.",0.0],
-	"DeclineRPM": ["Initial RPM for DeclineRate.",0.0],
 }
 var v2:Dictionary = {
-	"VVT_BuildUpTorque": ["See BuildUpTorque.",0.0],
-	"VVT_TorqueRise": ["See TorqueRise.",0.0],
-	"VVT_RiseRPM": ["See RiseRPM.",0.0],
-	"VVT_OffsetTorque": ["See OffsetTorque.",0.0],
-	"VVT_FloatRate": ["See FloatRate.",0.0],
-	"VVT_DeclineRate": ["See DeclineRate.",0.0],
-	"VVT_DeclineRPM": ["See DeclineRPM.",0.0],
 }
 var clutch:Dictionary = {
-	"ClutchStable": ["Fix for engine's responses to friction. Higher values would make it sluggish.",0.0],
-	"GearRatioRatioThreshold": ["Usually on a really short gear, the engine would jitter. This fixes it to say the least.",0.0],
-	"ThresholdStable": ["Fix correlated to GearRatioRatioThreshold. Keep this value as it is.",0.0],
-	"ClutchGrip": ["Clutch Capacity (nm)",0.0],
-	"ClutchFloatReduction": ['Prevents RPM "Floating". This gives a better sensation on accelerating. Setting it too high would reverse the "floating". Setting it to 0 would turn it off.',0.0],
 	"ClutchWobble": ["",0.0],
 	"ClutchElasticity": ["",0.0],
 	"WobbleRate": ["",0.0],
@@ -130,7 +55,6 @@ var wheel:Dictionary = {
 }
 
 var cs:Dictionary = {
-	"Note": ["See TyreCompoundSettings in ViVeWheel", 0.0],
 	"Stiffness": ["",0.0],
 	"DeformFactor": ["",0.0],
 	"ForeFriction": ["",0.0],
@@ -138,8 +62,8 @@ var cs:Dictionary = {
 	"GroundDragAffection": ["",0.0],
 }
 
+
 var tyreset:Dictionary = {
-	"Note": ["See ViVeTyreSettings in the in-engine docs (search it up).", 0.0],
 }
 
 func _type(n):

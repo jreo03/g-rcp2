@@ -127,7 +127,7 @@ func _physics_process(_delta:float) -> void:
 	$tacho/tcs.visible = car_node._tcsflash
 	$tacho/esp.visible = car_node._espflash
 
-##Restarts the car's engine. Needed if the RPM dips to low and it "dies".
+##Restarts the car's engine. Needed if the RPM dips to low and it stalls.
 func engine_restart() -> void:
 	if car_node != null:
 		car_node._rpm = car_node.IdleRPM

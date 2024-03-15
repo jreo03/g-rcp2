@@ -1,6 +1,6 @@
 @tool
 extends Control
-var engine_enabled = false
+var engine_enabled:bool = false
 
 var ed:EditorPlugin = EditorPlugin.new()
 
@@ -11,20 +11,20 @@ var eds:EditorSelection = ed.get_editor_interface().get_selection()
 func entered_engine():
 	for i in $Engine_Tuner/tune/container.get_children():
 		if i.get_class() == "CheckBox":
-			i.button_pressed = $Engine_Tuner/power_graph.get(str(i.var_name))
+			i.button_pressed = $Engine_Tuner/power_graph.car.get(str(i.var_name))
 		elif i.get_class() == "SpinBox":
-			i.value = $Engine_Tuner/power_graph.get(i.var_name)
+			i.value = $Engine_Tuner/power_graph.car.get(i.var_name)
 		if i.get_node("varname").text == "":
 			i.get_node("varname").text = i.var_name
 	refresh()
 
 func refresh():
-	$Engine_Tuner/power_graph.Draw_RPM = $Engine_Tuner/power_graph.IdleRPM
-	$Engine_Tuner/power_graph.Generation_Range = $Engine_Tuner/power_graph.RPMLimit
+	$Engine_Tuner/power_graph.car.Draw_RPM = $Engine_Tuner/power_graph.car.IdleRPM
+	$Engine_Tuner/power_graph.car.Generation_Range = $Engine_Tuner/power_graph.car.RPMLimit
 	$Engine_Tuner/power_graph.draw_()
 	var peak = max($Engine_Tuner/power_graph.peaktq[0],$Engine_Tuner/power_graph.peakhp[0])
-	if peak>0:
-		$Engine_Tuner/power_graph.graph_scale = 1.0/peak
+	if peak > 0:
+		$Engine_Tuner/power_graph.graph_scale = 1.0 / peak
 	$Engine_Tuner/power_graph.draw_()
 	
 	var hpunit = "hp"
@@ -35,8 +35,8 @@ func refresh():
 	elif $Engine_Tuner/power_graph.Power_Unit == 3:
 		hpunit = "kW"
 	$Engine_Tuner/hp.text = "Power: %s%s @ %s RPM" % [str( int($Engine_Tuner/power_graph.peakhp[0]*10.0)/10.0 ), hpunit ,str( int($Engine_Tuner/power_graph.peakhp[1]*10.0)/10.0 )]
-
-	var tqunit = "ft⋅lb"
+	
+	var tqunit:String = "ft⋅lb"
 	if $Engine_Tuner/power_graph.Torque_Unit == 1:
 		tqunit = "nm"
 	elif $Engine_Tuner/power_graph.Torque_Unit == 2:
@@ -45,7 +45,7 @@ func refresh():
 
 var changed_graph_size:Vector2 = Vector2(0.0,0.0)
 
-func _process(delta):
+func _process(_delta) -> void:
 	if not changed_graph_size == $Engine_Tuner/power_graph.size and engine_enabled:
 		changed_graph_size = $Engine_Tuner/power_graph.size
 		$Engine_Tuner/power_graph.draw_()
@@ -65,9 +65,9 @@ func _process(delta):
 
 var nods_buffer:Array[Node] = []
 
-func press(state):
+func press(state:String) -> void:
 	$Engine_Tuner/alert.dialog_text = ""
-	$Engine_Tuner/alert.position.y = size.y/2.0 +$Engine_Tuner/alert.size.y/2.0
+	$Engine_Tuner/alert.position.y = size.y/2.0 +$Engine_Tuner/alert.size.y / 2.0
 	$Engine_Tuner/alert.size = Vector2(83,58)
 
 	$Engine_Tuner/confirm.dialog_text = ""
@@ -143,13 +143,13 @@ func press(state):
 			$Engine_Tuner/confirm.dialog_text = "This configuration will be applied to the following nodes: \n"
 			for i in nods:
 				$Engine_Tuner/confirm.dialog_text += str("-") +str(i.name) +str("\n")
-
-					
+			
+			
 			if len(missing) == 0:
 				$Engine_Tuner/confirm.popup()
 			else:
 				$Engine_Tuner/alert.popup()
-
+	
 	elif state == "engine_append":
 		nods_buffer = eds.get_selected_nodes().duplicate(true)
 		var missing = []
@@ -187,11 +187,11 @@ func press(state):
 				for g in arrays:
 					arrays.set(arrays.find(g),g*Vector3($Collision/axis_x2.value,$Collision/axis_y2.value,$Collision/axis_z2.value) +Vector3($Collision/axis_x.value,$Collision/axis_y.value,$Collision/axis_z.value) )
 				i.shape.set_points(arrays)
-
+			
 			$Collision/alert.visible = false
 			$Collision/applied.popup()
 
-func confirm(state):
+func confirm(state:String) -> void:
 	if state == "engine_apply":
 		for i in $Engine_Tuner/tune/container.get_children():
 			for n in nods_buffer:

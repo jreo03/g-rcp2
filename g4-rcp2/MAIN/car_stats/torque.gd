@@ -1,6 +1,8 @@
 extends Resource
 ##A resource containing torque related variables.
 ##If "VVT" is used as a construct parameter, it will instantiate with VVT variables.
+## [br] VVT variables are the second iteration. 
+## Vehicles will select VVT settings when RPMs reach a certain point (VVTRPM), portrayed as Variable Valve Timing.
 class_name ViVeCarTorque
 
 #@export variable valve timing triggered

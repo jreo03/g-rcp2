@@ -28,6 +28,7 @@ var c_pws:Array[ViVeWheel]
 var car_controls_cache:ViVeCarControls.ControlType = ViVeCarControls.ControlType.CONTROLS_KEYBOARD_MOUSE
 var _control_func:Callable = car_controls.controls_keyboard_mouse
 
+## Gear Assistance.
 @export var GearAssist:ViVeGearAssist = ViVeGearAssist.new()
 
 @export_group("Meta")
@@ -82,7 +83,7 @@ enum TransmissionTypes {
 ##Transmission automation settings (for Automatic, CVT and Semi-Auto).
 class newAutoSettings:
 	extends Resource
-	## Shift rpm (auto).
+	## Upshift RPM (auto).
 	@export var shift_rpm:float = 6500.0
 	## Downshift threshold (auto).
 	@export var downshift_thresh:float = 300.0
@@ -101,12 +102,20 @@ class newAutoSettings:
 4000.0, # engagement rpm (auto/dct/cvt)
 ]
 
+## Settings for CVT.
 @export var CVTSettings:ViVeCVT = ViVeCVT.new()
 
 @export_group("Stability")
+## Anti-lock Braking System. 
 @export var ABS:ViVeABS = ViVeABS.new()
+## @experimental 
+## Electronic Stability Program. [br][br] CURRENTLY DOESN'T WORK!
 @export var ESP:ViVeESP = ViVeESP.new()
+## @experimental 
+## Prevents wheel slippage using the brakes. [br] [br] CURRENTLY DOESN'T WORK!
 @export var BTCS:ViVeBTCS = ViVeBTCS.new()
+## @experimental 
+## Prevents wheel slippage by partially closing the throttle. [br] [br] CURRENTLY DOESN'T WORK!
 @export var TTCS:ViVeTTCS = ViVeTTCS.new()
 
 @export_group("Differentials")
@@ -136,18 +145,19 @@ class newAutoSettings:
 @export var DeadRPM:float = 100.0
 
 @export_group("ECU")
-
+## Throttle Cutoff RPM.
 @export var RPMLimit:float = 7000.0
-
+## Throttle cutoff time.
 @export var LimiterDelay:float = 4
 
 @export var IdleRPM:float = 800.0
-
-@export var ThrottleLimit:float = 0.0
-
-@export var ThrottleIdle:float = 0.25
-
-@export var VVTRPM:float = 4500.0 # set this beyond the rev range to disable it, set it to 0 to use this vvt state permanently
+## Minimum throttle cutoff.
+@export_range(0.0, 1.0) var ThrottleLimit:float = 0.0
+## Throttle intake on idle.
+@export_range(0.0, 1.0) var ThrottleIdle:float = 0.25
+## Timing on RPM.
+## Set this beyond the rev range to disable it, set it to 0 to use this vvt state permanently.
+@export var VVTRPM:float = 4500.0 
 
 @export_group("Torque normal state")
 @export var torque_norm:ViVeCarTorque = ViVeCarTorque.new()
@@ -156,13 +166,22 @@ class newAutoSettings:
 @export var torque_vvt:ViVeCarTorque = ViVeCarTorque.new("VVT")
 
 @export_group("Clutch")
+## Fix for engine's responses to friction. Higher values would make it sluggish.
 @export var ClutchStable:float = 0.5
+## Usually on a really short gear, the engine would jitter. This fixes it to say the least.
 @export var GearRatioRatioThreshold:float = 200.0
+## Fix correlated to GearRatioRatioThreshold. Keep this value as it is.
 @export var ThresholdStable:float = 0.01
+## Clutch Capacity (nm).
 @export var ClutchGrip:float = 176.125
+## Prevents RPM "Floating". This gives a better sensation on accelerating. 
+## Setting it too high would reverse the "floating". Setting it to 0 would turn it off.
 @export var ClutchFloatReduction:float = 27.0
+
 @export var ClutchWobble:float = 2.5 * 0
+
 @export var ClutchElasticity:float = 0.2 * 0
+
 @export var WobbleRate:float = 0.0
 
 @export_group("Forced Inductions")
@@ -199,8 +218,6 @@ class newAutoSettings:
 @export var BlowRate:float = 35.0
 ## Deadzone before boost.
 @export var SCThreshold:float = 6.0
-
-#TODO: Prepend any non-exported variables with a "_" so they are hidden from docs.
 
 var _rpm:float = 0.0
 var _rpmspeed:float = 0.0

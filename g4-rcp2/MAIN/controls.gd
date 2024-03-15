@@ -13,43 +13,51 @@ enum ControlType {
 }
 ##Which ControlType is being used.
 @export_enum("Keyboard and Mouse", "Keyboard", "Touch controls (Gyro)", "Joypad") var control_type:int = 0
-
+## Applies all control settings globally. This also affects cars that were already spawned.
 @export var Use_Global_Control_Settings:bool = false
-##Use mouse steering if keyboard and mouse controls are active.
+##Uses your cursor to steer the vehicle if keyboard and mouse controls are active.
 @export var UseMouseSteering:bool = false
-##Use accelerometer steering if touch controls are active.
+## Uses your accelerometre to steer, typically on mobile devices that have them.
 @export var UseAccelerometreSteering :bool = false
-
+## Steering amplification on mouse and accelerometre steering.
 @export var SteerSensitivity:float = 1.0
-
+## Keyboard steering response rate.
 @export var KeyboardSteerSpeed:float = 0.025
-
+## Keyboard steering centring rate.
 @export var KeyboardReturnSpeed:float = 0.05
-
+## Return rate when steering from an opposite direction.
 @export var KeyboardCompensateSpeed:float = 0.1
-
+## Reduces steering rate based on the vehicle’s speed.
 @export var SteerAmountDecay:float = 0.015 # understeer help
+## Drift Help. The higher the value, the more the car will automatically center itself when drifting.
 @export var SteeringAssistance:float = 1.0
+## Drift Stability Help.
 @export var SteeringAssistanceAngular:float = 0.12
-
 ##@experimental Simulate rack and pinion steering physics.
 @export var LooseSteering :bool = false
-
+## Throttle pressure rate.
 @export var OnThrottleRate:float = 0.2
+## Throttle depress rate.
 @export var OffThrottleRate:float = 0.2
-
+## Brake pressure rate.
 @export var OnBrakeRate:float = 0.05
+## Brake depress rate.
 @export var OffBrakeRate:float = 0.1
-
+## Handbrake pull rate.
 @export var OnHandbrakeRate:float = 0.2
+## Handbrake push rate.
 @export var OffHandbrakeRate:float = 0.2
-
+## Clutch release rate.
 @export var OnClutchRate:float = 0.2
+## Clutch engage rate.
 @export var OffClutchRate:float = 0.2
-
+## Maximum throttle amount.
 @export var MaxThrottle:float = 1.0
+## Maximum brake amount.
 @export var MaxBrake:float = 1.0
+## Maximum handbrake amount.
 @export var MaxHandbrake:float = 1.0
+## Maxiumum clutch amount.
 @export var MaxClutch:float = 1.0
 
 var clock_mult:float = 1.0

@@ -385,7 +385,6 @@ text = "change scene"
 initial_position = 1
 size = Vector2i(700, 300)
 visible = false
-wrap_controls = true
 transparent = true
 popup_window = true
 script = ExtResource("9_3fasi")
@@ -398,13 +397,14 @@ offset_right = 63.0
 offset_bottom = 179.0
 grow_horizontal = 2
 grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
 
 [node name="Information" type="HSplitContainer" parent="Window/TabContainer"]
 layout_mode = 2
 
 [node name="VBoxContainer" type="VBoxContainer" parent="Window/TabContainer/Information"]
 layout_mode = 2
-size_flags_horizontal = 3
 
 [node name="watermark" type="TextureRect" parent="Window/TabContainer/Information/VBoxContainer"]
 layout_mode = 2
@@ -424,7 +424,6 @@ size_flags_horizontal = 3
 
 [node name="container" type="VBoxContainer" parent="Window/TabContainer/Information/scroll"]
 layout_mode = 2
-size_flags_horizontal = 3
 
 [node name="clabel" type="Label" parent="Window/TabContainer/Information/scroll/container"]
 layout_mode = 2
@@ -568,6 +567,8 @@ script = ExtResource("4")
 
 [node name="container" type="GridContainer" parent="Window/TabContainer/Change Scene"]
 layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
 columns = 3
 
 [node name="_DEFAULT" type="Button" parent="Window/TabContainer/Change Scene/container"]
@@ -603,6 +604,8 @@ script = ExtResource("10")
 
 [node name="container" type="GridContainer" parent="Window/TabContainer/Swap Car"]
 layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
 columns = 3
 
 [node name="_DEFAULT" type="Button" parent="Window/TabContainer/Swap Car/container"]
@@ -640,7 +643,7 @@ custom_minimum_size = Vector2(240, 60)
 layout_mode = 2
 max_value = 2.0
 script = ExtResource("7")
-var_name = "GEAR_ASSIST"
+var_name = "assist_level"
 treat_as_int = true
 
 [node name="text" type="Label" parent="Window/TabContainer/Control Config/container/gear_assist"]
@@ -709,6 +712,7 @@ popup/item_1/id = 0
 popup/item_2/text = "Joypad"
 popup/item_2/id = 2
 script = ExtResource("12_ofvnx")
+var_name = "control_type"
 
 [node name="steer_decay" type="HSlider" parent="Window/TabContainer/Control Config/container"]
 custom_minimum_size = Vector2(240, 60)
