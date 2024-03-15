@@ -31,18 +31,18 @@ class_name ViVeWheel
 class TyreCompoundSettings:
 	extends Resource
 	##@experimental Optimum tyre temperature for maximum grip effect. (Currently isn't used).
-	var OptimumTemp:float = 50.0
-	var Stiffness:float = 1.0
+	@export var OptimumTemp:float = 50.0
+	@export var Stiffness:float = 1.0
 	##Higher value would reduce grip.
-	var TractionFactor:float = 1.0
-	var DeformFactor:float = 1.0
-	var ForeFriction:float = 0.125
-	var ForeStiffness:float = 0.0
-	var GroundDragAffection:float = 1.0
+	@export var TractionFactor:float = 1.0
+	@export var DeformFactor:float = 1.0
+	@export var ForeFriction:float = 0.125
+	@export var ForeStiffness:float = 0.0
+	@export var GroundDragAffection:float = 1.0
 	##Increase in grip on loose surfaces.
-	var BuildupAffection:float = 1.0
+	@export var BuildupAffection:float = 1.0
 	##@experimental Tyre Cooldown Rate. (Currently isn't used).
-	var CoolRate:float = 0.000075
+	@export var CoolRate:float = 0.000075
 
 #@export var _CompoundSettings:Dictionary = {
 #	"OptimumTemp": 50.0,
@@ -253,8 +253,6 @@ func _physics_process(_delta:float) -> void:
 	
 	translation = last_translation
 	
-	assert(position < Vector3(4.0, 4.0, 4.0), "IT BLEW UP!!!")
-	
 	c_camber = Camber + Caster * rotation.y * float(translation.x > 0.0) -Caster * rotation.y * float(translation.x < 0.0)
 	
 	directional_force = Vector3(0,0,0)
@@ -271,8 +269,6 @@ func _physics_process(_delta:float) -> void:
 	
 	velo_2.global_position = $geometry.global_position
 	
-	assert(position < Vector3(4.0, 4.0, 4.0), "IT BLEW UP!!! 2")
-	
 	$velocity/step.global_position = velocity_last
 	$velocity2/step.global_position = velocity2_last
 	velocity_last = velo_1.global_position
@@ -283,8 +279,6 @@ func _physics_process(_delta:float) -> void:
 	
 	velo_1.rotation = Vector3(0,0,0)
 	velo_2.rotation = Vector3(0,0,0)
-	
-	assert(position < Vector3(4.0, 4.0, 4.0), "IT BLEW UP!!!! 3")
 	
 	# VARS
 	var elasticity:float = S_Stiffness

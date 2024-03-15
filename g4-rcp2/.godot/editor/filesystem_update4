@@ -1,11 +1,9 @@
 res://default_env.tres
-res://world.tscn
-res://MAIN/misc/tyre sounds/vars.gd
-res://MAIN/misc/engine sound/crossfade.gd
-res://MAIN/wheel.gd
-res://MAIN/misc/mechanical sounds/other_sounds.gd
-res://MAIN/car.gd
-res://MISC/misc scripts/debug.gd
-res://MAIN/vitavehicle.gd
-res://MISC/graph/draw.gd
 res://MISC/debugger.tscn
+res://MAIN/misc/tyre sounds/vars.gd
+res://MISC/car swapper/cars/Synic EKI [Rally]/assets/setups.gd
+res://world.tscn
+res://MAIN/car_stats/tyre_settings.gd
+res://MAIN/wheel.gd
+res://MISC/scene swapper/scenes/Nitrovista - Aqua Highway/assets/buoyancy.gd
+res://MISC/scene swapper/scenes/Nitrovista - Aqua Highway/assets/water_reflection.gd

@@ -1,0 +1,22 @@
+[gd_resource type="ShaderMaterial" load_steps=3 format=2]
+
+[ext_resource path="res://MISC/scene swapper/scenes/Nitrovista - Aqua Highway/assets/tree.png" type="Texture" id=1]
+
+[sub_resource type="Shader" id=57]
+code = "// NOTE: Shader automatically converted from Godot Engine 3.5.1.stable's SpatialMaterial.
+
+shader_type spatial;
+render_mode async_visible,blend_mix,depth_draw_opaque,cull_disabled,diffuse_burley,specular_schlick_ggx;
+
+uniform sampler2D texture_albedo : hint_albedo;
+
+void fragment() {
+	vec4 albedo_tex = texture(texture_albedo,UV);
+	ALPHA = albedo_tex.a;
+	ALPHA_SCISSOR = 0.1;
+}
+"
+
+[resource]
+shader = SubResource( 57 )
+shader_param/texture_albedo = ExtResource( 1 )

@@ -130,7 +130,7 @@ func _physics_process(_delta:float) -> void:
 ##Restarts the car's engine. Needed if the RPM dips to low and it "dies".
 func engine_restart() -> void:
 	if car_node != null:
-		car_node._rpm = car_node._IdleRPM
+		car_node._rpm = car_node.IdleRPM
 
 func toggle_forces() -> void:
 	Input.action_press("toggle_debug_mode")
