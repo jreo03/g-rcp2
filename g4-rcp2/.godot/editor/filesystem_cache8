@@ -1,31 +1,39 @@
 fc8a56933c4b1c8d796fdb8f7a9f9475
-::res://::1710536231
+::res://::1710555179
 base car.tscn::PackedScene::6006632351280429546::1710388597::0::1::::<><>::uid://df2i30irlljkl::::res://MAIN/wheel.tscn<>res://MAIN/car.gd<>uid://c7m04qiimdydw::::res://MAIN/misc/engine sound/engine.tscn<>uid://del2h14nydk3g::::res://MAIN/misc/textures/rim.jpg<>uid://d1vmrvs3aj84o::::res://MAIN/misc/tyre sounds/tyres.tscn<>uid://bvqp2v3vmlgcn::::res://MAIN/misc/mechanical sounds/other_sounds.tscn<>uid://kb7hq7qvuul3::::res://MAIN/misc/backfire_particles/fire.tscn<>uid://1a0k3s3amej8::::res://MAIN/misc/backfire_particles/backfire.png
 default_bus_layout.tres::AudioBusLayout::843813187252370841::1694830658::0::1::::<><>::
-default_env.tres::Environment::3574772965805249146::1710534243::0::1::::<><>::
+default_env.tres::Environment::3574772965805249146::1710555073::0::1::::<><>::
 export_presets.cfg::TextFile::-1::1709856908::0::1::::<><>::
 Grid.png::CompressedTexture2D::787967628881786892::1681240534::1709856878::1::::<><>::
 icon.png::CompressedTexture2D::5086476943662964858::1681240534::1709573525::1::::<><>::
 logo.png::CompressedTexture2D::4407219616870203296::1681240534::1709573525::1::::<><>::
 morning_env.scn::PackedScene::3285800326529799812::1709585239::0::1::::<><>::
 TEMPLATE.tscn::PackedScene::7693953741836897403::1709585239::0::1::::<><>::uid://crtwme8ggggra::::res://base car.tscn<>res://MAIN/misc/camera.gd<>res://MAIN/ground_surface_variables.gd<>uid://cv0iolhv1qxsn::::res://MISC/scene swapper/scenes/Test Scene/assets/Grid.png
-world.tscn::PackedScene::5607897601783510848::1710531535::0::1::::<><>::uid://crtwme8ggggra::::res://base car.tscn<>res://MISC/misc scripts/world_root.gd<>res://MAIN/misc/camera.gd<>uid://b77dj0608nvq0::::res://MISC/debugger.tscn<>uid://diafjore21wn::::res://MISC/scene swapper/scenes/Test Scene/scene.tscn<>uid://bm2wwe6lx2b53::::res://morning_env.scn<>uid://b3exh7m2ddrcy::::res://MISC/mobile controls/mobile.tscn<>uid://b315i7ikjj32c::::res://logo.png
+world.tscn::PackedScene::5607897601783510848::1710555074::0::1::::<><>::uid://crtwme8ggggra::::res://base car.tscn<>res://MISC/misc scripts/world_root.gd<>res://MAIN/misc/camera.gd<>uid://b77dj0608nvq0::::res://MISC/debugger.tscn<>uid://diafjore21wn::::res://MISC/scene swapper/scenes/Test Scene/scene.tscn<>uid://bm2wwe6lx2b53::::res://morning_env.scn<>uid://b3exh7m2ddrcy::::res://MISC/mobile controls/mobile.tscn<>uid://b315i7ikjj32c::::res://logo.png
 ::res://addons/::25200
-::res://addons/vitavehicle_ui/::1710534243
+::res://addons/vitavehicle_ui/::1710554706
 api_references.gd::GDScript::-1::1710530467::0::1::::<>VBoxContainer<>::
+collision.tscn::PackedScene::8482006128480112482::1710545357::0::1::::<><>::uid://btyvoi7jkhec0::::res://FONT/DroidSans.ttf
+engine_tuner.tscn::PackedScene::3692060514804277427::1710553354::0::1::::<><>::uid://tma76im8frc::::res://addons/vitavehicle_ui/portable_graph/power_graph.tscn<>uid://btyvoi7jkhec0::::res://FONT/DroidSans.ttf<>res://addons/vitavehicle_ui/tune_vars.gd
 folds.gd::GDScript::-1::1710369603::0::1::::<>Button<>::
-graph.gd::GDScript::-1::1710533684::0::1::::<>Control<>::
-handler.gd::GDScript::-1::1710534220::0::1::::<>Control<>::
-interface.tscn::PackedScene::4442507923572005845::1710534243::0::1::::<><>::uid://b315i7ikjj32c::::res://logo.png<>res://addons/vitavehicle_ui/graph.gd<>res://addons/vitavehicle_ui/handler.gd<>res://addons/vitavehicle_ui/tune_vars.gd<>uid://btyvoi7jkhec0::::res://FONT/DroidSans.ttf<>uid://luy46vxwmlu4::::res://FONT/DroidSans-Bold.ttf
+handler.gd::GDScript::-1::1710553367::0::1::::<>TabContainer<>::
+inform.tscn::PackedScene::3901245649205952464::1710545374::0::1::::<><>::uid://btyvoi7jkhec0::::res://FONT/DroidSans.ttf<>uid://b315i7ikjj32c::::res://logo.png
+interface.tscn::PackedScene::4442507923572005845::1710553488::0::1::::<><>::uid://b315i7ikjj32c::::res://logo.png<>uid://bsupxybgmf5vj::::res://addons/vitavehicle_ui/engine_tuner.tscn<>uid://ds30nwmnponmw::::res://addons/vitavehicle_ui/collision.tscn<>res://addons/vitavehicle_ui/handler.gd<>uid://re2icjigeohf::::res://addons/vitavehicle_ui/tutors.tscn<>uid://btyvoi7jkhec0::::res://FONT/DroidSans.ttf<>uid://bvt17fohgb3ts::::res://addons/vitavehicle_ui/inform.tscn
 plugin.cfg::TextFile::-1::1710037804::0::1::::<><>::
-script.gd::GDScript::-1::1710037976::0::1::::<>EditorPlugin<>::
+script.gd::GDScript::-1::1710554706::0::1::::<>EditorPlugin<>::
 tune_vars.gd::GDScript::-1::1681240534::0::1::::<>Node<>::
+tutors.tscn::PackedScene::1203121617340338411::1710545366::0::1::::<><>::uid://luy46vxwmlu4::::res://FONT/DroidSans-Bold.ttf<>uid://btyvoi7jkhec0::::res://FONT/DroidSans.ttf
+::res://addons/vitavehicle_ui/portable_graph/::1710555074
+graph.gd::GDScript::-1::1710555074::0::1::::ViVeTorqueGraph<>Control<>::
+power_graph.tscn::PackedScene::39953510257297632::1710553087::0::1::::<><>::res://addons/vitavehicle_ui/portable_graph/graph.gd
+power_graph_ui.gd::GDScript::-1::1710554952::0::1::::<>Control<>::
+power_graph_ui.tscn::PackedScene::752810775993910951::1710554706::0::1::::<><>::uid://tma76im8frc::::res://addons/vitavehicle_ui/portable_graph/power_graph.tscn<>res://addons/vitavehicle_ui/portable_graph/power_graph_ui.gd
 ::res://FONT/::1709573524
 Apache License.txt::TextFile::-1::1681240534::0::1::::<><>::
 DroidSans-Bold.ttf::FontFile::814875492688835281::1681240534::1709573524::1::::<><>::
 DroidSans.ttf::FontFile::3770854306919019749::1681240534::1709573524::1::::<><>::
-::res://MAIN/::1710530133
-car.gd::GDScript::-1::1710529141::0::1::::ViVeCar<>RigidBody3D<>::
+::res://MAIN/::1710554108
+car.gd::GDScript::-1::1710554108::0::1::::ViVeCar<>RigidBody3D<>::
 controls.gd::GDScript::-1::1710530133::0::1::::ViVeCarControls<>Resource<>::
 ground_surface_variables.gd::GDScript::-1::1709864744::0::1::::<>StaticBody3D<>::
 surface_vars.gd::GDScript::-1::1709864419::0::1::::ViVeSurfaceVars<>Resource<>::
@@ -84,7 +92,7 @@ smoke.tscn::PackedScene::1192038084724818200::1710049438::0::1::::<><>::res://MA
 sphere_normals2.png::CompressedTexture2D::8601348623129901671::1681348636::1709856879::1::::<><>::
 sphere_normals.png::CompressedTexture2D::2904618001309106605::1681348692::1709856878::1::::<><>::
 tyre_smoke.gd::GDScript::-1::1709937593::0::1::::ViVeTyreSmoke<>Node3D<>::
-::res://MAIN/misc/tyre sounds/::1710534015
+::res://MAIN/misc/tyre sounds/::1710555052
 offroad.ogg::AudioStreamOggVorbis::440321274424287445::1681240534::1709573524::1::::<><>::
 peel0.ogg::AudioStreamOggVorbis::6000113688998064023::1681240534::1710302240::1::::<><>::
 peel1.ogg::AudioStreamOggVorbis::8266698218543596359::1681240534::1709573524::1::::<><>::
@@ -94,7 +102,7 @@ roll1.ogg::AudioStreamOggVorbis::2277986835550223673::1681240534::1709573524::1:
 roll2.ogg::AudioStreamOggVorbis::8856070905148784731::1681240534::1709573524::1::::<><>::
 tyres.gd::GDScript::-1::1710302815::0::1::::<>Node3D<>::
 tyres.tscn::PackedScene::9028284012982398516::1710302735::0::1::::<><>::res://MAIN/misc/tyre sounds/tyres.gd<>res://MAIN/misc/tyre sounds/vars.gd<>uid://gjka6jqu3b8p::::res://MAIN/misc/tyre sounds/offroad.ogg<>uid://crqq84gd1fbsh::::res://MAIN/misc/tyre sounds/peel0.ogg<>uid://04ebjdn23ih8::::res://MAIN/misc/tyre sounds/roll0.ogg<>uid://7pqd0tyxcjgj::::res://MAIN/misc/tyre sounds/roll1.ogg<>uid://dp1pkuseb4gfn::::res://MAIN/misc/tyre sounds/peel1.ogg<>uid://dyf7guf22o6t0::::res://MAIN/misc/tyre sounds/roll2.ogg<>uid://d3b45tmngsrf2::::res://MAIN/misc/tyre sounds/peel2.ogg
-vars.gd::GDScript::-1::1710534015::0::1::::<>AudioStreamPlayer3D<>::
+vars.gd::GDScript::-1::1710555052::0::1::::<>AudioStreamPlayer3D<>::
 ::res://MISC/::1710531535
 debugger.tscn::PackedScene::4698723353516704613::1710531535::0::1::::<><>::uid://b315i7ikjj32c::::res://logo.png<>res://MISC/misc scripts/debug.gd<>res://MISC/scene swapper/scene swapper.gd<>res://MISC/graphics_config/graphics config.gd<>res://MISC/controls config/slider_variables.gd<>uid://btyvoi7jkhec0::::res://FONT/DroidSans.ttf<>res://MISC/controls config/run.gd<>res://MISC/controls config/check_variables.gd<>res://MISC/misc scripts/option_control.gd<>res://MISC/car swapper/car swapper.gd<>uid://cr5l3r8wqkyn6::::res://MAIN/misc/textures/sw.png<>uid://b7tkt12prqch8::::res://MAIN/misc/textures/sw_desired.png<>res://MISC/controls config/option_variables.gd<>uid://b1vo60v1pjs6w::::res://MISC/tachometre/tacho.tscn<>uid://cbskusbekrb4l::::res://MISC/vertical progress bar/bar.tscn<>uid://cnjbclsh2lklc::::res://MISC/visual gravity system/vgs.tscn<>uid://2ojbutsqhnh4::::res://MISC/graph/display.tscn
 ::res://MISC/autoload/::1709858609
@@ -102,8 +110,8 @@ graphics.gd::GDScript::-1::1709858609::0::1::::<>Node<>::
 ::res://MISC/car swapper/::1710387807
 car swapper.gd::GDScript::-1::1710387807::0::1::::<>ScrollContainer<>::
 ::res://MISC/car swapper/cars/::1710483629
-::res://MISC/car swapper/cars/Eclipse SRC/::1709585234
-scene.tscn::PackedScene::6631471648446349857::1709585234::0::1::::<><>::uid://df2i30irlljkl::::res://MAIN/wheel.tscn<>res://MAIN/car.gd<>uid://c7m04qiimdydw::::res://MAIN/misc/engine sound/engine.tscn<>uid://ckt75vv2etwoa::::res://MISC/car swapper/cars/Eclipse SRC/engine sounds/1.ogg<>uid://d1vmrvs3aj84o::::res://MAIN/misc/tyre sounds/tyres.tscn<>uid://cqdajib2yo6rv::::res://MISC/car swapper/cars/Eclipse SRC/engine sounds/2.ogg<>uid://bvqp2v3vmlgcn::::res://MAIN/misc/mechanical sounds/other_sounds.tscn<>uid://d6eb4cnoayb7::::res://MISC/car swapper/cars/Eclipse SRC/engine sounds/3.ogg<>uid://bgadta1w1wxsb::::res://MISC/car swapper/cars/Eclipse SRC/engine sounds/4.ogg<>uid://css4spfpu75vb::::res://MISC/car swapper/cars/Eclipse SRC/engine sounds/5.ogg<>uid://cxwcusr1xcuau::::res://MISC/car swapper/cars/Eclipse SRC/engine sounds/6.ogg<>uid://ckhm05fdvk5rf::::res://MISC/car swapper/cars/Eclipse SRC/engine sounds/7.ogg<>uid://bvu4bihqkrgdt::::res://MISC/car swapper/cars/Eclipse SRC/engine sounds/8.ogg
+::res://MISC/car swapper/cars/Eclipse SRC/::1710554154
+scene.tscn::PackedScene::6631471648446349857::1710554154::0::1::::<><>::uid://df2i30irlljkl::::res://MAIN/wheel.tscn<>res://MAIN/car.gd<>uid://c7m04qiimdydw::::res://MAIN/misc/engine sound/engine.tscn<>uid://ckt75vv2etwoa::::res://MISC/car swapper/cars/Eclipse SRC/engine sounds/1.ogg<>uid://d1vmrvs3aj84o::::res://MAIN/misc/tyre sounds/tyres.tscn<>uid://cqdajib2yo6rv::::res://MISC/car swapper/cars/Eclipse SRC/engine sounds/2.ogg<>uid://bvqp2v3vmlgcn::::res://MAIN/misc/mechanical sounds/other_sounds.tscn<>uid://d6eb4cnoayb7::::res://MISC/car swapper/cars/Eclipse SRC/engine sounds/3.ogg<>uid://bgadta1w1wxsb::::res://MISC/car swapper/cars/Eclipse SRC/engine sounds/4.ogg<>uid://css4spfpu75vb::::res://MISC/car swapper/cars/Eclipse SRC/engine sounds/5.ogg<>uid://cxwcusr1xcuau::::res://MISC/car swapper/cars/Eclipse SRC/engine sounds/6.ogg<>uid://ckhm05fdvk5rf::::res://MISC/car swapper/cars/Eclipse SRC/engine sounds/7.ogg<>uid://bvu4bihqkrgdt::::res://MISC/car swapper/cars/Eclipse SRC/engine sounds/8.ogg
 thumbnail.png::CompressedTexture2D::5547623015528300654::1666085960::1709573526::1::::<><>::
 ::res://MISC/car swapper/cars/Eclipse SRC/engine sounds/::1709573524
 1.ogg::AudioStreamOggVorbis::5515950635343455660::1684098466::1709573524::1::::<><>::

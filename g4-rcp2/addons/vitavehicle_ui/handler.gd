@@ -1,5 +1,5 @@
 @tool
-extends Control
+extends TabContainer
 var engine_enabled:bool = false
 
 var ed:EditorPlugin = EditorPlugin.new()
@@ -27,7 +27,7 @@ func refresh():
 		$Engine_Tuner/power_graph.graph_scale = 1.0 / peak
 	$Engine_Tuner/power_graph.draw_()
 	
-	var hpunit = "hp"
+	var hpunit:String = "hp"
 	if $Engine_Tuner/power_graph.Power_Unit == 1:
 		hpunit = "bhp"
 	elif $Engine_Tuner/power_graph.Power_Unit == 2:
@@ -46,9 +46,9 @@ func refresh():
 var changed_graph_size:Vector2 = Vector2(0.0,0.0)
 
 func _process(_delta) -> void:
-	if not changed_graph_size == $Engine_Tuner/power_graph.size and engine_enabled:
-		changed_graph_size = $Engine_Tuner/power_graph.size
-		$Engine_Tuner/power_graph.draw_()
+#	if not changed_graph_size == $Engine_Tuner/power_graph.size and engine_enabled:
+#		changed_graph_size = $Engine_Tuner/power_graph.size
+#		$Engine_Tuner/power_graph.draw_()
 	
 	if engine_enabled:
 		for i in $Engine_Tuner/tune/container.get_children():
@@ -80,47 +80,35 @@ func press(state:String) -> void:
 	
 	if state == "unit_tq":
 		$Engine_Tuner/power_graph.Torque_Unit += 1
-		if $Engine_Tuner/power_graph.Torque_Unit>2:
+		if $Engine_Tuner/power_graph.Torque_Unit > 2:
 			$Engine_Tuner/power_graph.Torque_Unit = 0
 		$Engine_Tuner/power_graph.draw_()
 		refresh()
 	elif state == "unit_hp":
 		$Engine_Tuner/power_graph.Power_Unit += 1
-		if $Engine_Tuner/power_graph.Power_Unit>3:
+		if $Engine_Tuner/power_graph.Power_Unit > 3:
 			$Engine_Tuner/power_graph.Power_Unit = 0
 		$Engine_Tuner/power_graph.draw_()
 		refresh()
 	
 	elif state == "engine":
-		$menu.visible = false
-		$Engine_Tuner.visible = true
+		current_tab = 0
 		entered_engine()
 		engine_enabled = true
 	elif state == "weight_dist":
-		$menu.visible = false
-		$Collision.visible = true
+		current_tab = 1
 	elif state == "info":
-		$menu.visible = false
-		$inform.visible = true
+		current_tab = 4
 	elif state == "help":
-		$tutors.visible = true
-		$menu.visible = false
+		current_tab = 2
 	elif state == "api":
-		$refer/yes/container.generate()
-		$refer.visible = true
-		$menu.visible = false
+		current_tab = 4
 	elif state == "back":
-		$tutors.visible = false
-		$refer.visible = false
-		$Collision.visible = false
-		$inform.visible = false
-		$menu.visible = true
-		$Engine_Tuner.visible = false
-		engine_enabled = false
+		current_tab = 3
 	elif state == "engine_apply":
 		nods_buffer = eds.get_selected_nodes().duplicate(true)
-		var missing = []
-		var nods = eds.get_selected_nodes()
+		var missing:PackedStringArray = []
+		var nods:Array[Node] = eds.get_selected_nodes()
 		if len(eds.get_selected_nodes()) == 0:
 			$Engine_Tuner/alert.dialog_text = "Nothing is selected."
 			$Engine_Tuner/alert.popup()
@@ -139,7 +127,6 @@ func press(state:String) -> void:
 						if not i.var_name in i_nods:
 							missing.append(i.var_name)
 			
-			
 			$Engine_Tuner/confirm.dialog_text = "This configuration will be applied to the following nodes: \n"
 			for i in nods:
 				$Engine_Tuner/confirm.dialog_text += str("-") +str(i.name) +str("\n")
@@ -152,7 +139,7 @@ func press(state:String) -> void:
 	
 	elif state == "engine_append":
 		nods_buffer = eds.get_selected_nodes().duplicate(true)
-		var missing = []
+		var missing:PackedStringArray = []
 		var nods = eds.get_selected_nodes()
 		if len(eds.get_selected_nodes()) == 0:
 			$Engine_Tuner/alert.dialog_text = "Nothing is selected."
@@ -206,3 +193,19 @@ func confirm(state:String) -> void:
 					i.value = float(n.get(i.var_name))
 				elif i.get_class() == "CheckBox":
 					i.button_pressed = n.get(i.var_name)
+
+func _on_info_pressed() -> void:
+	set_current_tab(4)
+
+
+
+func _on_history_pressed() -> void:
+	pass # Replace with function body.
+
+
+func _on_help_pressed() -> void:
+	pass # Replace with function body.
+
+
+func _on_api_pressed() -> void:
+	pass # Replace with function body.

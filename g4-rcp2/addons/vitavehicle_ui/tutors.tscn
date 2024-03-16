@@ -1,0 +1,261 @@
+[gd_scene load_steps=3 format=3 uid="uid://re2icjigeohf"]
+
+[ext_resource type="FontFile" uid="uid://luy46vxwmlu4" path="res://FONT/DroidSans-Bold.ttf" id="1_g00fu"]
+[ext_resource type="FontFile" uid="uid://btyvoi7jkhec0" path="res://FONT/DroidSans.ttf" id="2_tmb1b"]
+
+[node name="tutors" type="Control"]
+visible = false
+layout_mode = 3
+anchors_preset = 0
+
+[node name="ColorRect" type="ColorRect" parent="."]
+show_behind_parent = true
+layout_mode = 0
+anchor_left = 0.0292969
+anchor_top = 0.103333
+anchor_right = 0.833008
+anchor_bottom = 0.946667
+color = Color(0, 0, 0, 0.184314)
+
+[node name="yes" type="ScrollContainer" parent="."]
+layout_mode = 0
+anchor_left = 0.0292969
+anchor_top = 0.103333
+anchor_right = 0.833008
+anchor_bottom = 0.946667
+scroll_vertical = 100
+
+[node name="container" type="VBoxContainer" parent="yes"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="start" type="Label" parent="yes/container"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("1_g00fu")
+theme_override_font_sizes/font_size = 32
+text = "Starting"
+autowrap_mode = 2
+
+[node name="text" type="Label" parent="yes/container"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_tmb1b")
+text = "The main playable scene is world.tscn, provided with a sample car (base car.tscn) and a map from one of the assets from the MISC directory. The \"debug\" Control node is used for monitoring and showcasing examples of pre-tuned cars from the MISC directory.
+
+"
+autowrap_mode = 2
+
+[node name="misc" type="Label" parent="yes/container"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("1_g00fu")
+theme_override_font_sizes/font_size = 22
+text = "Directories"
+autowrap_mode = 2
+
+[node name="text2" type="Label" parent="yes/container"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_tmb1b")
+text = "The MAIN folder is located just at the bare surface of the project. It's the core of this physics engine, whereas MISC is just additional content that can be reused and edited. Deleting anything in the core folder (MAIN) may cause the physics engine to not work, while MISC itself will just break the project on reload.
+
+The \"misc\" (uncapitalised) folder located within MAIN are also additional content which I find useful. You can also modify or delete/replace them too.
+
+"
+autowrap_mode = 2
+
+[node name="disc" type="Label" parent="yes/container"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("1_g00fu")
+theme_override_font_sizes/font_size = 22
+text = "Note"
+autowrap_mode = 2
+
+[node name="text7" type="Label" parent="yes/container"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_tmb1b")
+text = "Knowing both the basics of Godot's functionality and an intermediate knowledge on cars are recommended. If you need help - ask questions on the itch.io page.
+"
+autowrap_mode = 2
+
+[node name="button4" type="Button" parent="yes/container"]
+modulate = Color(0, 0.635294, 1, 1)
+layout_mode = 2
+size_flags_horizontal = 0
+theme_override_fonts/font = ExtResource("2_tmb1b")
+text = "https://jreo.itch.io/rcp4/community"
+flat = true
+
+[node name="text13" type="Label" parent="yes/container"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_tmb1b")
+text = "For live chatting, join the Discord server."
+autowrap_mode = 2
+
+[node name="button5" type="Button" parent="yes/container"]
+modulate = Color(0, 0.635294, 1, 1)
+layout_mode = 2
+size_flags_horizontal = 0
+theme_override_fonts/font = ExtResource("2_tmb1b")
+text = "https://discord.gg/kCvNBujcfR"
+flat = true
+
+[node name="text12" type="Label" parent="yes/container"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_tmb1b")
+text = "
+
+"
+autowrap_mode = 2
+
+[node name="migrate" type="Label" parent="yes/container"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("1_g00fu")
+theme_override_font_sizes/font_size = 32
+text = "Migrating and implementing"
+autowrap_mode = 2
+
+[node name="text3" type="Label" parent="yes/container"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_tmb1b")
+text = "When you want to add VitaVehicle's car simulator to an existing Godot game, you only need to copy MAIN to make your cars move.
+
+Also you would want to include the vitavehicle_ui addon for the use of it's tools as necessary, along with the fonts. You then have to go to Project>Project Settings>AutoLoad, open vitavehicle.gd from MAIN, name it \"VitaVehicleSimulation\", and click \"Add\".
+
+"
+autowrap_mode = 2
+
+[node name="setup" type="Label" parent="yes/container"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("1_g00fu")
+theme_override_font_sizes/font_size = 22
+text = "Creating a new vehicle"
+autowrap_mode = 2
+
+[node name="text4" type="Label" parent="yes/container"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_tmb1b")
+text = "Now you've got the required files, here are steps and procedures you may have to take:
+
+1. Add a RigidBody node and attach car.gd from MAIN
+
+2. Add a CollisionShape and mesh to your liking. Using 1 CollisionShape is recommended as of now.
+
+3. Add a Position3D and name it \"DRAG_CENTRE\" and position it near the centre of mass of the RigidBody. Typically if you have a single CollisionShape (which is recommended), copy its translation coords and paste it on the Position3D.
+
+4. Drag wheel.tscn off the FileSystem panel and parent under said RigidBody node and position it as you'd wish. Make sure to enable Editable Children in order to parent wheel meshes and stuff within the animation node. Repeat this step according to how many wheels you need.
+
+5. Drag the tscn's from engine sound, mechanical sounds, and/or tyre sounds folders which you have copied, and parent them under your RigidBody.
+
+
+"
+autowrap_mode = 2
+
+[node name="tune" type="Label" parent="yes/container"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("1_g00fu")
+theme_override_font_sizes/font_size = 32
+text = "Tuning"
+autowrap_mode = 2
+
+[node name="ctrl" type="Label" parent="yes/container"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("1_g00fu")
+theme_override_font_sizes/font_size = 22
+text = "Controls"
+autowrap_mode = 2
+
+[node name="text10" type="Label" parent="yes/container"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_tmb1b")
+text = "Your vehicle has variables on steering, throttle response, braking, etc, which you can adjust to your liking. If you want every car to have the same control setups, open vitavehicle.gd and adjust the identical variables there, check  \"Use Global Control Settings\" on all cars you have and they will have the same control settings.
+
+"
+autowrap_mode = 2
+
+[node name="drivetrain" type="Label" parent="yes/container"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("1_g00fu")
+theme_override_font_sizes/font_size = 22
+text = "Drivetrain"
+autowrap_mode = 2
+
+[node name="text5" type="Label" parent="yes/container"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_tmb1b")
+text = "Your car has a variable called \"Powered Wheels\". It delivers torque to the wheels that are listed in the array by their names. You can increase or decrease the number of driven wheels by adjusting the size of the array, but invalid names would break the code.
+
+There are variables provided on each wheels that needed to communicate with another wheel too. For example: Differentials and swaybars - Set these variables to the name of another wheel, typically the opposing ones in order to connect a swaybar and/or limited-slip differentials.
+Tip: Don't connect differentials to any undriven wheels.
+
+"
+autowrap_mode = 2
+
+[node name="susp" type="Label" parent="yes/container"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("1_g00fu")
+theme_override_font_sizes/font_size = 22
+text = "Suspensions and tyres"
+autowrap_mode = 2
+
+[node name="text8" type="Label" parent="yes/container"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_tmb1b")
+text = "On each wheel nodes - suspension, axle geometry, and tyre pressure are variables which you could adjust in accordance to how heavy your vehicle is, combined with your liking. Increase \"A_Geometry1\" when too much negative camber is applied upon compression. You will want to increase tyre pressure depending how heavy your car is, or increase \"B Saturation\" and tyre stiffness in the compound settings if you have a heavy duty vehicle; a truck for example. A value of 2 could work for >5000kg vehicles. However vehicles of this class are still unstable on VitaVehicle.
+
+"
+autowrap_mode = 2
+
+[node name="engine" type="Label" parent="yes/container"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("1_g00fu")
+theme_override_font_sizes/font_size = 22
+text = "Engine"
+autowrap_mode = 2
+
+[node name="text6" type="Label" parent="yes/container"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_tmb1b")
+text = "On the RigidBody, there are variables which you could adjust engine power, especially ones that has something to do with \"torque\" or \"rpm\", typically you'd want to increase Clutch Grip if the engine is too powerful, otherwise torque wont have anywhere to go. To increase max speed on a gear - final drive, gear ratios, and reverse ratios are the ways to tweak it. It's also the case that higher engine redlines gives more speed.
+
+Check out the Torque Curve Editor to know how an engine will perform on a set of variables. To know how your current car performs - select the car's RigidBody itself, go back to the VitaVehicle Interface, and click \"Import\". You can also fine-tune the variables on the right panel, and click \"Apply\" to save settings to the car you selected. The torque and power graph tells how torque is delivered on specific RPMs. The small up and down buttons next to the number boxes can be dragged likewise or clicked for precise tuning of the torque curvature.
+
+"
+autowrap_mode = 2
+
+[node name="final" type="Label" parent="yes/container"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("1_g00fu")
+theme_override_font_sizes/font_size = 22
+text = "Finalising"
+autowrap_mode = 2
+
+[node name="text9" type="Label" parent="yes/container"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_tmb1b")
+text = "Test driving your vehicle is recommended to know whether or not it handles like how you want it to.
+I suggest doing this almost everytime you tweak a variable.
+
+
+"
+autowrap_mode = 2
+
+[node name="start2" type="Label" parent="yes/container"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("1_g00fu")
+theme_override_font_sizes/font_size = 32
+text = "Extra"
+autowrap_mode = 2
+
+[node name="text11" type="Label" parent="yes/container"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_tmb1b")
+text = "This page is subject to change in the future and may provide more ways to help you with your use of VitaVehicle."
+autowrap_mode = 2
+
+[node name="back" type="Button" parent="."]
+layout_mode = 0
+anchor_left = 0.859375
+anchor_top = 0.886667
+anchor_right = 0.988282
+anchor_bottom = 0.966667
+theme_override_fonts/font = ExtResource("2_tmb1b")
+theme_override_font_sizes/font_size = 20
+text = "Back"

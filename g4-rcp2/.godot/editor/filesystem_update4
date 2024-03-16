@@ -1,4 +1,4 @@
 res://default_env.tres
-res://addons/vitavehicle_ui/interface.tscn
+res://world.tscn
 res://MAIN/misc/tyre sounds/vars.gd
-res://addons/vitavehicle_ui/handler.gd
+res://addons/vitavehicle_ui/portable_graph/graph.gd

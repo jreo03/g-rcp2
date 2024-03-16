@@ -1,0 +1,96 @@
+[gd_scene load_steps=3 format=3 uid="uid://kywxiebdamqh"]
+
+[ext_resource type="PackedScene" uid="uid://tma76im8frc" path="res://addons/vitavehicle_ui/portable_graph/power_graph.tscn" id="1_687bf"]
+[ext_resource type="Script" path="res://addons/vitavehicle_ui/portable_graph/power_graph_ui.gd" id="1_wj437"]
+
+[node name="Control" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_wj437")
+
+[node name="HSplitContainer" type="HSplitContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="graph" parent="HSplitContainer" instance=ExtResource("1_687bf")]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="VBoxContainer" type="VBoxContainer" parent="HSplitContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="HBoxContainer" type="HBoxContainer" parent="HSplitContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="Label" type="Label" parent="HSplitContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Torque Unit"
+
+[node name="TorqueUnit" type="OptionButton" parent="HSplitContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+item_count = 3
+selected = 1
+popup/item_0/text = "FT/LBS"
+popup/item_0/id = 0
+popup/item_1/text = "NM"
+popup/item_1/id = 1
+popup/item_2/text = "KG/M"
+popup/item_2/id = 2
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="HSplitContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="Label" type="Label" parent="HSplitContainer/VBoxContainer/HBoxContainer2"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Power Unit"
+
+[node name="PowerUnit" type="OptionButton" parent="HSplitContainer/VBoxContainer/HBoxContainer2"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+item_count = 4
+selected = 0
+popup/item_0/text = "HP"
+popup/item_0/id = 0
+popup/item_1/text = "BHP"
+popup/item_1/id = 1
+popup/item_2/text = "PS"
+popup/item_2/id = 2
+popup/item_3/text = "KW"
+popup/item_3/id = 3
+
+[node name="car_select" type="Button" parent="HSplitContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+text = "Select car"
+
+[node name="refresh" type="Button" parent="HSplitContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+text = "Refresh"
+
+[node name="constant" type="CheckButton" parent="HSplitContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+text = "Constant Refresh"
+
+[connection signal="item_selected" from="HSplitContainer/VBoxContainer/HBoxContainer/TorqueUnit" to="." method="_on_torque_unit_item_selected"]
+[connection signal="item_selected" from="HSplitContainer/VBoxContainer/HBoxContainer2/PowerUnit" to="." method="_on_power_unit_item_selected"]
+[connection signal="pressed" from="HSplitContainer/VBoxContainer/car_select" to="." method="_on_car_select_pressed"]
+[connection signal="pressed" from="HSplitContainer/VBoxContainer/refresh" to="." method="_on_refresh_pressed"]
+[connection signal="toggled" from="HSplitContainer/VBoxContainer/constant" to="." method="_on_constant_toggled"]

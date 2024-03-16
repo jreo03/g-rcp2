@@ -1,0 +1,39 @@
+[gd_scene load_steps=2 format=3 uid="uid://tma76im8frc"]
+
+[ext_resource type="Script" path="res://addons/vitavehicle_ui/portable_graph/graph.gd" id="1_3lh2k"]
+
+[node name="ctrl" type="Control"]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 506.0
+offset_bottom = 266.316
+script = ExtResource("1_3lh2k")
+
+[node name="power_graph" type="AspectRatioContainer" parent="."]
+layout_mode = 0
+offset_right = 506.0
+offset_bottom = 266.316
+ratio = 1.9
+alignment_horizontal = 0
+alignment_vertical = 0
+
+[node name="torque" type="Line2D" parent="power_graph"]
+width = 5.0
+default_color = Color(0, 0.5, 1, 1)
+
+[node name="peak" type="Polygon2D" parent="power_graph/torque"]
+color = Color(0, 0.5, 1, 1)
+polygon = PackedVector2Array(-10, 10, 10, 10, 10, -10, -10, -10)
+
+[node name="power" type="Line2D" parent="power_graph"]
+width = 5.0
+default_color = Color(1, 0, 0, 1)
+
+[node name="peak" type="Polygon2D" parent="power_graph/power"]
+color = Color(1, 0, 0, 1)
+polygon = PackedVector2Array(-10, 10, 10, 10, 10, -10, -10, -10)
+
+[node name="ColorRect" type="ColorRect" parent="power_graph"]
+show_behind_parent = true
+layout_mode = 2
+color = Color(0, 0, 0, 0.184314)

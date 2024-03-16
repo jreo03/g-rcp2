@@ -1,5 +1,11 @@
-Window
+Label
+HBoxContainer
+Control
+OptionButton
+AspectRatioContainer
+CheckButton
+Button
 VBoxContainer
 HSplitContainer
 TabContainer
-OptionButton
+Window
