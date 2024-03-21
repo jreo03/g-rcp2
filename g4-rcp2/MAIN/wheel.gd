@@ -106,6 +106,11 @@ class TyreCompoundSettings:
 
 @onready var velo_1:Marker3D = $"velocity"
 @onready var velo_2:Marker3D = $"velocity2"
+@onready var velo_1_step:Marker3D = $"velocity/step"
+@onready var velo_2_step:Marker3D = $"velocity2/step"
+@onready var anim:Marker3D = $"animation"
+@onready var anim_camber:Marker3D = $"animation/camber"
+@onready var anim_camber_wheel:Marker3D = $"animation/camber/wheel"
 
 var dist:float = 0.0
 var w_size:float = 1.0
@@ -208,7 +213,7 @@ var velocity2_last:Vector3 = Vector3(0,0,0)
 func _physics_process(_delta:float) -> void:
 	var translation:Vector3 = position
 	var cast_to:Vector3 = target_position
-	var global_translation:Vector3 = global_position
+#	var global_translation:Vector3 = global_position
 	var last_translation:Vector3 = position
 	
 	var x_pos:float = float(translation.x > 0)
@@ -240,7 +245,7 @@ func _physics_process(_delta:float) -> void:
 		
 		rotate_object_local(Vector3(0,1,0), deg_to_rad(90.0))
 		
-		get_parent()._steering_angles.append(rad_to_deg(global_rotation.y))
+		car._steering_angles.append(rad_to_deg(global_rotation.y))
 		
 		rotation_degrees = Vector3(0, 0, 0)
 		rotation = Vector3(0, 0, 0)
@@ -260,22 +265,23 @@ func _physics_process(_delta:float) -> void:
 	velo_1.position = Vector3(0,0,0)
 	
 	
-	w_size = ((abs(TyreSettings.Width_mm) * ((abs(TyreSettings.Aspect_Ratio) * 2.0) * 0.01) + abs(TyreSettings.Rim_Size_in) * 25.4) * 0.003269) * 0.5
+	#w_size = ((absi(TyreSettings.Width_mm) * ((absi(TyreSettings.Aspect_Ratio) * 2.0) * 0.01) + absi(TyreSettings.Rim_Size_in) * 25.4) * 0.003269) * 0.5
+	w_size = ((TyreSettings.Width_mm * ((TyreSettings.Aspect_Ratio * 2.0) * 0.01) + TyreSettings.Rim_Size_in * 25.4) * 0.003269) * 0.5
 	w_weight = pow(w_size,2.0)
 	
 	w_size_read = w_size
 	w_size_read = maxf(w_size_read, 1.0)
 	w_weight_read = maxf(w_weight_read, 1.0)
 	
-	velo_2.global_position = $geometry.global_position
+	velo_2.global_position = geometry.global_position
 	
-	$velocity/step.global_position = velocity_last
-	$velocity2/step.global_position = velocity2_last
+	velo_1_step.global_position = velocity_last
+	velo_2_step.global_position = velocity2_last
 	velocity_last = velo_1.global_position
 	velocity2_last = velo_2.global_position
 	
-	velocity = -$velocity/step.position * 60.0
-	velocity2 = -$velocity2/step.position * 60.0
+	velocity = -velo_1_step.position * 60.0
+	velocity2 = -velo_2_step.position * 60.0
 	
 	velo_1.rotation = Vector3(0,0,0)
 	velo_2.rotation = Vector3(0,0,0)
@@ -303,7 +309,8 @@ func _physics_process(_delta:float) -> void:
 	
 	var tyre_maxgrip:float = TyreSettings.GripInfluence / CompoundSettings.TractionFactor
 	
-	var tyre_stiffness2:float = abs(TyreSettings.Width_mm) / (abs(TyreSettings.Aspect_Ratio) / 1.5)
+	#var tyre_stiffness2:float = absi(TyreSettings.Width_mm) / (absi(TyreSettings.Aspect_Ratio) / 1.5)
+	var tyre_stiffness2:float = TyreSettings.Width_mm / (TyreSettings.Aspect_Ratio / 1.5)
 	
 	var deviding:float = (Vector2(velocity.x, velocity.z).length() / 50.0 + 0.5) * CompoundSettings.DeformFactor
 	
@@ -332,11 +339,11 @@ func _physics_process(_delta:float) -> void:
 		if car._dsweightrun > 0.0:
 			bp += ((car._stalled * (c_p / car._ds_weight)) * car.car_controls.clutchpedal) * (((500.0 / (car.RevSpeed * 100.0)) / (car._dsweightrun / 2.5)) / w_weight_read)
 	if bp > 0.0:
-		if abs(absolute_wv) > 0.0:
-			var distanced:float = abs(absolute_wv) / bp
+		if absf(absolute_wv) > 0.0:
+			var distanced:float = absf(absolute_wv) / bp
 			distanced -= car._brakeline
 			distanced = maxf(distanced, snap * (w_size_read / B_Saturation))
-			wheelpower += -absolute_wv / distanced
+			wheelpower += - absolute_wv / distanced
 		else:
 			wheelpower += -absolute_wv
 	
@@ -406,10 +413,10 @@ func _physics_process(_delta:float) -> void:
 		#distw *= tyre_stiffness
 		distx *= tyre_stiffness
 		
-		distx -= atan2(abs(wv), 1.0) * ((angle * 10.0) * w_size)
+		distx -= atan2(absf(wv), 1.0) * ((angle * 10.0) * w_size)
 		
 		if grip > 0:
-			var slip:float = sqrt(pow(abs(disty), 2.0) + pow(abs(distx), 2.0)) / grip
+			var slip:float = sqrt(pow(absf(disty), 2.0) + pow(absf(distx), 2.0)) / grip
 			
 			slip_percpre = slip / tyre_stiffness
 			
@@ -417,27 +424,27 @@ func _physics_process(_delta:float) -> void:
 			slip -= CompoundSettings.TractionFactor
 			slip = maxf(slip, 0.0)
 			
-			var slip_sk:float = sqrt(pow(abs(disty), 2.0) + pow(abs((distx) * 2.0), 2.0)) / grip
+			var slip_sk:float = sqrt(pow(absf(disty), 2.0) + pow(absf((distx) * 2.0), 2.0)) / grip
 			slip_sk /= slip * surface_vars.ground_builduprate + 1
 			slip_sk -= CompoundSettings.TractionFactor
 			slip_sk = maxf(slip_sk, 0.0)
 			
-			var slipw:float = sqrt(pow(abs(0.0),2.0) + pow(abs(distx), 2.0)) / grip
+			var slipw:float = sqrt(pow(absf(0.0),2.0) + pow(absf(distx), 2.0)) / grip
 			slipw /= slipw * surface_vars.ground_builduprate + 1.0
 			var forcey:float = - disty / (slip + 1.0)
 			var forcex:float = - distx / (slip + 1.0)
 			
-			if abs(disty) / (tyre_stiffness / 3.0) > (car.ABS.threshold / grip) * pow(surface_vars.ground_friction, 2) and car.ABS.enabled and abs(velocity.z) > car.ABS.speed_pre_active and ContactABS:
+			if absf(disty) / (tyre_stiffness / 3.0) > (car.ABS.threshold / grip) * pow(surface_vars.ground_friction, 2) and car.ABS.enabled and abs(velocity.z) > car.ABS.speed_pre_active and ContactABS:
 				car._abspump = car.ABS.pump_time
-				if abs(distx) / (tyre_stiffness/3.0) > (car.ABS.lat_thresh / grip) * pow(surface_vars.ground_friction, 2):
+				if absf(distx) / (tyre_stiffness / 3.0) > (car.ABS.lat_thresh / grip) * pow(surface_vars.ground_friction, 2):
 					car._abspump = car.ABS.lat_pump_time
 			
-			var yesx:float =  minf(abs(forcex), 1.0)
+			var yesx:float =  minf(absf(forcex), 1.0)
 			
 			var smoothx:float = pow(yesx, 2)
 			smoothx = minf(smoothx, 1.0)
 			
-			var yesy:float = minf(abs(forcey), 1.0)
+			var yesy:float = minf(absf(forcey), 1.0)
 			
 			var smoothy:float = yesy * 1.0
 			smoothy = minf(smoothy, 1.0)
@@ -445,7 +452,7 @@ func _physics_process(_delta:float) -> void:
 			forcex /= (smoothx * (rigidity) + (1.0 - rigidity))
 			forcey /= (smoothy * (rigidity) + (1.0 - rigidity))
 			
-			var distyw:float = sqrt(pow(abs(disty), 2.0) + pow(abs(distx), 2.0))
+			var distyw:float = sqrt(pow(absf(disty), 2.0) + pow(absf(distx), 2.0))
 			var tr2:float = (grip / tyre_stiffness)
 			var afg:float = tyre_stiffness * tr2
 			distyw /= CompoundSettings.TractionFactor
@@ -503,7 +510,7 @@ func _physics_process(_delta:float) -> void:
 		var disty:float = velocity2.z - (wv * w_size) / (surface_vars.drag + 1.0)
 		if  Differed_Wheel: #NodePath will return true if it's not ""
 			var d_w:ViVeWheel = car.get_node(Differed_Wheel)
-			disty = velocity2.z - ((wv * (1.0 - get_parent()._locked) +d_w.wv_diff * get_parent()._locked) * w_size) / (surface_vars.drag + 1)
+			disty = velocity2.z - ((wv * (1.0 - car._locked) +d_w.wv_diff * car._locked) * w_size) / (surface_vars.drag + 1)
 		
 		var distx:float = velocity2.x
 		
@@ -518,13 +525,13 @@ func _physics_process(_delta:float) -> void:
 		disty *= tyre_stiffness
 		distx *= tyre_stiffness
 	
-		distx -= atan2(abs(wv), 1.0) * ((angle * 10.0) * w_size)
+		distx -= atan2(absf(wv), 1.0) * ((angle * 10.0) * w_size)
 		
 		if grip > 0:
-			var slipraw:float = sqrt(pow(abs(disty), 2.0) + pow(abs(distx), 2.0))
+			var slipraw:float = sqrt(pow(absf(disty), 2.0) + pow(absf(distx), 2.0))
 			slipraw = minf(slipraw, grip)
 			
-			var slip:float = sqrt(pow(abs(disty), 2.0) + pow(abs(distx), 2.0)) / grip
+			var slip:float = sqrt(pow(absf(disty), 2.0) + pow(absf(distx), 2.0)) / grip
 			slip /= slip * surface_vars.ground_builduprate + 1.0
 			slip -= CompoundSettings.TractionFactor
 			
@@ -532,15 +539,15 @@ func _physics_process(_delta:float) -> void:
 			
 			slip_perc2 = slip
 			
-			var forcey:float = -disty / (slip + 1.0)
-			var forcex:float = -distx / (slip + 1.0)
+			var forcey:float = - disty / (slip + 1.0)
+			var forcex:float = - distx / (slip + 1.0)
 			
-			var yesx:float = minf(abs(forcex), 1.0)
+			var yesx:float = minf(absf(forcex), 1.0)
 			
 			var smoothx:float = pow(yesx, 2)
 			smoothx = minf(smoothx, 1.0)
 			
-			var yesy:float = minf(abs(forcey), 1.0)
+			var yesy:float = minf(absf(forcey), 1.0)
 			
 			var smoothy:float = yesy * 1.0
 			smoothy = minf(smoothy, 1.0)
@@ -554,27 +561,27 @@ func _physics_process(_delta:float) -> void:
 		geometry.position = target_position
 	
 	output_wv = wv
-	$animation/camber/wheel.rotate_x(deg_to_rad(wv))
+	anim_camber_wheel.rotate_x(deg_to_rad(wv))
 	
 	geometry.position.y += w_size
-	var inned:float = (abs(cambered) + A_Geometry4) / 90.0
+	var inned:float = (absf(cambered) + A_Geometry4) / 90.0
 	
 	inned *= inned - A_Geometry4 / 90.0
 	geometry.position.x = -inned * translation.x
-	$animation/camber.rotation.z = - (deg_to_rad(- c_camber * float(translation.x < 0.0) + c_camber * float(translation.x > 0.0)) - deg_to_rad( - cambered * float(translation.x < 0.0) + cambered * float(translation.x > 0.0)) * A_Geometry2)
+	anim_camber.rotation.z = - (deg_to_rad(- c_camber * float(translation.x < 0.0) + c_camber * float(translation.x > 0.0)) - deg_to_rad( - cambered * float(translation.x < 0.0) + cambered * float(translation.x > 0.0)) * A_Geometry2)
 	var g:float
 	
-	axle_position = $geometry.position.y
+	axle_position = geometry.position.y
 	if not Solidify_Axles: #If the NodePath is null
-		g = ($geometry.position.y + (abs(cast_to.y) - A_Geometry1)) / (abs(translation.x) + A_Geometry3 + 1.0)
-		g /= abs(g) + 1.0
+		g = (geometry.position.y + (absf(cast_to.y) - A_Geometry1)) / (absf(translation.x) + A_Geometry3 + 1.0)
+		g /= absf(g) + 1.0
 		cambered = (g * 90.0) - A_Geometry4
 	else:
-		g = (geometry.position.y - get_node(Solidify_Axles).axle_position) / (abs(translation.x) + 1.0)
-		g /= abs(g) + 1.0
+		g = (geometry.position.y - get_node(Solidify_Axles).axle_position) / (absf(translation.x) + 1.0)
+		g /= absf(g) + 1.0
 		cambered = (g * 90.0)
 	
-	$animation.position = geometry.position
+	anim.position = geometry.position
 	
 #	var forces = $velocity2.global_transform.basis.orthonormalized().xform(Vector3(0,0,1))*directional_force.z + $velocity2.global_transform.basis.orthonormalized().xform(Vector3(1,0,0))*directional_force.x + $velocity2.global_transform.basis.orthonormalized().xform(Vector3(0,1,0))*directional_force.y
 	var forces:Vector3 = (velo_2.global_transform.basis.orthonormalized() * (Vector3(0,0,1))) * directional_force.z + (velo_2.global_transform.basis.orthonormalized() * (Vector3(1,0,0))) * directional_force.x + (velo_2.global_transform.basis.orthonormalized() * (Vector3(0,1,0))) * directional_force.y
@@ -594,7 +601,7 @@ func _physics_process(_delta:float) -> void:
 ##Calculate suspension.
 func suspension() -> float:
 	rolldist_clamped = clampf(rolldist, -1.0, 1.0)
-	var g_range:float = abs(target_position.y)
+	var g_range:float = absf(target_position.y)
 	geometry.global_position = get_collision_point()
 	geometry.position.y -= (ground_bump * surface_vars.ground_bump_height)
 	

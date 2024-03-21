@@ -31,7 +31,7 @@ func load_and_cache(path:String) -> PackedScene:
 		pass
 	else:
 		literal_cache[path] = load(path)
-
+	
 	loaded = literal_cache[path]
 	return loaded
 

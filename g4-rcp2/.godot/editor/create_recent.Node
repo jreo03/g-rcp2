@@ -1,9 +1,11 @@
-Label
+RichTextLabel
 HBoxContainer
+CheckBox
+CheckButton
+Label
 Control
 OptionButton
 AspectRatioContainer
-CheckButton
 Button
 VBoxContainer
 HSplitContainer

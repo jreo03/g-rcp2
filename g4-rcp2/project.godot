@@ -16,8 +16,9 @@ run/main_scene="res://world.tscn"
 config/features=PackedStringArray("4.2")
 boot_splash/bg_color=Color(0.141176, 0.141176, 0.141176, 1)
 boot_splash/image="res://logo.png"
+boot_splash/fullsize=false
 boot_splash/use_filter=false
-config/icon="res://icon.png"
+config/icon="res://vlogo.png"
 
 [autoload]
 
@@ -26,7 +27,14 @@ misc_graphics_settings="*res://MISC/autoload/graphics.gd"
 
 [debug]
 
+gdscript/warnings/exclude_addons=false
 gdscript/warnings/untyped_declaration=1
+gdscript/warnings/inferred_declaration=1
+gdscript/warnings/unsafe_property_access=1
+gdscript/warnings/unsafe_method_access=1
+gdscript/warnings/unsafe_cast=1
+gdscript/warnings/unsafe_call_argument=1
+gdscript/warnings/return_value_discarded=1
 
 [display]
 
@@ -165,6 +173,7 @@ pointing/emulate_touch_from_mouse=true
 
 [physics]
 
+3d/run_on_separate_thread=true
 3d/physics_engine="GodotPhysics3D"
 3d/default_gravity=32.035
 3d/default_linear_damp=0.0

@@ -1,5 +1,7 @@
 extends Control
 
+class_name ViVeInEngineTorqueGraph
+
 @export_enum("ft⋅lb", "nm", "kg/m") var Torque_Unit:int = 1
 @export_enum("hp", "bhp", "ps", "kW") var Power_Unit:int = 0
 
@@ -18,6 +20,11 @@ extends Control
 @export var Generation_Range:float = 7000.0
 @export var Draw_RPM:float = 800.0
 
+@onready var torque:Line2D = $"torque"
+@onready var torque_peak:Polygon2D = $"torque/peak"
+@onready var power:Line2D = $"power"
+@onready var power_peak:Polygon2D = $"power/peak"
+
 var peakhp:Array[float] = [0.0,0.0]
 var peaktq:Array[float] = [0.0,0.0]
 
@@ -25,7 +32,8 @@ var car:ViVeCar = ViVeCar.new()
 
 #This keeps getting re-called somewhere when it shouldn't be, when swapping cars
 func _ready() -> void:
-	ViVeEnvironment.singleton.connect("car_changed", draw_graph)
+	if not ViVeEnvironment.singleton.is_connected("car_changed", draw_graph):
+		var _err:Error = ViVeEnvironment.get_singleton().connect("car_changed", draw_graph)
 
 func draw_graph() -> void:
 	car = ViVeEnvironment.singleton.car
@@ -38,13 +46,13 @@ func draw_graph() -> void:
 func calculate() -> void:
 	peakhp = [0.0,0.0]
 	peaktq = [0.0,0.0]
-	$torque.clear_points()
-	$power.clear_points()
+	torque.clear_points()
+	power.clear_points()
 	var skip:int = 0
-	for i in range(Generation_Range):
+	for i:int in range(Generation_Range):
 		if i > Draw_RPM:
 			car._rpm = i
-			var trq:float = VitaVehicleSimulation.multivariate(car)
+			var trq:float = car.multivariate()
 			var hp:float = (i / 5252.0) * trq
 			
 			if Torque_Unit == 1:
@@ -65,14 +73,14 @@ func calculate() -> void:
 			
 			if hp > peakhp[0]:
 				peakhp = [hp, i]
-				$power/peak.position = hp_p
+				power_peak.position = hp_p
 			
 			if trq > peaktq[0]:
 				peaktq = [trq, i]
-				$torque/peak.position = tr_p
+				torque_peak.position = tr_p
 			
 			skip -= 1
 			if skip <= 0:
-				$torque.add_point(tr_p)
-				$power.add_point(hp_p)
+				torque.add_point(tr_p)
+				power.add_point(hp_p)
 				skip = 100

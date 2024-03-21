@@ -384,7 +384,6 @@ text = "change scene"
 [node name="Window" type="Window" parent="."]
 initial_position = 1
 size = Vector2i(700, 300)
-visible = false
 transparent = true
 popup_window = true
 script = ExtResource("9_3fasi")
@@ -400,11 +399,14 @@ grow_vertical = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
-[node name="Information" type="HSplitContainer" parent="Window/TabContainer"]
+[node name="Information" type="HBoxContainer" parent="Window/TabContainer"]
 layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
 
 [node name="VBoxContainer" type="VBoxContainer" parent="Window/TabContainer/Information"]
 layout_mode = 2
+size_flags_horizontal = 3
 
 [node name="watermark" type="TextureRect" parent="Window/TabContainer/Information/VBoxContainer"]
 layout_mode = 2
@@ -424,8 +426,10 @@ size_flags_horizontal = 3
 
 [node name="container" type="VBoxContainer" parent="Window/TabContainer/Information/scroll"]
 layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
 
-[node name="clabel" type="Label" parent="Window/TabContainer/Information/scroll/container"]
+[node name="control_header" type="Label" parent="Window/TabContainer/Information/scroll/container"]
 layout_mode = 2
 mouse_filter = 1
 text = "--------------------------------------------------
@@ -434,9 +438,10 @@ text = "--------------------------------------------------
 horizontal_alignment = 1
 clip_text = true
 
-[node name="c" type="Label" parent="Window/TabContainer/Information/scroll/container"]
+[node name="controls" type="RichTextLabel" parent="Window/TabContainer/Information/scroll/container"]
 layout_mode = 2
-text = "Keyboard Steering:
+bbcode_enabled = true
+text = "[i] Keyboard Steering: [/i]
 W/Up = Accelerator
 S/Down = Brake
 A/Left = Steer Left
@@ -446,7 +451,7 @@ E/P = Shift Up
 Q/L = Shift Down
 Space/Ctrl = Handbrake
 
-Mouse Steering:
+[i] Mouse Steering: [/i]
 LMB = Accelerator
 RMB = Brake
 Cursor (Horizontal Axis Only) = Steer
@@ -455,7 +460,7 @@ E = Shift Up
 Q = Shift Down
 Shift = Handbrake
 
-Gamepad:
+[i]Gamepad:[/i]
 Right trigger = Accelerator
 Left Trigger = Brake
 Left stick = Steer
@@ -463,14 +468,14 @@ Xbox X = Shift Down
 Xbox Y = Shift Up
 Xbox B = Handbrake
 
-Joystick:
+[i]Joystick:[/i]
 NOT CONFIGURED
 
-Steering Wheel:
-UNSUPPORTED BY GODOT"
-clip_text = true
+[i]Steering Wheel:[/i]
+DRIVER SUPPORT NOT IMPLEMENTED YET"
+fit_content = true
 
-[node name="clabel2" type="Label" parent="Window/TabContainer/Information/scroll/container"]
+[node name="misc_ctrls_header" type="Label" parent="Window/TabContainer/Information/scroll/container"]
 layout_mode = 2
 mouse_filter = 1
 text = "--------------------------------------------------
@@ -479,7 +484,7 @@ text = "--------------------------------------------------
 horizontal_alignment = 1
 clip_text = true
 
-[node name="c2" type="Label" parent="Window/TabContainer/Information/scroll/container"]
+[node name="misc_ctrls" type="Label" parent="Window/TabContainer/Information/scroll/container"]
 layout_mode = 2
 text = "F11 = Toggle Fullscreen
 Esc = Close All Panels
@@ -491,7 +496,7 @@ O = Zoom Out
 F = Toggle Forces Visualisation"
 clip_text = true
 
-[node name="credlabel" type="Label" parent="Window/TabContainer/Information/scroll/container"]
+[node name="credit_header" type="Label" parent="Window/TabContainer/Information/scroll/container"]
 layout_mode = 2
 text = "--------------------------------------------------
 Credits/Sources:
@@ -499,7 +504,7 @@ Credits/Sources:
 horizontal_alignment = 1
 clip_text = true
 
-[node name="cred" type="Label" parent="Window/TabContainer/Information/scroll/container"]
+[node name="credits" type="Label" parent="Window/TabContainer/Information/scroll/container"]
 custom_minimum_size = Vector2(55, 371)
 layout_mode = 2
 text = "Contributors:
@@ -522,43 +527,30 @@ script = ExtResource("5")
 [node name="container" type="VBoxContainer" parent="Window/TabContainer/Graphics Config"]
 layout_mode = 2
 
-[node name="CheckBox3" type="CheckBox" parent="Window/TabContainer/Graphics Config/container"]
-custom_minimum_size = Vector2(240, 60)
+[node name="smoke" type="CheckBox" parent="Window/TabContainer/Graphics Config/container"]
 layout_mode = 2
-script = ExtResource("9")
-var_name = "smoke"
-
-[node name="text" type="Label" parent="Window/TabContainer/Graphics Config/container/CheckBox3"]
-layout_mode = 0
-anchor_right = 1.0
-anchor_bottom = 1.0
 text = "Tyre Smoke"
 
-[node name="amount" type="Label" parent="Window/TabContainer/Graphics Config/container/CheckBox3"]
-layout_mode = 0
-anchor_right = 1.0
-anchor_bottom = 1.0
-text = "false"
-vertical_alignment = 2
-
-[node name="_FULLSCREEN" type="CheckBox" parent="Window/TabContainer/Graphics Config/container"]
-custom_minimum_size = Vector2(240, 60)
+[node name="fs" type="CheckBox" parent="Window/TabContainer/Graphics Config/container"]
 layout_mode = 2
-script = ExtResource("9")
-var_name = "fs"
-
-[node name="text" type="Label" parent="Window/TabContainer/Graphics Config/container/_FULLSCREEN"]
-layout_mode = 0
-anchor_right = 1.0
-anchor_bottom = 1.0
 text = "Fullscreen"
 
-[node name="amount" type="Label" parent="Window/TabContainer/Graphics Config/container/_FULLSCREEN"]
-layout_mode = 0
-anchor_right = 1.0
-anchor_bottom = 1.0
-text = "false"
-vertical_alignment = 2
+[node name="vsync" type="CheckBox" parent="Window/TabContainer/Graphics Config/container"]
+layout_mode = 2
+tooltip_text = "This will make the game run smoother by capping the framerate to that of your screen"
+text = "VSync"
+
+[node name="reflections" type="CheckBox" parent="Window/TabContainer/Graphics Config/container"]
+layout_mode = 2
+text = "Reflections"
+
+[node name="shadows" type="CheckBox" parent="Window/TabContainer/Graphics Config/container"]
+layout_mode = 2
+text = "Shadows"
+
+[node name="fxaa" type="CheckBox" parent="Window/TabContainer/Graphics Config/container"]
+layout_mode = 2
+text = "FXAA"
 
 [node name="Change Scene" type="ScrollContainer" parent="Window/TabContainer"]
 visible = false
@@ -1100,6 +1092,12 @@ vertical_alignment = 2
 [connection signal="pressed" from="swap car" to="Window" method="_on_swap_car_pressed"]
 [connection signal="pressed" from="swap map" to="Window" method="_on_swap_map_pressed"]
 [connection signal="close_requested" from="Window" to="Window" method="_on_close_requested"]
+[connection signal="toggled" from="Window/TabContainer/Graphics Config/container/smoke" to="Window/TabContainer/Graphics Config" method="_on_tyre_smoke_toggled"]
+[connection signal="toggled" from="Window/TabContainer/Graphics Config/container/fs" to="Window/TabContainer/Graphics Config" method="_on__fullscreen_toggled"]
+[connection signal="toggled" from="Window/TabContainer/Graphics Config/container/vsync" to="Window/TabContainer/Graphics Config" method="_on_vsync_toggled"]
+[connection signal="toggled" from="Window/TabContainer/Graphics Config/container/reflections" to="Window/TabContainer/Graphics Config" method="_on_reflections_toggled"]
+[connection signal="toggled" from="Window/TabContainer/Graphics Config/container/shadows" to="Window/TabContainer/Graphics Config" method="_on_shadows_toggled"]
+[connection signal="toggled" from="Window/TabContainer/Graphics Config/container/fxaa" to="Window/TabContainer/Graphics Config" method="_on_fxaa_toggled"]
 
 [editable path="throttle"]
 [editable path="brake"]

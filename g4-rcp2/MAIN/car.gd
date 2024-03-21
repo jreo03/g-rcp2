@@ -13,6 +13,7 @@ var c_pws:Array[ViVeWheel]
 @onready var front_right:ViVeWheel = $"fr"
 @onready var back_left:ViVeWheel = $"rl"
 @onready var back_right:ViVeWheel = $"rr"
+@onready var drag_center:Marker3D = $"DRAG_CENTRE"
 
 ##An array containing the front wheels of the car.
 @onready var front_wheels:Array[ViVeWheel] = [front_left, front_right]
@@ -281,10 +282,10 @@ var _rvelocity:Vector3 = Vector3(0,0,0)
 var _stalled:float = 0.0
 
 func bullet_fix() -> void:
-	var offset:Vector3 = $DRAG_CENTRE.position
+	var offset:Vector3 = drag_center.position
 	stats.AckermannPoint -= offset.z
 	
-	for i:Node in get_children():
+	for i:Node3D in get_children():
 		i.position -= offset
 
 ## Emitted when the wheels are ready.
@@ -296,7 +297,7 @@ func _ready() -> void:
 	for i:String in Powered_Wheels:
 		var wh:ViVeWheel = get_node(str(i))
 		c_pws.append(wh)
-	emit_signal("wheels_ready")
+	var _err:Error = emit_signal("wheels_ready")
 
 ##Get the wheels of the car.
 func get_wheels() -> Array[ViVeWheel]:
@@ -311,8 +312,8 @@ func get_powered_wheels() -> Array[ViVeWheel]:
 
 func _mouse_wrapper() -> void:
 	var mouseposx:float = 0.0
-	if get_viewport().size.x > 0.0:
-		mouseposx = get_viewport().get_mouse_position().x / get_viewport().size.x
+	if get_window().size.x > 0.0:
+		mouseposx = get_window().get_mouse_position().x / get_window().size.x
 	car_controls.controls_keyboard_mouse(mouseposx)
 
 ##Check which [Callable] from [ViVeCarControls] to use for the car's controls.
@@ -364,7 +365,7 @@ func controls() -> void:
 		
 		for i:ViVeWheel in [front_left,front_right]:
 			car_controls.steer_velocity += (i.directional_force.x * 0.00125) * i.Caster
-			car_controls.steer_velocity -= (i.stress * 0.0025) * (atan2(abs(i.wv), 1.0) * i.angle)
+			car_controls.steer_velocity -= (i.stress * 0.0025) * (atan2(absf(i.wv), 1.0) * i.angle)
 			
 			car_controls.steer_velocity += car_controls.steer * (i.directional_force.z * 0.0005) * i.Caster
 			
@@ -406,7 +407,7 @@ func controls() -> void:
 		else:
 			car_controls.handbrakepull -= car_controls.OffHandbrakeRate / _clock_mult
 		
-		var siding:float = abs(_velocity.x)
+		var siding:float = absf(_velocity.x)
 		
 		#Based on the syntax, I'm unsure if this is doing what it "should" do...?
 		if (_velocity.x > 0 and car_controls.steer2 > 0) or (_velocity.x < 0 and car_controls.steer2 < 0):
@@ -420,9 +421,10 @@ func controls() -> void:
 			
 			if car_controls.UseMouseSteering:
 				var mouseposx:float = 0.0
-				if get_viewport().size.x > 0.0:
-					mouseposx = get_viewport().get_mouse_position().x / get_viewport().size.x
-				
+#				if get_viewport().size.x > 0.0:
+#					mouseposx = get_viewport().get_mouse_position().x / get_viewport().size.x
+				if get_window().size.x > 0.0:
+					mouseposx = get_window().get_mouse_position().x / get_window().size.x
 				
 				car_controls.steer2 = (mouseposx - 0.5) * 2.0
 				car_controls.steer2 *= car_controls.SteerSensitivity
@@ -904,7 +906,7 @@ func aero() -> void:
 	
 	if has_node("DRAG_CENTRE"):
 #		apply_impulse(global_transform.basis.orthonormalized().xform($DRAG_CENTRE.position),forc)
-		apply_impulse(forc, global_transform.basis.orthonormalized() * ($DRAG_CENTRE.position))
+		apply_impulse(forc, global_transform.basis.orthonormalized() * (drag_center.position))
 	else:
 		apply_central_impulse(forc)
 
@@ -918,6 +920,7 @@ func _physics_process(_delta:float) -> void:
 		car_controls.assistance_factor = 90.0 / _max_steering_angle
 	_steering_angles = []
 	
+	#TODO: Set these elsewhere, such as a settings file
 	if car_controls.Use_Global_Control_Settings:
 		car_controls = VitaVehicleSimulation.universal_controls
 		
@@ -1102,4 +1105,60 @@ func _process(_delta:float) -> void:
 			weight_dist[1] = 1.0 - weight_dist[0]
 	
 	#readout_torque = VitaVehicleSimulation.multivariate(RiseRPM,TorqueRise,BuildUpTorque,EngineFriction,EngineDrag,OffsetTorque,_rpm,DeclineRPM,DeclineRate,FloatRate,MaxPSI,TurboAmount,EngineCompressionRatio,TurboEnabled,VVTRPM,VVT_BuildUpTorque,VVT_TorqueRise,VVT_RiseRPM,VVT_OffsetTorque,VVT_FloatRate,VVT_DeclineRPM,VVT_DeclineRate,SuperchargerEnabled,SCRPMInfluence,BlowRate,SCThreshold,DeclineSharpness,VVT_DeclineSharpness)
-	_readout_torque = VitaVehicleSimulation.multivariate(self)
+	#_readout_torque = VitaVehicleSimulation.multivariate(self)
+	_readout_torque = multivariate()
+
+const multivariation_inputs:PackedStringArray = [
+"RiseRPM","TorqueRise","BuildUpTorque","EngineFriction",
+"EngineDrag","OffsetTorque","RPM","DeclineRPM","DeclineRate",
+"FloatRate","PSI","TurboAmount","EngineCompressionRatio",
+"TEnabled","VVTRPM","VVT_BuildUpTorque","VVT_TorqueRise",
+"VVT_RiseRPM","VVT_OffsetTorque","VVT_FloatRate",
+"VVT_DeclineRPM","VVT_DeclineRate","SCEnabled",
+"SCRPMInfluence","BlowRate","SCThreshold",
+"DeclineSharpness","VVT_DeclineSharpness"
+]
+
+func multivariate() -> float:
+	#car uses _turbopsi for PSI, this may be inaccurate to other uses of the function
+	
+	var value:float = 0.0
+	
+	var maxpsi:float = 0.0
+	var scrpm:float = 0.0
+	var f:float = 0.0
+	var j:float = 0.0
+	
+	#if car.SCEnabled:
+	if SuperchargerEnabled:
+		maxpsi = _turbopsi
+		scrpm = _rpm
+		scrpm = _rpm * SCRPMInfluence
+		_turbopsi = (scrpm / 10000.0) * BlowRate - SCThreshold
+		_turbopsi = clampf(_turbopsi, 0.0, maxpsi)
+	
+	#if not car.SCEnabled and not car.TEnabled:
+	if not SuperchargerEnabled and not TurboEnabled:
+		_turbopsi = 0.0
+	
+	var torque_local:ViVeCarTorque 
+	if _rpm > VVTRPM:
+		torque_local = torque_vvt
+	else:
+		torque_local = torque_norm
+	
+	value = (_rpm * torque_local.BuildUpTorque + torque_local.OffsetTorque) + ( (_turbopsi * TurboAmount) * (EngineCompressionRatio * 0.609) )
+	f = _rpm - torque_local.RiseRPM
+	f = maxf(f, 0.0)
+	
+	value += (f * f) * (torque_local.TorqueRise / 10000000.0)
+	j = _rpm - torque_local.DeclineRPM
+	j = maxf(j, 0.0)
+	
+	value /= (j * (j * torque_local.DeclineSharpness + (1.0 - torque_local.DeclineSharpness))) * (torque_local.DeclineRate / 10000000.0) + 1.0
+	value /= pow(_rpm, 2) * (torque_local.FloatRate / 10000000.0) + 1.0
+	
+	value -= _rpm / ((abs(pow(_rpm, 2))) / EngineFriction + 1.0)
+	value -= _rpm * EngineDrag
+	
+	return value

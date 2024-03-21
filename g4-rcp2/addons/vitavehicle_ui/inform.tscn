@@ -4,9 +4,12 @@
 [ext_resource type="Texture2D" uid="uid://b315i7ikjj32c" path="res://logo.png" id="2_6djdl"]
 
 [node name="inform" type="Control"]
-visible = false
 layout_mode = 3
-anchors_preset = 0
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 
 [node name="background" type="ColorRect" parent="."]
 layout_mode = 0

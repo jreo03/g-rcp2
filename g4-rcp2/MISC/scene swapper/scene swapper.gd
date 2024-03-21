@@ -65,7 +65,3 @@ func _ready() -> void:
 		but.get_node("icon").texture = load(pathh + "scenes/" + i + "/thumbnail.png")
 #		but.connect("pressed", self, "swapmap",[i])
 		but.pressed.connect(swapmap.bind(i))
-
-func _input(_event:InputEvent) -> void:
-	if Input.is_action_just_pressed("ui_cancel"):
-		visible = false

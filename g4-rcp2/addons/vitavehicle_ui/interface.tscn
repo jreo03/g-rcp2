@@ -1,7 +1,6 @@
-[gd_scene load_steps=8 format=3 uid="uid://b4j8prwa2veg8"]
+[gd_scene load_steps=7 format=3 uid="uid://b4j8prwa2veg8"]
 
 [ext_resource type="Texture2D" uid="uid://b315i7ikjj32c" path="res://logo.png" id="2"]
-[ext_resource type="PackedScene" uid="uid://bsupxybgmf5vj" path="res://addons/vitavehicle_ui/engine_tuner.tscn" id="2_m8d5f"]
 [ext_resource type="PackedScene" uid="uid://ds30nwmnponmw" path="res://addons/vitavehicle_ui/collision.tscn" id="3_04ea6"]
 [ext_resource type="Script" path="res://addons/vitavehicle_ui/handler.gd" id="4"]
 [ext_resource type="PackedScene" uid="uid://re2icjigeohf" path="res://addons/vitavehicle_ui/tutors.tscn" id="4_s8p6t"]
@@ -24,11 +23,7 @@ size_flags_vertical = 3
 tabs_visible = false
 script = ExtResource("4")
 
-[node name="Engine_Tuner" parent="Control" instance=ExtResource("2_m8d5f")]
-layout_mode = 2
-
 [node name="Collision" parent="Control" instance=ExtResource("3_04ea6")]
-visible = false
 layout_mode = 2
 
 [node name="tutors" parent="Control" instance=ExtResource("4_s8p6t")]

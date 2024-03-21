@@ -12,7 +12,7 @@ func _on_Area_body_exited(body) -> void:
 	if not body in bodies:
 		bodies.append(body)
 
-func _physics_process(_delta) -> void:
+func _physics_process(_delta:float) -> void:
 	for i in bodies:
 		if is_instance_valid(i):
 			i.linear_velocity /= 1.075

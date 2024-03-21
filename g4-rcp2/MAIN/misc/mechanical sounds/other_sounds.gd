@@ -25,7 +25,8 @@ extends Node3D
 @export var TurboNoiseRPMAffection:float = 0.25
 
 @export var engine_sound:NodePath = NodePath("../engine_sound")
-@export var exhaust_particles :Array[NodePath] = []
+var engine_node:ViVeCarEngineSFX
+@export var exhaust_particles :Array[CPUParticles3D] = []
 
 @export var volume:float = 0.25
 var blow_psi:float = 0.0
@@ -35,29 +36,39 @@ var fueltrace:float = 0.0
 var air:float = 0.0
 var rand:float = 0.0
 
+var car:ViVeCar = get_parent()
+
+@onready var scwhine:AudioStreamPlayer3D = $"scwhine"
+@onready var whistle:AudioStreamPlayer3D = $"whistle"
+@onready var blow:AudioStreamPlayer3D = $"blow"
+@onready var backfire:AudioStreamPlayer3D = $"backfire"
+@onready var spool:AudioStreamPlayer3D = $"spool"
+@onready var whigh:AudioStreamPlayer3D = $"whigh"
+@onready var wlow:AudioStreamPlayer3D = $"wlow"
+
 func play() -> void:
-	$blow.stop()
-	$spool.stop()
-	$whistle.stop()
-	$scwhine.stop()
-	$whigh.play()
-	$wlow.play()
-	if get_parent().TurboEnabled:
-		$blow.play()
-		$spool.play()
-		$whistle.play()
-	if get_parent().SuperchargerEnabled:
-		$scwhine.play()
+	blow.stop()
+	spool.stop()
+	whistle.stop()
+	scwhine.stop()
+	whigh.play()
+	wlow.play()
+	if car.TurboEnabled:
+		blow.play()
+		spool.play()
+		whistle.play()
+	if car.SuperchargerEnabled:
+		scwhine.play()
 
 func stop() -> void:
 	for i:AudioStreamPlayer3D in get_children():
 		i.stop()
 
 func _ready() -> void:
+	car = get_parent_node_3d()
 	play()
 
 func _physics_process(_delta:float) -> void:
-	var car:ViVeCar = ViVeEnvironment.get_singleton().car
 	fueltrace += (car._throttle) * backfire_FuelRichness
 	air = (car._throttle * car._rpm) * backfire_Air + car._turbopsi
 	
@@ -65,37 +76,39 @@ func _physics_process(_delta:float) -> void:
 	
 	fueltrace = maxf(fueltrace, 0.0)
 	
+	engine_node = get_node(engine_sound)
+	
 	if has_node(engine_sound):
-		get_node(engine_sound).pitch_influence -= (get_node(engine_sound).pitch_influence - 1.0) * 0.5
+		engine_node.pitch_influence -= (engine_node.pitch_influence - 1.0) * 0.5
 	
 	if car._rpm > car.DeadRPM:
 		if fueltrace > randf_range(air * backfire_BackfirePrevention + backfire_BackfireThreshold, 60.0 / backfire_BackfireRate):
 			rand = 0.1
 			var ft:float = maxf(fueltrace, 10.0)
 			
-			$backfire.play()
+			backfire.play()
 			var yed:float = 1.5 - ft * 0.1
 			yed = maxf(yed, 1.0)
 			
-			$backfire.pitch_scale = randf_range(yed * 1.25,yed * 1.5)
-			$backfire.volume_db = linear_to_db((ft * backfire_Volume) * 0.1)
-			$backfire.max_db = $backfire.volume_db
-			get_node(engine_sound).pitch_influence = 0.5
-			for i in exhaust_particles:
-				get_node(i).emitting = true
+			backfire.pitch_scale = randf_range(yed * 1.25, yed * 1.5)
+			backfire.volume_db = linear_to_db((ft * backfire_Volume) * 0.1)
+			backfire.max_db = backfire.volume_db
+			engine_node.pitch_influence = 0.5
+			for i:CPUParticles3D in exhaust_particles:
+				i.emitting = true
 		else:
-			for i in exhaust_particles:
-				get_node(i).emitting = false
+			for i:CPUParticles3D in exhaust_particles:
+				i.emitting = false
 	
 	var wh:float = abs(car._rpm / 10000.0) * WhinePitch
 	wh = maxf(wh, 0.0)
 	
 	if wh > 0.01:
-		$scwhine.volume_db = linear_to_db(WhineVolume * volume)
-		$scwhine.max_db = $scwhine.volume_db
-		$scwhine.pitch_scale = wh
+		scwhine.volume_db = linear_to_db(WhineVolume * volume)
+		scwhine.max_db = scwhine.volume_db
+		scwhine.pitch_scale = wh
 	else:
-		$scwhine.volume_db = linear_to_db(0.0)
+		scwhine.volume_db = linear_to_db(0.0)
 	
 	var dist:float = blow_psi - car._turbopsi
 	blow_psi -= (blow_psi - car._turbopsi) * BlowOffWhineReduction
@@ -115,24 +128,24 @@ func _physics_process(_delta:float) -> void:
 	
 	spoolvol += (abs(car._rpm) * (TurboNoiseRPMAffection / 1000.0)) * spoolvol
 	
-	var blow:float = linear_to_db(volume * (blowvol * BlowOffVolume2))
-	blow = maxf(blow, -60.0)
+	var blow_local:float = linear_to_db(volume * (blowvol * BlowOffVolume2))
+	blow_local = maxf(blow_local, -60.0)
 	
-	var spool:float = linear_to_db(volume * (spoolvol * SpoolVolume))
-	spool = maxf(spool, -60.0)
+	var spool_local:float = linear_to_db(volume * (spoolvol * SpoolVolume))
+	spool_local = maxf(spool_local, -60.0)
 	
-	$blow.volume_db = blow
-	$spool.volume_db = spool
+	blow.volume_db = blow_local
+	spool.volume_db = spool_local
 	
-	$blow.max_db = $blow.volume_db
-	$spool.max_db = $spool.volume_db
+	blow.max_db = blow.volume_db
+	spool.max_db = spool.volume_db
 	var yes:float = blowvol * BlowOffVolume
 	yes = clampf(yes, 0.0, 1.0)
-	var whistle:float = linear_to_db(yes)
-	whistle = maxf(whistle, -60.0)
+	var whistle_local:float = linear_to_db(yes)
+	whistle_local = maxf(whistle_local, -60.0)
 	
-	$whistle.volume_db = whistle
-	$whistle.max_db = $whistle.volume_db
+	whistle.volume_db = whistle_local
+	whistle.max_db = whistle.volume_db
 	
 	var wps:float = 1.0
 	if car._turbopsi > 0.0:
@@ -141,27 +154,27 @@ func _physics_process(_delta:float) -> void:
 		wps = blowvol * BlowOffPitch2 + BlowOffPitch1
 	wps = minf(wps, MaxWhinePitch)
 	
-	$whistle.pitch_scale = wps
-	$spool.pitch_scale = SpoolPitch + spoolvol * 0.5
-	$blow.pitch_scale = BlowPitch
+	whistle.pitch_scale = wps
+	spool.pitch_scale = SpoolPitch + spoolvol * 0.5
+	blow.pitch_scale = BlowPitch
 	
 	var h:float = car._whinepitch / 200.0
 	h = clampf(h, 0.5, 1.0)
 	
-	var wlow:float = linear_to_db(((car._gearstress * car.GearGap) / 160000.0) * ((1.0 - h) * 0.5))
-	wlow = maxf(wlow, -60.0)
+	var wlow_local:float = linear_to_db(((car._gearstress * car.GearGap) / 160000.0) * ((1.0 - h) * 0.5))
+	wlow_local = maxf(wlow_local, -60.0)
 	
-	$wlow.volume_db = wlow
-	$wlow.max_db = $wlow.volume_db
+	wlow.volume_db = wlow_local
+	wlow.max_db = wlow.volume_db
 	if car._whinepitch / 50.0 > 0.0001:
-		$wlow.pitch_scale = car._whinepitch / 50.0
-	var whigh:float = linear_to_db(((car._gearstress * car.GearGap) / 80000.0) * 0.5)
-	whigh = maxf(whigh, -60.0)
+		wlow.pitch_scale = car._whinepitch / 50.0
+	var whigh_local:float = linear_to_db(((car._gearstress * car.GearGap) / 80000.0) * 0.5)
+	whigh_local = maxf(whigh_local, -60.0)
 	
-	$whigh.volume_db = whigh
-	$whigh.max_db = $whigh.volume_db
+	whigh.volume_db = whigh_local
+	whigh.max_db = whigh.volume_db
 	if car._whinepitch / 100.0 > 0.0001:
-		$whigh.pitch_scale = car._whinepitch / 100.0
+		whigh.pitch_scale = car._whinepitch / 100.0
 
 
 

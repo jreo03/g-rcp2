@@ -105,11 +105,11 @@ func digital_button_curve(digital:bool, analog:float, on_rate:float, off_rate:fl
 func loose_steering() -> void:
 	steer += steer_velocity
 
-	if abs(steer) > 1.0:
+	if absf(steer) > 1.0:
 		steer_velocity *= -0.5
 	for i:ViVeWheel in [front_left,front_right]:
 		steer_velocity += (i.directional_force.x * 0.00125) * i.Caster
-		steer_velocity -= (i.stress * 0.0025) * (atan2(abs(i.wv), 1.0) * i.angle)
+		steer_velocity -= (i.stress * 0.0025) * (atan2(absf(i.wv), 1.0) * i.angle)
 		
 		steer_velocity += steer * (i.directional_force.z * 0.0005) * i.Caster
 		
@@ -191,7 +191,7 @@ func steer_analog(input_axis:float) -> void:
 	
 	steer2 = clampf(steer2, -1.0, 1.0)
 	
-	var s:float = abs(steer2) * 1.0 + 0.5
+	var s:float = absf(steer2) * 1.0 + 0.5
 	s = minf(s, 1.0)
 	
 	steer2 *= s
@@ -228,7 +228,7 @@ func controls_joypad() -> void:
 	
 	
 	
-	var siding:float = abs(velocity.x)
+	var siding:float = absf(velocity.x)
 	
 	#Based on the syntax, I'm unsure if this is doing what it "should" do...?
 	if (velocity.x > 0 and steer2 > 0) or (velocity.x < 0 and steer2 < 0):
@@ -270,7 +270,7 @@ func controls_keyboard_mouse(mouseposx:float = 0.0) -> void:
 	
 	apply_gear_assist()
 	
-	var siding:float = abs(velocity.x)
+	var siding:float = absf(velocity.x)
 	
 	#Based on the syntax, I'm unsure if this is doing what it "should" do...?
 	if (velocity.x > 0 and steer2 > 0) or (velocity.x < 0 and steer2 < 0):

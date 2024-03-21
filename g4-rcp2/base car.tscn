@@ -277,6 +277,21 @@ transform = Transform3D(-101.962, 0, -8.9138e-06, 0, 101.962, 0, 8.9138e-06, 0, 
 mesh = SubResource("11")
 skeleton = NodePath("../../../../..")
 
+[node name="fl2" parent="." instance=ExtResource("1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.2, 0.2, 3.8)
+target_position = Vector3(0, -2.7, 0)
+Caster = 2.0
+S_Stiffness = 55.0
+S_Damping = 4.0
+S_ReboundDamping = 4.0
+B_Torque = 30.0
+B_Bias = 0.8
+
+[node name="Cylinder2" type="MeshInstance3D" parent="fl2/animation/camber/wheel" index="0"]
+transform = Transform3D(-101.962, 0, -8.9138e-06, 0, 101.962, 0, 8.9138e-06, 0, -101.962, 0, 0, 0)
+mesh = SubResource("11")
+skeleton = NodePath("../../../../..")
+
 [node name="rr" parent="." instance=ExtResource("1")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.2, 0.2, -3.8)
 target_position = Vector3(0, -2.7, 0)
@@ -302,7 +317,6 @@ mesh = SubResource("11")
 skeleton = NodePath("../../../../..")
 
 [node name="other_sounds" parent="." instance=ExtResource("6")]
-exhaust_particles = Array[NodePath]([NodePath("../fire")])
 
 [node name="fire" parent="." instance=ExtResource("7")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.21278, -1.65592, -5.90752)
@@ -313,6 +327,8 @@ scale_amount_curve = SubResource("14")
 [editable path="fr/animation/camber/smoke_dirt"]
 [editable path="fl"]
 [editable path="fl/animation/camber/smoke_dirt"]
+[editable path="fl2"]
+[editable path="fl2/animation/camber/smoke_dirt"]
 [editable path="rr"]
 [editable path="rr/animation/camber/smoke_dirt"]
 [editable path="rl"]

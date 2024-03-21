@@ -6,18 +6,22 @@ class_name ViVeEnvironment
 ##NOTE:Using this is considered unsafe in comparison to calling [method ViVeEnvironment.get_singleton]
 static var singleton:ViVeEnvironment = null
 
+var Debug_Mode:bool = true
+
 ##The currently active player car.
 ##NOTE: Could be changed in the future to accomodate multiple player cars, but right now acts singularly.
 @onready var car:ViVeCar = $"car":
 	set(new):
 		car = new
-		emit_signal("car_changed")
+		var _err:Error = emit_signal("car_changed")
 
 ##The currently loaded play scene.
 @onready var scene:Node3D = $"test scene":
 	set(new):
 		scene = new
-		emit_signal("scene_changed")
+		var _err:Error = emit_signal("scene_changed")
+
+@onready var env:WorldEnvironment = $"Morning_env"
 
 ##Emitted when the car is changed. 
 ##NOTE: Could be changed in the future to accomodate multiple player cars, but right now acts singularly.

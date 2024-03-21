@@ -26,24 +26,35 @@ class_name ViVeTorqueGraph
 var peakhp:Array[float] = [0.0,0.0]
 var peaktq:Array[float] = [0.0,0.0]
 
-@export var car:ViVeCar = ViVeCar.new()
+@export var car:ViVeCar = null
 
 @onready var torque:Line2D = $power_graph/torque
 @onready var torque_p:Polygon2D = $power_graph/torque/peak
 @onready var power:Line2D = $power_graph/power
 @onready var power_p:Polygon2D = $power_graph/power/peak
 
+var temp_rpm_fix:float = 0.0
+
 func draw_graph() -> void:
+	#Some checks I've found are necessary
+	if not is_instance_valid(car):
+		print("Car instance is not valid")
+		return
+#	elif car.get("_rpm") == null:
+#		print("'_rpm' could not be found in given car, drawing cannot proceed.")
+#		return
+	
 	peakhp = [0.0,0.0]
 	peaktq = [0.0,0.0]
 	torque.clear_points()
 	power.clear_points()
 	var skip:int = 0
-	var draw_scale:Vector2 = Vector2(size.x / Generation_Range, size.y / Generation_Range) 
-	for i in range(Generation_Range):
+	#var draw_scale:Vector2 = Vector2(size.x / Generation_Range, size.y / Generation_Range) 
+	for i:int in range(Generation_Range):
 		if i > Draw_RPM:
-			car._rpm = i
-			var trq:float = VitaVehicleSimulation.multivariate(car)
+			car._rpm = float(i)
+			#var trq:float = VitaVehicleSimulation.multivariate(car)
+			var trq:float = car.multivariate()
 			var hp:float = (i / 5252.0) * trq
 			
 			if Torque_Unit == 1:

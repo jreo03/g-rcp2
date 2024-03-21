@@ -8,20 +8,20 @@ static var singleton:ViVeDebug = null
 var changed_graph_size:Vector2 = Vector2(0,0)
 
 @onready var car_node:ViVeCar
-
+@onready var tacho:ViVeTachometer = $"tacho"
 @onready var tacho_gear:Label = $tacho/gear
-
 @onready var tacho_rpm:Label = $tacho/rpm
-
-@onready var power_graph:Control = $power_graph
-
+@onready var power_graph:ViVeInEngineTorqueGraph = $power_graph
 @onready var vgs:ViVeVGS = $vgs
+
+@onready var fps:Label = $"container/fps"
+@onready var weight_dist:Label = $"container/weight_dist"
 
 func _ready() -> void:
 	if not ViVeEnvironment.singleton.is_connected("ready", setup):
-		ViVeEnvironment.singleton.connect("ready", setup)
+		var _err:Error = ViVeEnvironment.get_singleton().connect("ready", setup)
 	if not ViVeEnvironment.singleton.is_connected("car_changed", update_car):
-		ViVeEnvironment.singleton.connect("car_changed", update_car)
+		var _err:Error = ViVeEnvironment.get_singleton().connect("car_changed", update_car)
 	singleton = self
 
 func update_car() -> void:
@@ -47,21 +47,22 @@ func setup() -> void:
 func _process(delta:float) -> void:
 	if car_node == null:
 		return
-	VitaVehicleSimulation.misc_smoke = misc_graphics_settings.smoke
 	if delta > 0:
-		#str(Performance.get_monitor(Performance.TIME_FPS))
-		$container/fps.text = "fps: " + str(1.0 / delta)
+		#This gives a more precise FPS at the cost of calculation
+		fps.text = "fps: " + str(1.0 / delta)
+		#This gives a smoother FPS but performs slightly better
+		#fps.text = "fps: " + str(Performance.get_monitor(Performance.TIME_FPS))
 		
 		$sw.rotation_degrees = car_node.car_controls.steer * 380.0
 		$sw_desired.rotation_degrees = car_node.car_controls.steer2 * 380.0
-		if car_node.Debug_Mode:
-			$container/weight_dist.text = "weight distribution: F%f/R%f" % [car_node.weight_dist[0] * 100, car_node.weight_dist[1] * 100]
+		if ViVeEnvironment.singleton.Debug_Mode:
+			weight_dist.text = "weight distribution: F%f/R%f" % [car_node.weight_dist[0] * 100, car_node.weight_dist[1] * 100]
 		else:
-			$container/weight_dist.text = "[ enable Debug_Mode or press F to\nfetch weight distribution ]"
+			weight_dist.text = "[ enable Debug_Mode or press F to\nfetch weight distribution ]"
 	
 	if not changed_graph_size == power_graph.size:
 		changed_graph_size = power_graph.size
-		power_graph._ready()
+		power_graph.draw_graph()
 	
 	$"fix engine".visible = car_node._rpm < car_node.DeadRPM
 	
@@ -73,7 +74,7 @@ func _process(delta:float) -> void:
 	$tacho/speedk.text = "KM/PH: " +str(int(car_node.linear_velocity.length() * 1.10130592))
 	$tacho/speedm.text = "MPH: " +str(int((car_node.linear_velocity.length() * 1.10130592) / 1.609 ) )
 	
-	var hpunit:String = "hp"
+	var hpunit:String
 	
 	match power_graph.Power_Unit:
 		1:
@@ -83,7 +84,7 @@ func _process(delta:float) -> void:
 		3:
 			hpunit = "kW"
 		_:
-			pass
+			hpunit = "hp"
 	
 	$hp.text = "Power: %s%s @ %s RPM" % [str( int(power_graph.peakhp[0] * 10.0) / 10.0 ), hpunit, str(int(power_graph.peakhp[1] * 10.0) / 10.0)]
 	
@@ -94,13 +95,13 @@ func _process(delta:float) -> void:
 		tqunit = "kg/m"
 	$tq.text = "Torque: %s%s @ %s RPM" % [str(int(power_graph.peaktq[0] * 10.0) / 10.0 ), tqunit, str(int(power_graph.peaktq[1] * 10.0) / 10.0)]
 	
-	$power_graph/rpm.position.x = (car_node._rpm/power_graph.Generation_Range) * power_graph.size.x - 1.0
-	$power_graph/redline.position.x = (car_node.RPMLimit/power_graph.Generation_Range) * power_graph.size.x - 1.0
+	$power_graph/rpm.position.x = (car_node._rpm / power_graph.Generation_Range) * power_graph.size.x - 1.0
+	$power_graph/redline.position.x = (car_node.RPMLimit / power_graph.Generation_Range) * power_graph.size.x - 1.0
 	
 	$g.text = "Gs:\nx%s,\ny%s,\nz%s" % [str(int(car_node._gforce.x * 100.0) / 100.0), str(int(car_node._gforce.y * 100.0) / 100.0), str(int(car_node._gforce.z * 100.0) / 100.0)]
 	
-	$tacho.currentpsi = car_node._turbopsi * (car_node.TurboAmount)
-	$tacho.currentrpm = car_node._rpm
+	tacho.currentpsi = car_node._turbopsi * (car_node.TurboAmount)
+	tacho.currentrpm = car_node._rpm
 	tacho_rpm.text = str(int(car_node._rpm))
 	
 	if car_node._rpm < 0:
@@ -123,9 +124,12 @@ func _physics_process(_delta:float) -> void:
 		return
 	vgs.gforce -= (vgs.gforce - Vector2(car_node._gforce.x, car_node._gforce.z)) * 0.5
 	
-	$tacho/abs.visible = car_node._abspump > 0 and car_node.car_controls.brakepedal > 0.1
-	$tacho/tcs.visible = car_node._tcsflash
-	$tacho/esp.visible = car_node._espflash
+	var tacho_label:Label = $tacho/abs
+	tacho_label.visible = car_node._abspump > 0 and car_node.car_controls.brakepedal > 0.1
+	tacho_label = $tacho/tcs
+	tacho_label.visible = car_node._tcsflash
+	tacho_label = $tacho/esp
+	tacho_label.visible = car_node._espflash
 
 ##Restarts the car's engine. Needed if the RPM dips to low and it stalls.
 func engine_restart() -> void:

@@ -59,7 +59,7 @@ func _physics_process(_delta:float) -> void:
 				i.self_modulate = Color(1,0,0)
 			
 	
-	var vector_cache:float = Vector2(abs(gforce.x), abs(gforce.y)).length()
+	var vector_cache:float = Vector2(absf(gforce.x), absf(gforce.y)).length()
 	#glength = vector_cache / vgs_scale - 1.0
 	glength = maxf(vector_cache / vgs_scale - 1.0, 0.0)
 	if vector_cache > MaxG:

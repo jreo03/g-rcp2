@@ -30,7 +30,3 @@ func setup() -> void:
 				i.get_node("amount").text = str(i.button_pressed)
 			_:
 				pass
-
-func _input(_event:InputEvent) -> void:
-	if Input.is_action_just_pressed("ui_cancel"):
-		visible = false

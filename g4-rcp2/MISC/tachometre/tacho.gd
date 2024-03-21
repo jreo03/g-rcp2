@@ -1,5 +1,7 @@
 extends Control
 
+class_name ViVeTachometer
+
 var currentrpm :float = 0.0
 var currentpsi :float = 0.0
 
@@ -10,11 +12,17 @@ var currentpsi :float = 0.0
 
 var generated:Array[ColorRect] = []
 
+@onready var turbo_needle:TextureRect = $"turbo/needle"
+
+@onready var tacho_needle:TextureRect = $"tacho/needle"
+
 func _ready() -> void:
-	$turbo.visible = Turbo_Visible
-	$turbo/maxpsi.text = str(int(Max_PSI))
+	var turbo:TextureRect = $"turbo"
+	turbo.visible = Turbo_Visible
+	var turbo_max:Label = $"turbo/maxpsi"
+	turbo_max.text = str(int(Max_PSI))
 	if len(generated) > 0:
-		for i in generated:
+		for i:ColorRect in generated:
 			i.queue_free()
 		generated.clear()
 	
@@ -24,7 +32,7 @@ func _ready() -> void:
 	var maximum:int = int(RPM_Range / 1000.0)
 	var red:float = Redline / 1000.0 - 0.001
 	
-	for i in range(maximum + 1):
+	for i:int in range(maximum + 1):
 		var dist:float = float(i) / float(maximum)
 		var dist2:float = (float(i) + 0.25) / float(maximum)
 		var dist3:float = (float(i) + 0.5) / float(maximum)
@@ -32,17 +40,18 @@ func _ready() -> void:
 		
 		var d:ColorRect = $tacho/major.duplicate(true)
 		$tacho.add_child(d)
-		d.rotation_degrees = lowangle*(1.0-dist) + highangle*dist
+		d.rotation_degrees = lowangle * (1.0-dist) + highangle * dist
 		d.visible = true
-		d.get_node("tetx").text = str(i)
-		d.get_node("tetx").rotation_degrees = -d.rotation_degrees
+		var tetx:Label = d.get_node("tetx")
+		tetx.text = str(i)
+		tetx.rotation_degrees = -d.rotation_degrees
 		generated.append(d)
 		
 		if float(i) > red:
 			d.color = Color(1,0,0)
 		
-		if len(d.get_node("tetx").text) > 1:
-			d.get_node("tetx").position.y += 5
+		if len(tetx.text) > 1:
+			tetx.position.y += 5
 		
 		if not i == maximum:
 			d = $tacho/minor.duplicate(true)
@@ -50,8 +59,8 @@ func _ready() -> void:
 			d.rotation_degrees = lowangle*(1.0-dist2) + highangle*dist2
 			d.visible = true
 			generated.append(d)
-			if float(i+0.25)>red:
-				d.color = Color(1,0,0)
+			if float(i + 0.25) > red:
+				d.color = Color.RED
 			
 			d = $tacho/minor.duplicate(true)
 			$tacho.add_child(d)
@@ -59,7 +68,7 @@ func _ready() -> void:
 			d.visible = true
 			generated.append(d)
 			if float(i + 0.5) > red:
-				d.color = Color(1,0,0)
+				d.color = Color.RED
 			
 			d = $tacho/minor.duplicate(true)
 			$tacho.add_child(d)
@@ -67,13 +76,13 @@ func _ready() -> void:
 			d.visible = true
 			generated.append(d)
 			if float(i + 0.75) > red:
-				d.color = Color(1,0,0)
+				d.color = Color.RED
 
 func _process(_delta:float) -> void:
-	$tacho/needle.rotation_degrees = - 120.0 + 240.0 * (abs(currentrpm) / RPM_Range)
+	tacho_needle.rotation_degrees = - 120.0 + 240.0 * (absf(currentrpm) / RPM_Range)
 	
-	$turbo/needle.rotation_degrees = - 90.0 + 180.0 * (currentpsi / Max_PSI)
+	turbo_needle.rotation_degrees = - 90.0 + 180.0 * (currentpsi / Max_PSI)
 	
-	$turbo/needle.rotation_degrees = maxf($turbo/needle.rotation_degrees, - 90.0)
+	turbo_needle.rotation_degrees = maxf(turbo_needle.rotation_degrees, - 90.0)
 #	if $turbo/needle.rotation_degrees < - 90.0:
 #		$turbo/needle.rotation_degrees = - 90.0
