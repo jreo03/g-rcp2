@@ -907,12 +907,6 @@ func _physics_process(_delta:float) -> void:
 		
 		GearAssist.assist_level = VitaVehicleSimulation.GearAssistant
 	
-	if Input.is_action_just_pressed("toggle_debug_mode"):
-		if Debug_Mode:
-			Debug_Mode = false
-		else:
-			Debug_Mode = true
-	
 #	velocity = global_transform.basis.orthonormalized().xform_inv(linear_velocity)
 	_velocity = global_transform.basis.orthonormalized().transposed() * (linear_velocity)
 #	rvelocity = global_transform.basis.orthonormalized().xform_inv(angular_velocity)
@@ -1085,8 +1079,6 @@ func _process(_delta:float) -> void:
 			weight_dist[0] = (front_load / total) * 0.5 + 0.5
 			weight_dist[1] = 1.0 - weight_dist[0]
 	
-	#readout_torque = VitaVehicleSimulation.multivariate(RiseRPM,TorqueRise,BuildUpTorque,EngineFriction,EngineDrag,OffsetTorque,_rpm,DeclineRPM,DeclineRate,FloatRate,MaxPSI,TurboAmount,EngineCompressionRatio,TurboEnabled,VVTRPM,VVT_BuildUpTorque,VVT_TorqueRise,VVT_RiseRPM,VVT_OffsetTorque,VVT_FloatRate,VVT_DeclineRPM,VVT_DeclineRate,SuperchargerEnabled,SCRPMInfluence,BlowRate,SCThreshold,DeclineSharpness,VVT_DeclineSharpness)
-	#_readout_torque = VitaVehicleSimulation.multivariate(self)
 	_readout_torque = multivariate()
 
 const multivariation_inputs:PackedStringArray = [

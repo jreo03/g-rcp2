@@ -51,3 +51,12 @@ func switch_sky(procedural:bool) -> void:
 		environment = current_sky
 	else:
 		environment = default_sky
+
+func _input(event: InputEvent) -> void:
+	if event.is_action_pressed("toggle_debug_mode"):
+		if Debug_Mode:
+			Debug_Mode = false
+			car.Debug_Mode = false
+		else:
+			Debug_Mode = true
+			car.Debug_Mode = true
