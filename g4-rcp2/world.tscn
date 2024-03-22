@@ -21,7 +21,7 @@ sky_material = SubResource("ProceduralSkyMaterial_22uh0")
 background_mode = 2
 sky = SubResource("Sky_2nt26")
 
-[node name="Morning_env" type="WorldEnvironment"]
+[node name="root" type="WorldEnvironment"]
 environment = SubResource("Environment_nfa35")
 script = ExtResource("1_ki5xn")
 
