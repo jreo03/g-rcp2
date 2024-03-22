@@ -1097,6 +1097,7 @@ vertical_alignment = 2
 [connection signal="pressed" from="swap car" to="Window" method="_on_swap_car_pressed"]
 [connection signal="pressed" from="swap map" to="Window" method="_on_swap_map_pressed"]
 [connection signal="close_requested" from="Window" to="Window" method="_on_close_requested"]
+[connection signal="tab_changed" from="Window/TabContainer" to="Window" method="_on_tab_container_tab_changed"]
 [connection signal="toggled" from="Window/TabContainer/Graphics Config/container/vsync" to="Window/TabContainer/Graphics Config" method="_on_vsync_toggled"]
 [connection signal="toggled" from="Window/TabContainer/Graphics Config/container/reflections" to="Window/TabContainer/Graphics Config" method="_on_reflections_toggled"]
 [connection signal="toggled" from="Window/TabContainer/Graphics Config/container/shadows" to="Window/TabContainer/Graphics Config" method="_on_shadows_toggled"]

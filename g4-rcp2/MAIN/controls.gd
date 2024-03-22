@@ -6,17 +6,19 @@ class_name ViVeCarControls
 enum ControlType {
 	##Use the keyboard and mouse for control.
 	CONTROLS_KEYBOARD_MOUSE,
-	##Use the touchscreen and accelerometer for control.
+	##Use the touchscreen for control.
 	CONTROLS_TOUCH,
 	##Use a connected game controller for control.
 	CONTROLS_JOYPAD,
 }
 ##Which ControlType is being used.
 @export_enum("Keyboard and Mouse", "Keyboard", "Touch controls (Gyro)", "Joypad") var control_type:int = 0
+## @depreciated
 ## Applies all control settings globally. This also affects cars that were already spawned.
 @export var Use_Global_Control_Settings:bool = false
 ##Uses your cursor to steer the vehicle if keyboard and mouse controls are active.
 @export var UseMouseSteering:bool = false
+## @depreciated
 ## Uses your accelerometre to steer, typically on mobile devices that have them.
 @export var UseAccelerometreSteering :bool = false
 ## Steering amplification on mouse and accelerometre steering.
