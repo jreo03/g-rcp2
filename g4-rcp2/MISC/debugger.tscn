@@ -527,18 +527,6 @@ script = ExtResource("5")
 [node name="container" type="VBoxContainer" parent="Window/TabContainer/Graphics Config"]
 layout_mode = 2
 
-[node name="smoke" type="CheckBox" parent="Window/TabContainer/Graphics Config/container"]
-layout_mode = 2
-text = "Tyre Smoke"
-
-[node name="fs" type="CheckBox" parent="Window/TabContainer/Graphics Config/container"]
-layout_mode = 2
-text = "Fullscreen"
-
-[node name="use_procedural_sky" type="CheckBox" parent="Window/TabContainer/Graphics Config/container"]
-layout_mode = 2
-text = "Use Procedural Sky"
-
 [node name="vsync" type="CheckBox" parent="Window/TabContainer/Graphics Config/container"]
 layout_mode = 2
 tooltip_text = "This will make the game run smoother by capping the framerate to that of your screen"
@@ -552,9 +540,21 @@ text = "Reflections"
 layout_mode = 2
 text = "Shadows"
 
+[node name="smoke" type="CheckBox" parent="Window/TabContainer/Graphics Config/container"]
+layout_mode = 2
+text = "Tyre Smoke"
+
+[node name="use_procedural_sky" type="CheckBox" parent="Window/TabContainer/Graphics Config/container"]
+layout_mode = 2
+text = "Use Procedural Sky"
+
 [node name="fxaa" type="CheckBox" parent="Window/TabContainer/Graphics Config/container"]
 layout_mode = 2
 text = "FXAA"
+
+[node name="fs" type="CheckBox" parent="Window/TabContainer/Graphics Config/container"]
+layout_mode = 2
+text = "Fullscreen"
 
 [node name="Change Scene" type="ScrollContainer" parent="Window/TabContainer"]
 visible = false
@@ -1096,13 +1096,13 @@ vertical_alignment = 2
 [connection signal="pressed" from="swap car" to="Window" method="_on_swap_car_pressed"]
 [connection signal="pressed" from="swap map" to="Window" method="_on_swap_map_pressed"]
 [connection signal="close_requested" from="Window" to="Window" method="_on_close_requested"]
-[connection signal="toggled" from="Window/TabContainer/Graphics Config/container/smoke" to="Window/TabContainer/Graphics Config" method="_on_tyre_smoke_toggled"]
-[connection signal="toggled" from="Window/TabContainer/Graphics Config/container/fs" to="Window/TabContainer/Graphics Config" method="_on__fullscreen_toggled"]
-[connection signal="toggled" from="Window/TabContainer/Graphics Config/container/use_procedural_sky" to="Window/TabContainer/Graphics Config" method="_on_use_procedural_sky_toggled"]
 [connection signal="toggled" from="Window/TabContainer/Graphics Config/container/vsync" to="Window/TabContainer/Graphics Config" method="_on_vsync_toggled"]
 [connection signal="toggled" from="Window/TabContainer/Graphics Config/container/reflections" to="Window/TabContainer/Graphics Config" method="_on_reflections_toggled"]
 [connection signal="toggled" from="Window/TabContainer/Graphics Config/container/shadows" to="Window/TabContainer/Graphics Config" method="_on_shadows_toggled"]
+[connection signal="toggled" from="Window/TabContainer/Graphics Config/container/smoke" to="Window/TabContainer/Graphics Config" method="_on_tyre_smoke_toggled"]
+[connection signal="toggled" from="Window/TabContainer/Graphics Config/container/use_procedural_sky" to="Window/TabContainer/Graphics Config" method="_on_use_procedural_sky_toggled"]
 [connection signal="toggled" from="Window/TabContainer/Graphics Config/container/fxaa" to="Window/TabContainer/Graphics Config" method="_on_fxaa_toggled"]
+[connection signal="toggled" from="Window/TabContainer/Graphics Config/container/fs" to="Window/TabContainer/Graphics Config" method="_on__fullscreen_toggled"]
 
 [editable path="throttle"]
 [editable path="brake"]
