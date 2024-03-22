@@ -187,10 +187,10 @@ func diffs() -> void:
 	if car._locked > 0.0:
 		if Differed_Wheel: #Non "" NodePath evaluates true
 			var d_w:ViVeWheel = car.get_node(Differed_Wheel)
-			snap = abs(d_w.wheelpower_global) / (car._locked * 16.0) + 1.0
+			snap = absf(d_w.wheelpower_global) / (car._locked * 16.0) + 1.0
 			absolute_wv = output_wv+(offset*snap)
-			var distanced2:float = abs(absolute_wv - d_w.absolute_wv_diff) / (car._locked * 16.0)
-			distanced2 += abs(d_w.wheelpower_global) / (car._locked * 16.0)
+			var distanced2:float = absf(absolute_wv - d_w.absolute_wv_diff) / (car._locked * 16.0)
+			distanced2 += absf(d_w.wheelpower_global) / (car._locked * 16.0)
 			distanced2 = maxf(distanced2, snap)
 			
 			distanced2 += 1.0 / cache_tyrestiffness

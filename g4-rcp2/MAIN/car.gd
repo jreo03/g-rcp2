@@ -298,10 +298,12 @@ func _mouse_wrapper() -> void:
 
 ##Check which [Callable] from [ViVeCarControls] to use for the car's controls.
 func decide_controls() -> Callable:
+	ViVeTouchControls.singleton.visible = false
 	match car_controls.control_type as ViVeCarControls.ControlType:
 		ViVeCarControls.ControlType.CONTROLS_KEYBOARD_MOUSE:
 			return _mouse_wrapper
 		ViVeCarControls.ControlType.CONTROLS_TOUCH:
+			ViVeTouchControls.singleton.show()
 			return car_controls.controls_touchscreen
 		ViVeCarControls.ControlType.CONTROLS_JOYPAD:
 			return car_controls.controls_joypad

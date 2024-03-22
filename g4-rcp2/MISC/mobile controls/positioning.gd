@@ -17,6 +17,6 @@ func _process(_delta:float) -> void:
 
 func press(state:bool) -> void:
 	if state:
-		Input.action_press(name)
+		Input.action_press(action)
 	else:
-		Input.action_release(name)
+		Input.action_release(action)

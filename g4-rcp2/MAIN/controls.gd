@@ -198,8 +198,40 @@ func steer_analog(input_axis:float) -> void:
 
 ##The control implementation for touchscreen + accelerometer
 func controls_touchscreen() -> void:
-	steer_analog(Input.get_accelerometer().x / 10.0)
+	gas = Input.is_action_pressed("gas")
+	brake = Input.is_action_pressed("brake")
+	su = Input.is_action_just_pressed("shiftup")
+	sd = Input.is_action_just_pressed("shiftdown")
+	handbrake = Input.is_action_pressed("handbrake")
+	left = Input.is_action_pressed("left")
+	right = Input.is_action_pressed("right")
 	
+	if not UseMouseSteering:
+		if left:
+			steer_velocity -= 0.01
+		elif right:
+			steer_velocity += 0.01
+	
+	if LooseSteering:
+		loose_steering()
+	
+	apply_gear_assist()
+	
+	var siding:float = absf(velocity.x)
+	
+	#Based on the syntax, I'm unsure if this is doing what it "should" do...?
+	if (velocity.x > 0 and steer2 > 0) or (velocity.x < 0 and steer2 < 0):
+		siding = 0.0
+	
+	var going:float = velocity.z / (siding + 1.0)
+	going = maxf(going, 0)
+	
+	if UseMouseSteering:
+		steer_analog(Input.get_accelerometer().x / 10.0)
+	else:
+		steer_digital_curve()
+	
+	apply_assistance_factor(going)
 
 ##The control implementation for game controllers (joypads)
 func controls_joypad() -> void:
@@ -226,11 +258,8 @@ func controls_joypad() -> void:
 	brakepedal = Input.get_joy_axis(joypad_index, JOY_AXIS_TRIGGER_LEFT)
 	handbrakepull = digital_button_curve(handbrake, handbrakepull, OnHandbrakeRate, OffHandbrakeRate)
 	
-	
-	
 	var siding:float = absf(velocity.x)
 	
-	#Based on the syntax, I'm unsure if this is doing what it "should" do...?
 	if (velocity.x > 0 and steer2 > 0) or (velocity.x < 0 and steer2 < 0):
 		siding = 0.0
 	

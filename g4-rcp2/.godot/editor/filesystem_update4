@@ -1,14 +1,13 @@
 res://default_env.tres
-res://world.tscn
-res://MISC/misc scripts/world_root.gd
 res://MISC/debugger.tscn
+res://world.tscn
 res://base car.tscn
 res://morning_env.scn
-res://MISC/scene swapper/scene swapper.gd
-res://MISC/graphics_config/graphics config.gd
-res://MISC/car swapper/cars/Synic EKI [Rally]/scene.tscn
 res://MISC/car swapper/cars/Eclipse SRC/scene.tscn
+res://MAIN/wheel.gd
+res://default_bus_layout.tres
+res://MISC/mobile controls/mobile.tscn
+res://MISC/mobile controls/mobile_ctrls.gd
 res://MAIN/car.gd
-res://MAIN/car_stats/auto_settings.gd
-res://MAIN/misc/tyre sounds/tyres.tscn
-res://MAIN/misc/tyre sounds/tyres.gd
+res://MISC/mobile controls/positioning.gd
+res://MAIN/controls.gd

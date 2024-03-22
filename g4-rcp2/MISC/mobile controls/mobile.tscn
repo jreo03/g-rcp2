@@ -31,6 +31,7 @@ position = Vector2(849, 370)
 scale = Vector2(1.03125, 1)
 texture_normal = ExtResource("2")
 shape = SubResource("1")
+action = "gas"
 script = ExtResource("3")
 
 [node name="brake" type="TouchScreenButton" parent="."]
@@ -39,6 +40,7 @@ position = Vector2(665, 427)
 scale = Vector2(0.857868, 1)
 texture_normal = ExtResource("4")
 shape = SubResource("2")
+action = "brake"
 script = ExtResource("3")
 
 [node name="clutch" type="TouchScreenButton" parent="."]
@@ -47,6 +49,7 @@ position = Vector2(852, 251)
 scale = Vector2(1.01562, 0.358779)
 texture_normal = ExtResource("5")
 shape = SubResource("3")
+action = "clutch"
 script = ExtResource("3")
 
 [node name="left" type="TouchScreenButton" parent="."]
@@ -54,6 +57,7 @@ modulate = Color(1, 1, 1, 0.5)
 position = Vector2(44, 425)
 texture_normal = ExtResource("6")
 shape = SubResource("3")
+action = "left"
 script = ExtResource("3")
 
 [node name="handbrake" type="TouchScreenButton" parent="."]
@@ -61,6 +65,7 @@ modulate = Color(1, 1, 1, 0.5)
 position = Vector2(689, 262)
 texture_normal = ExtResource("9")
 shape = SubResource("4")
+action = "handbrake"
 script = ExtResource("3")
 
 [node name="shiftup" type="TouchScreenButton" parent="."]
@@ -69,6 +74,7 @@ position = Vector2(39, 247)
 scale = Vector2(0.5, 0.5)
 texture_normal = ExtResource("7")
 shape = SubResource("3")
+action = "shiftup"
 script = ExtResource("3")
 
 [node name="shiftdown" type="TouchScreenButton" parent="."]
@@ -77,6 +83,7 @@ position = Vector2(39, 327)
 scale = Vector2(0.5, 0.5)
 texture_normal = ExtResource("8")
 shape = SubResource("3")
+action = "shiftdown"
 script = ExtResource("3")
 
 [node name="right" type="TouchScreenButton" parent="."]
@@ -86,6 +93,7 @@ rotation = -3.14159
 scale = Vector2(1, -1)
 texture_normal = ExtResource("6")
 shape = SubResource("3")
+action = "right"
 script = ExtResource("3")
 
 [connection signal="pressed" from="gas" to="gas" method="press" binds= [true]]
