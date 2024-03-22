@@ -1,6 +1,7 @@
+CheckBox
+Node
 RichTextLabel
 HBoxContainer
-CheckBox
 CheckButton
 Label
 Control

@@ -2,6 +2,8 @@ extends ScrollContainer
 
 var car:ViVeCar
 
+const default_sky:Environment = preload("res://default_env.tres")
+
 func setcar() -> void:
 	car = get_parent().get_node(get_parent().car)
 
@@ -45,13 +47,13 @@ func _on_fxaa_toggled(toggled_on: bool) -> void:
 	else:
 		get_viewport().screen_space_aa = Viewport.SCREEN_SPACE_AA_DISABLED
 
-
 func _on_shadows_toggled(toggled_on: bool) -> void:
 	misc_graphics_settings.shadows = toggled_on
+	#I hate this calling, but eh
+	ViVeEnvironment.get_singleton().env.sun.shadow_enabled = toggled_on
 
 func _on_reflections_toggled(toggled_on: bool) -> void:
 	misc_graphics_settings.reflections = toggled_on
-
 
 func _on_use_procedural_sky_toggled(toggled_on: bool) -> void:
 	misc_graphics_settings.use_procedural_sky = toggled_on
