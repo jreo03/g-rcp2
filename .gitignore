@@ -1,5 +1,8 @@
 
 README.md.backup
-g4-rcp2/.godot*
-g4-rcp2/.godot/*
-*.Node
+# Godot 4+ specific ignores
+.godot/
+addons/
+android/
+g4-rcp2/.godot/
+

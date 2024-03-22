@@ -1,4 +1,4 @@
-extends Node3D
+extends WorldEnvironment
 ##The singleton representing the base of the SceneTree in a VitaVehicle instance.
 class_name ViVeEnvironment
 
@@ -6,6 +6,8 @@ class_name ViVeEnvironment
 ##NOTE:Using this is considered unsafe in comparison to calling [method ViVeEnvironment.get_singleton]
 static var singleton:ViVeEnvironment = null
 
+var current_sky:Environment = environment
+const default_sky:Environment = preload("res://default_env.tres")
 var Debug_Mode:bool = true
 
 ##The currently active player car.
@@ -21,10 +23,7 @@ var Debug_Mode:bool = true
 		scene = new
 		var _err:Error = emit_signal("scene_changed")
 
-@onready var env:WorldEnvironment = $"Morning_env":
-	set(new):
-		env = new
-		var _err:Error = emit_signal("env_changed")
+@onready var sun:DirectionalLight3D = $"morning_sun"
 
 ##Emitted when the car is changed. 
 ##NOTE: Could be changed in the future to accomodate multiple player cars, but right now acts singularly.
@@ -32,7 +31,7 @@ signal car_changed
 ##Emitted when the play scene changes.
 signal scene_changed
 
-##Emiited when the WorldEnvironment changes
+##Emiited when the Environment changes
 signal env_changed
 
 func _init() -> void:
@@ -45,3 +44,10 @@ static func get_singleton() -> ViVeEnvironment:
 		return singleton
 	else:
 		return ViVeEnvironment.new()
+
+
+func switch_sky(procedural:bool) -> void:
+	if misc_graphics_settings.use_procedural_sky:
+		environment = current_sky
+	else:
+		environment = default_sky

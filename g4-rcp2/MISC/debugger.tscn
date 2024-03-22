@@ -384,6 +384,7 @@ text = "change scene"
 [node name="Window" type="Window" parent="."]
 initial_position = 1
 size = Vector2i(700, 300)
+visible = false
 transparent = true
 popup_window = true
 script = ExtResource("9_3fasi")

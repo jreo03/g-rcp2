@@ -1,7 +1,6 @@
 extends ScrollContainer
 
 @onready var button:Button = $container/_DEFAULT.duplicate()
-@onready var world:Node3D = get_tree().current_scene
 
 const pathh:String = "res://MISC/scene swapper/"
 var canclick:bool = true
@@ -37,7 +36,6 @@ func load_and_cache(path:String) -> PackedScene:
 	return loaded
 
 func swapmap(naem:String) -> void:
-	
 	#world.get_node(current_map).queue_free()
 	ViVeEnvironment.singleton.scene.queue_free()
 	
