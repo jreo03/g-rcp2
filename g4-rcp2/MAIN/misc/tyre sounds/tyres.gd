@@ -28,6 +28,7 @@ func stop() -> void:
 func _ready() -> void:
 	parent = get_parent_node_3d()
 	var _err:Error = parent.connect("wheels_ready", load_wheels)
+	
 	play()
 
 func load_wheels() -> void:
@@ -49,7 +50,7 @@ func _physics_process(_delta:float) -> void:
 	
 	var wheel:ViVeWheel = most_skidding(wheels)
 	
-	length = maxf((wheel.skvol / 2.0 - 1.0), 2.0)
+	length = minf((wheel.skvol / 2.0 - 1.0), 2.0)
 	
 	var roll:float = absf(wheel.wv * wheel.w_size) - wheel.velocity.length()
 	
@@ -68,7 +69,7 @@ func _physics_process(_delta:float) -> void:
 	
 	var mult:float = (parent.linear_velocity.length() / 5000.0 + 1.0)
 	
-	roll0.pitch_scale = 1.0 / (parent.linear_velocity.length() / 500.0 + 1.0)
+	#roll0.pitch_scale = 1.0 / (parent.linear_velocity.length() / 500.0 + 1.0)
 	roll1.pitch_scale = 1.0 / mult
 	roll2.pitch_scale = 1.0 / mult
 	peel0.pitch_scale = 0.95 + length / 8.0 / mult

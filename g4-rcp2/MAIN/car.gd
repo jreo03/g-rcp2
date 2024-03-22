@@ -2,12 +2,10 @@ extends RigidBody3D
 ##A class representing a car in VitaVehicle.
 class_name ViVeCar
 
-var stats:ViVeCarSS = ViVeCarSS.new()
-
 var c_pws:Array[ViVeWheel]
 
 ##A set of wheels that are powered parented under the vehicle.
-@export var Powered_Wheels:PackedStringArray = ["fl", "fr"]
+
 
 @onready var front_left:ViVeWheel = $"fl"
 @onready var front_right:ViVeWheel = $"fr"
@@ -20,10 +18,6 @@ var c_pws:Array[ViVeWheel]
 ##An array containing the rear wheels of the car.
 @onready var rear_wheels:Array[ViVeWheel] = [back_left, back_right]
 
-##Whether or not debug mode is active. [br]
-##TODO: Make this do more than just hide weight distribution.
-@export var Debug_Mode :bool = false
-
 @export_group("Controls")
 @export var car_controls:ViVeCarControls = ViVeCarControls.new()
 var car_controls_cache:ViVeCarControls.ControlType = ViVeCarControls.ControlType.CONTROLS_KEYBOARD_MOUSE
@@ -33,7 +27,11 @@ var _control_func:Callable = car_controls.controls_keyboard_mouse
 @export var GearAssist:ViVeGearAssist = ViVeGearAssist.new()
 
 @export_group("Meta")
+#Whether the car is a user-controlled vehicle or not
 @export var Controlled:bool = true
+##Whether or not debug mode is active. [br]
+##TODO: Make this do more than just hide weight distribution.
+@export var Debug_Mode :bool = false
 
 @export_group("Chassis")
 ##Vehicle weight in kilograms.
@@ -52,6 +50,8 @@ var _control_func:Callable = car_controls.controls_keyboard_mouse
 @export var AckermannPoint:float = -3.8
 ##Minimum turning circle (measured in default unit scale).
 @export var Steer_Radius:float = 13.0
+
+@export var Powered_Wheels:PackedStringArray = ["fl", "fr"]
 
 @export_group("Drivetrain")
 ##Final Drive Ratio refers to the last set of gears that connect a vehicle's engine to the driving axle.
@@ -81,27 +81,7 @@ enum TransmissionTypes {
 	semi_auto = 3
 }
 
-##Transmission automation settings (for Automatic, CVT and Semi-Auto).
-class newAutoSettings:
-	extends Resource
-	## Upshift RPM (auto).
-	@export var shift_rpm:float = 6500.0
-	## Downshift threshold (auto).
-	@export var downshift_thresh:float = 300.0
-	## Throttle efficiency threshold (auto/dct).
-	@export_range(0, 1) var throt_eff_thresh:float = 0.5
-	## Engagement rpm threshold (auto/dct/cvt).
-	@export var engage_rpm_thresh:float = 0.0
-	## Engagement rpm (auto/dct/cvt).
-	@export var engage_rpm:float = 4000.0
-
-@export var AutoSettings:Array[float] = [
-6500.0, # shift rpm (auto)
-300.0, # downshift threshold (auto)
-0.5, # throttle efficiency threshold (range: 0 - 1) (auto/dct)
-0.0, # engagement rpm threshold (auto/dct/cvt)
-4000.0, # engagement rpm (auto/dct/cvt)
-]
+@export var AutoSettings:ViVeAutoSettings = ViVeAutoSettings.new()
 
 ## Settings for CVT.
 @export var CVTSettings:ViVeCVT = ViVeCVT.new()
@@ -283,7 +263,7 @@ var _stalled:float = 0.0
 
 func bullet_fix() -> void:
 	var offset:Vector3 = drag_center.position
-	stats.AckermannPoint -= offset.z
+	AckermannPoint -= offset.z
 	
 	for i:Node3D in get_children():
 		i.position -= offset
@@ -629,7 +609,7 @@ func transmission() -> void:
 		car_controls.gear = _actualgear
 	
 	elif TransmissionType == 1:
-		car_controls.clutchpedal = (_rpm - float(AutoSettings[3]) * (car_controls.gaspedal * float(AutoSettings[2]) + (1.0 - float(AutoSettings[2]))) ) / float(AutoSettings[4])
+		car_controls.clutchpedal = (_rpm - float(AutoSettings.AutoSettings.engage_rpm_thresh) * (car_controls.gaspedal * float(AutoSettings.throt_eff_thresh) + (1.0 - float(AutoSettings.throt_eff_thresh))) ) / float(AutoSettings.engage_rpm)
 		
 		if not GearAssist.assist_level == 2:
 			if car_controls.su:
@@ -666,9 +646,9 @@ func transmission() -> void:
 			car_controls.su = false
 			car_controls.sd = false
 			for i:ViVeWheel in c_pws:
-				if (i.wv / GearAssist.speed_influence) > (float(AutoSettings[0]) * (car_controls.gaspedal *float(AutoSettings[2]) + (1.0 - float(AutoSettings[2])))) / _ratio:
+				if (i.wv / GearAssist.speed_influence) > (float(AutoSettings.shift_rpm) * (car_controls.gaspedal *float(AutoSettings.throt_eff_thresh) + (1.0 - float(AutoSettings.throt_eff_thresh)))) / _ratio:
 					car_controls.su = true
-				elif (i.wv / GearAssist.speed_influence) < ((float(AutoSettings[0]) - float(AutoSettings[1])) * (car_controls.gaspedal * float(AutoSettings[2]) + (1.0 - float(AutoSettings[2])))) / lastratio:
+				elif (i.wv / GearAssist.speed_influence) < ((float(AutoSettings.shift_rpm) - float(AutoSettings.downshift_thresh)) * (car_controls.gaspedal * float(AutoSettings.throt_eff_thresh) + (1.0 - float(AutoSettings.throt_eff_thresh)))) / lastratio:
 					car_controls.sd = true
 					
 			if car_controls.su:
@@ -682,7 +662,7 @@ func transmission() -> void:
 			car_controls.gear = _actualgear
 	elif TransmissionType == 2:
 		
-		car_controls.clutchpedal = (_rpm - float(AutoSettings[3]) * (car_controls.gaspedal * float(AutoSettings[2]) + (1.0 - float(AutoSettings[2]))) ) / float(AutoSettings[4])
+		car_controls.clutchpedal = (_rpm - float(AutoSettings.engage_rpm_thresh) * (car_controls.gaspedal * float(AutoSettings.throt_eff_thresh) + (1.0 - float(AutoSettings.throt_eff_thresh))) ) / float(AutoSettings.engage_rpm)
 		
 			#clutchpedal = 1
 		
@@ -730,7 +710,7 @@ func transmission() -> void:
 		_ratio = minf(_ratio, CVTSettings.iteration_2)
 	
 	elif TransmissionType == 3:
-		car_controls.clutchpedal = (_rpm - float(AutoSettings[3]) * (car_controls.gaspedal * float(AutoSettings[2]) + (1.0 - float(AutoSettings[2]))) ) /float(AutoSettings[4])
+		car_controls.clutchpedal = (_rpm - float(AutoSettings.engage_rpm_thresh) * (car_controls.gaspedal * float(AutoSettings.throt_eff_thresh) + (1.0 - float(AutoSettings.throt_eff_thresh))) ) /float(AutoSettings.engage_rpm)
 		
 		if car_controls.gear > 0:
 			_ratio = GearRatios[car_controls.gear - 1] * FinalDriveRatio * RatioMult
@@ -1158,7 +1138,7 @@ func multivariate() -> float:
 	value /= (j * (j * torque_local.DeclineSharpness + (1.0 - torque_local.DeclineSharpness))) * (torque_local.DeclineRate / 10000000.0) + 1.0
 	value /= pow(_rpm, 2) * (torque_local.FloatRate / 10000000.0) + 1.0
 	
-	value -= _rpm / ((abs(pow(_rpm, 2))) / EngineFriction + 1.0)
+	value -= _rpm / ((absf(pow(_rpm, 2))) / EngineFriction + 1.0)
 	value -= _rpm * EngineDrag
 	
 	return value

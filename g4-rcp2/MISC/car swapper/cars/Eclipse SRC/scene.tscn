@@ -1,18 +1,10 @@
-[gd_scene load_steps=30 format=3 uid="uid://c1qlms1ih0s2l"]
+[gd_scene load_steps=22 format=3 uid="uid://c1qlms1ih0s2l"]
 
 [ext_resource type="PackedScene" uid="uid://df2i30irlljkl" path="res://MAIN/wheel.tscn" id="1"]
 [ext_resource type="Script" path="res://MAIN/car.gd" id="2"]
 [ext_resource type="PackedScene" uid="uid://c7m04qiimdydw" path="res://MAIN/misc/engine sound/engine.tscn" id="3"]
-[ext_resource type="AudioStream" uid="uid://ckt75vv2etwoa" path="res://MISC/car swapper/cars/Eclipse SRC/engine sounds/1.ogg" id="4_ppb00"]
 [ext_resource type="PackedScene" uid="uid://d1vmrvs3aj84o" path="res://MAIN/misc/tyre sounds/tyres.tscn" id="5"]
-[ext_resource type="AudioStream" uid="uid://cqdajib2yo6rv" path="res://MISC/car swapper/cars/Eclipse SRC/engine sounds/2.ogg" id="5_imbti"]
 [ext_resource type="PackedScene" uid="uid://bvqp2v3vmlgcn" path="res://MAIN/misc/mechanical sounds/other_sounds.tscn" id="6"]
-[ext_resource type="AudioStream" uid="uid://d6eb4cnoayb7" path="res://MISC/car swapper/cars/Eclipse SRC/engine sounds/3.ogg" id="6_bubjy"]
-[ext_resource type="AudioStream" uid="uid://bgadta1w1wxsb" path="res://MISC/car swapper/cars/Eclipse SRC/engine sounds/4.ogg" id="7_87coq"]
-[ext_resource type="AudioStream" uid="uid://css4spfpu75vb" path="res://MISC/car swapper/cars/Eclipse SRC/engine sounds/5.ogg" id="8_b4h4g"]
-[ext_resource type="AudioStream" uid="uid://cxwcusr1xcuau" path="res://MISC/car swapper/cars/Eclipse SRC/engine sounds/6.ogg" id="9_5avts"]
-[ext_resource type="AudioStream" uid="uid://ckhm05fdvk5rf" path="res://MISC/car swapper/cars/Eclipse SRC/engine sounds/7.ogg" id="10_v0gof"]
-[ext_resource type="AudioStream" uid="uid://bvu4bihqkrgdt" path="res://MISC/car swapper/cars/Eclipse SRC/engine sounds/8.ogg" id="11_1v2r1"]
 
 [sub_resource type="ConvexPolygonShape3D" id="12"]
 points = PackedVector3Array(2.75605, 1.27715, 6.68259, 1.75444, 2.13382, 3.26614, -2.75659, 1.27715, 6.68259, 2.75605, -0.4, 6.68259, 2.75605, 0.921974, -4.96708, 1.75444, 2.13382, -0.149161, -1.75498, 2.13382, 3.26614, -2.75659, -0.4, 6.68259, -1.75498, 2.13382, -0.149161, -2.75659, 0.921974, -4.96708, 2.75605, -0.4, -4.96708, -2.75659, -0.4, -4.96708)
@@ -247,7 +239,6 @@ blend_shape_mode = 0
 mass = 90.0
 can_sleep = false
 script = ExtResource("2")
-ABS = [2500.0, 1, 10, false, 0.5, 500.0, 2]
 
 [node name="DRAG_CENTRE" type="Marker3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.624618, 0.725289)
@@ -263,30 +254,6 @@ pitch_calibrate = 9900.0
 crossfade_vvt = 3.0
 crossfade_throttle = 2.0
 crossfade_influence = 7.0
-
-[node name="450000" parent="engine_sound" index="0"]
-stream = ExtResource("4_ppb00")
-
-[node name="300000" parent="engine_sound" index="1"]
-stream = ExtResource("5_imbti")
-
-[node name="225000" parent="engine_sound" index="2"]
-stream = ExtResource("6_bubjy")
-
-[node name="178750" parent="engine_sound" index="3"]
-stream = ExtResource("7_87coq")
-
-[node name="150500" parent="engine_sound" index="4"]
-stream = ExtResource("8_b4h4g")
-
-[node name="126500" parent="engine_sound" index="5"]
-stream = ExtResource("9_5avts")
-
-[node name="112750" parent="engine_sound" index="6"]
-stream = ExtResource("10_v0gof")
-
-[node name="100500" parent="engine_sound" index="7"]
-stream = ExtResource("11_1v2r1")
 
 [node name="fr" parent="." instance=ExtResource("1")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.3, 0.2, 3.8)

@@ -7,3 +7,8 @@ res://morning_env.scn
 res://MISC/scene swapper/scene swapper.gd
 res://MISC/graphics_config/graphics config.gd
 res://MISC/car swapper/cars/Synic EKI [Rally]/scene.tscn
+res://MISC/car swapper/cars/Eclipse SRC/scene.tscn
+res://MAIN/car.gd
+res://MAIN/car_stats/auto_settings.gd
+res://MAIN/misc/tyre sounds/tyres.tscn
+res://MAIN/misc/tyre sounds/tyres.gd
