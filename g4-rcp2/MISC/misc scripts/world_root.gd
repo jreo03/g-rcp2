@@ -21,13 +21,19 @@ var Debug_Mode:bool = true
 		scene = new
 		var _err:Error = emit_signal("scene_changed")
 
-@onready var env:WorldEnvironment = $"Morning_env"
+@onready var env:WorldEnvironment = $"Morning_env":
+	set(new):
+		env = new
+		var _err:Error = emit_signal("env_changed")
 
 ##Emitted when the car is changed. 
 ##NOTE: Could be changed in the future to accomodate multiple player cars, but right now acts singularly.
 signal car_changed
 ##Emitted when the play scene changes.
 signal scene_changed
+
+##Emiited when the WorldEnvironment changes
+signal env_changed
 
 func _init() -> void:
 	singleton = self

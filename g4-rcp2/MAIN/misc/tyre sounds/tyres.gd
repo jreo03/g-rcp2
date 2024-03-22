@@ -37,8 +37,8 @@ func most_skidding(array:Array[ViVeWheel]) -> ViVeWheel:
 	var val:float = -10000000000000000000000000000000000.0
 	var obj:ViVeWheel
 	for i:ViVeWheel in array:
-		val = max(val, abs(i.skvol))
-		if val == abs(i.skvol):
+		val = maxf(val, absf(i.skvol))
+		if val == absf(i.skvol):
 			obj = i
 	return obj
 
@@ -49,11 +49,9 @@ func _physics_process(_delta:float) -> void:
 	
 	var wheel:ViVeWheel = most_skidding(wheels)
 	
-	length = wheel.skvol / 2.0 - 1.0
+	length = maxf((wheel.skvol / 2.0 - 1.0), 2.0)
 	
-	var roll:float = abs(wheel.wv * wheel.w_size) - wheel.velocity.length()
-	
-	length = maxf(length, 2.0)
+	var roll:float = absf(wheel.wv * wheel.w_size) - wheel.velocity.length()
 	
 	width -= (width - (1.0 - (roll / 10.0 - 1.0))) * 0.05
 	
@@ -69,12 +67,14 @@ func _physics_process(_delta:float) -> void:
 	total = minf(total, 1.0)
 	
 	var mult:float = (parent.linear_velocity.length() / 5000.0 + 1.0)
+	
 	roll0.pitch_scale = 1.0 / (parent.linear_velocity.length() / 500.0 + 1.0)
 	roll1.pitch_scale = 1.0 / mult
 	roll2.pitch_scale = 1.0 / mult
 	peel0.pitch_scale = 0.95 + length / 8.0 / mult
 	peel1.pitch_scale = 1.0 / mult
 	peel2.pitch_scale =  1.1 - total * 0.1 / mult
+	
 	
 	var drit:float = (parent.linear_velocity.length() * wheel.stress) / 1000.0 - 0.1
 	
@@ -90,7 +90,7 @@ func _physics_process(_delta:float) -> void:
 		if i.name == "dirt":
 			i.volume_db = linear_to_db(drit * 0.3)
 			i.max_db = i.volume_db
-			i.pitch_scale = 1.0 + length * 0.05 + abs( roll / 100.0)
+			i.pitch_scale = 1.0 + length * 0.05 + absf(roll / 100.0)
 		else:
 			var dist:float = absf(i.length - length)
 			var dist2:float = absf(i.width - width)

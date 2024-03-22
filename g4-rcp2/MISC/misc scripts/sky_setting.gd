@@ -1,10 +1,11 @@
 extends WorldEnvironment
 
 var current_sky:Environment = environment
-var default_sky:Environment = load("res://default_env.tres")
+const default_sky:Environment = preload("res://default_env.tres")
 
+#This is one of those process frames that is wasteful
 func _process(_delta) -> void:
-	if misc_graphics_settings.use_procedual_sky:
+	if misc_graphics_settings.use_procedural_sky:
 		environment = current_sky
 	else:
 		environment = default_sky

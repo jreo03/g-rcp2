@@ -4,7 +4,7 @@ extends Node
 class_name ViVeSimulation
 #This is VitaVehicleSimulation
 
-var misc_smoke:bool = true
+var misc_smoke:bool = false
 
 enum GearAssist {
 	Manual = 0,

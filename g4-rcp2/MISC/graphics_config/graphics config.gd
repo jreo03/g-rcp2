@@ -49,7 +49,9 @@ func _on_fxaa_toggled(toggled_on: bool) -> void:
 func _on_shadows_toggled(toggled_on: bool) -> void:
 	misc_graphics_settings.shadows = toggled_on
 
-
 func _on_reflections_toggled(toggled_on: bool) -> void:
 	misc_graphics_settings.reflections = toggled_on
-	pass # Replace with function body.
+
+
+func _on_use_procedural_sky_toggled(toggled_on: bool) -> void:
+	misc_graphics_settings.use_procedural_sky = toggled_on

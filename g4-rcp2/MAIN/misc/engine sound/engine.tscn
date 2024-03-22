@@ -22,6 +22,7 @@ pitch_scale = 0.01
 area_mask = 512
 attenuation_filter_db = 0.0
 script = ExtResource("3_fr042")
+pitch = 450000
 
 [node name="snd_2" type="AudioStreamPlayer3D" parent="."]
 stream = ExtResource("3")
@@ -31,6 +32,7 @@ pitch_scale = 0.01
 area_mask = 512
 attenuation_filter_db = 0.0
 script = ExtResource("3_fr042")
+pitch = 300000
 
 [node name="snd_3" type="AudioStreamPlayer3D" parent="."]
 stream = ExtResource("4")
@@ -40,6 +42,7 @@ pitch_scale = 0.01
 area_mask = 512
 attenuation_filter_db = 0.0
 script = ExtResource("3_fr042")
+pitch = 225000
 
 [node name="snd_4" type="AudioStreamPlayer3D" parent="."]
 stream = ExtResource("5")
@@ -49,6 +52,7 @@ pitch_scale = 0.01
 area_mask = 512
 attenuation_filter_db = 0.0
 script = ExtResource("3_fr042")
+pitch = 178750
 
 [node name="snd_5" type="AudioStreamPlayer3D" parent="."]
 stream = ExtResource("6")
@@ -58,6 +62,7 @@ pitch_scale = 0.01
 area_mask = 512
 attenuation_filter_db = 0.0
 script = ExtResource("3_fr042")
+pitch = 150500
 
 [node name="snd_6" type="AudioStreamPlayer3D" parent="."]
 stream = ExtResource("7")
@@ -67,6 +72,7 @@ pitch_scale = 0.01
 area_mask = 512
 attenuation_filter_db = 0.0
 script = ExtResource("3_fr042")
+pitch = 126500
 
 [node name="snd_7" type="AudioStreamPlayer3D" parent="."]
 stream = ExtResource("8")
@@ -76,6 +82,7 @@ pitch_scale = 0.01
 area_mask = 512
 attenuation_filter_db = 0.0
 script = ExtResource("3_fr042")
+pitch = 112750
 
 [node name="snd_8" type="AudioStreamPlayer3D" parent="."]
 stream = ExtResource("9")
@@ -85,3 +92,4 @@ pitch_scale = 0.01
 area_mask = 512
 attenuation_filter_db = 0.0
 script = ExtResource("3_fr042")
+pitch = 100500

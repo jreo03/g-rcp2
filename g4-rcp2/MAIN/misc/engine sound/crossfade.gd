@@ -49,7 +49,7 @@ func _ready() -> void:
 
 func _physics_process(_delta:float) -> void:
 	var car:ViVeCar = get_parent_node_3d()
-	pitch = abs(car._rpm * pitch_influence) / pitch_calibrate
+	pitch = absf(car._rpm * pitch_influence) / pitch_calibrate
 	
 	volume = 0.5 + car._throttle * 0.5
 	
@@ -71,7 +71,7 @@ func _physics_process(_delta:float) -> void:
 	
 	for i:ViVeEngineSound in get_children():
 		#var maxvol:float = float(str(i.get_child(0).name)) / 100.0
-		var maxvol:float = i.volume
+		var maxvol:float = i.volume / 100.0
 		var maxpitch:float = i.pitch / 100000.0
 		
 		var index:float = float(i.get_index())
