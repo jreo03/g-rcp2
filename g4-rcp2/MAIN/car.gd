@@ -20,7 +20,7 @@ var c_pws:Array[ViVeWheel]
 
 @export_group("Controls")
 @export var car_controls:ViVeCarControls = ViVeCarControls.new()
-var car_controls_cache:ViVeCarControls.ControlType = ViVeCarControls.ControlType.CONTROLS_KEYBOARD_MOUSE
+var car_controls_cache:ViVeCarControls.ControlType
 var _control_func:Callable = car_controls.controls_keyboard_mouse
 
 ## Gear Assistance.
@@ -273,6 +273,7 @@ signal wheels_ready
 
 func _ready() -> void:
 #	bullet_fix()
+	_control_func = decide_controls()
 	_rpm = IdleRPM
 	for i:String in Powered_Wheels:
 		var wh:ViVeWheel = get_node(str(i))
@@ -292,8 +293,7 @@ func get_powered_wheels() -> Array[ViVeWheel]:
 
 func _mouse_wrapper() -> void:
 	var mouseposx:float = 0.0
-	if get_window().size.x > 0.0:
-		mouseposx = get_window().get_mouse_position().x / get_window().size.x
+	mouseposx = get_window().get_mouse_position().x / get_window().size.x
 	car_controls.controls_keyboard_mouse(mouseposx)
 
 ##Check which [Callable] from [ViVeCarControls] to use for the car's controls.
@@ -316,7 +316,6 @@ func new_controls() -> void:
 	_control_func.call()
 
 func controls() -> void:
-	
 	#Tbh I don't see why these need to be divided, but...
 	if car_controls.UseMouseSteering:
 		car_controls.gas = Input.is_action_pressed("gas_mouse")
