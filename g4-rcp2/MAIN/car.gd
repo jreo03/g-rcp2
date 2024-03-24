@@ -2,9 +2,10 @@ extends RigidBody3D
 ##A class representing a car in VitaVehicle.
 class_name ViVeCar
 
+##A set of wheels that are powered parented under the vehicle.
 var c_pws:Array[ViVeWheel]
 
-##A set of wheels that are powered parented under the vehicle.
+
 
 
 @onready var front_left:ViVeWheel = $"fl"
@@ -341,7 +342,7 @@ func controls() -> void:
 	if car_controls.LooseSteering:
 		car_controls.steer += car_controls.steer_velocity
 		
-		if abs(car_controls.steer) > 1.0:
+		if absf(car_controls.steer) > 1.0:
 			car_controls.steer_velocity *= -0.5
 		
 		for i:ViVeWheel in [front_left,front_right]:
@@ -412,7 +413,7 @@ func controls() -> void:
 				
 				car_controls.steer2 = clampf(car_controls.steer2, -1.0, 1.0)
 				
-				var s:float = abs(car_controls.steer2) * 1.0 + 0.5
+				var s:float = absf(car_controls.steer2) * 1.0 + 0.5
 				s = minf(s, 1.0)
 				
 				car_controls.steer2 *= s
@@ -427,7 +428,7 @@ func controls() -> void:
 				
 				car_controls.steer2 = clampf(car_controls.steer2, -1.0, 1.0)
 				
-				var s:float = abs(car_controls.steer2) * 1.0 +0.5
+				var s:float = absf(car_controls.steer2) * 1.0 + 0.5
 				s = minf(s, 1.0)
 				
 				car_controls.steer2 *= s
@@ -549,7 +550,7 @@ func transmission() -> void:
 							car_controls.gasrestricted = false
 		elif GearAssist.assist_level == 2:
 			var assistshiftspeed:float = (GearAssist.upshift_RPM / _ratio) * GearAssist.speed_influence
-			var assistdownshiftspeed:float = (GearAssist.down_RPM / abs((GearRatios[car_controls.gear - 2] * FinalDriveRatio) * RatioMult)) * GearAssist.speed_influence
+			var assistdownshiftspeed:float = (GearAssist.down_RPM / absi((GearRatios[car_controls.gear - 2] * FinalDriveRatio) * RatioMult)) * GearAssist.speed_influence
 			if car_controls.gear == 0:
 				if car_controls.gas:
 					_sassistdel -= 1
@@ -701,11 +702,11 @@ func transmission() -> void:
 		
 		_cvtaccel -= (_cvtaccel - (car_controls.gaspedal * CVTSettings.throt_eff_thresh + (1.0 - CVTSettings.throt_eff_thresh))) * CVTSettings.accel_rate
 		
-		var a:float = CVTSettings.iteration_3 / ((abs(wv) / 10.0) * _cvtaccel + 1.0)
+		var a:float = CVTSettings.iteration_3 / ((absf(wv) / 10.0) * _cvtaccel + 1.0)
 		
 		a = maxf(a, CVTSettings.iteration_4)
 		
-		_ratio = (CVTSettings.iteration_1 * 10000000.0) / (abs(wv) * (_rpm * a) + 1.0)
+		_ratio = (CVTSettings.iteration_1 * 10000000.0) / (absf(wv) * (_rpm * a) + 1.0)
 		
 		
 		_ratio = minf(_ratio, CVTSettings.iteration_2)
@@ -729,7 +730,7 @@ func transmission() -> void:
 					_actualgear -= 1
 		else:
 			var assistshiftspeed:float = (GearAssist.upshift_RPM / _ratio) * GearAssist.speed_influence
-			var assistdownshiftspeed:float = (GearAssist.down_RPM / abs((GearRatios[car_controls.gear - 2] * FinalDriveRatio) * RatioMult)) * GearAssist.speed_influence
+			var assistdownshiftspeed:float = (GearAssist.down_RPM / absi((GearRatios[car_controls.gear - 2] * FinalDriveRatio) * RatioMult)) * GearAssist.speed_influence
 			if car_controls.gear == 0:
 				if car_controls.gas:
 					_sassistdel -= 1
@@ -786,23 +787,23 @@ func drivetrain() -> void:
 			Centre_Preload = 1.0
 			ClutchFloatReduction = 0.0
 		
-		_gearstress = (abs(_resistance) * StressFactor) * car_controls.clutchpedal
+		_gearstress = (absf(_resistance) * StressFactor) * car_controls.clutchpedal
 		var stabled:float = _ratio * 0.9 + 0.1
 		_ds_weight = DSWeight / stabled
 		
-		_whinepitch = abs(_rpm / _ratio) * 1.5
+		_whinepitch = absf(_rpm / _ratio) * 1.5
 		
 		if _resistance > 0.0:
-			_locked = abs(_resistance / _ds_weight) * (CoastLocking / 100.0) + Preload
+			_locked = absf(_resistance / _ds_weight) * (CoastLocking / 100.0) + Preload
 		else:
-			_locked = abs(_resistance / _ds_weight) * (Locking / 100.0) + Preload
+			_locked = absf(_resistance / _ds_weight) * (Locking / 100.0) + Preload
 		
 		_locked = clampf(_locked, 0.0, 1.0)
 		
 		if _wv_difference > 0.0:
-			_c_locked = abs(_wv_difference) * (Centre_CoastLocking / 10.0) + Centre_Preload
+			_c_locked = absf(_wv_difference) * (Centre_CoastLocking / 10.0) + Centre_Preload
 		else:
-			_c_locked = abs(_wv_difference) * (Centre_Locking / 10.0) + Centre_Preload
+			_c_locked = absf(_wv_difference) * (Centre_Locking / 10.0) + Centre_Preload
 		if _c_locked < 0.0 or len(c_pws) < 4:
 			_c_locked = 0.0
 		elif _c_locked > 1.0:
@@ -947,9 +948,9 @@ func _physics_process(_delta:float) -> void:
 	
 	var uhh:float = pow((_max_steering_angle / 90.0), 2)
 	uhh *= 0.5
-	steeroutput *= abs(car_controls.steer) * (uhh) + (1.0 - uhh)
+	steeroutput *= absf(car_controls.steer) * (uhh) + (1.0 - uhh)
 	
-	if abs(steeroutput) > 0.0:
+	if absf(steeroutput) > 0.0:
 		_steering_geometry = [ 
 			- Steer_Radius / steeroutput, 
 			AckermannPoint
@@ -1032,9 +1033,9 @@ func _physics_process(_delta:float) -> void:
 	j = maxf(j, 0.0)
 	
 	torque /= (j * (j * torque_local.DeclineSharpness + (1.0 - torque_local.DeclineSharpness))) * (torque_local.DeclineRate / 10000000.0) + 1.0
-	torque /= abs(_rpm * abs(_rpm)) * (torque_local.FloatRate / 10000000.0) + 1.0
+	torque /= absf(_rpm * absf(_rpm)) * (torque_local.FloatRate / 10000000.0) + 1.0
 	
-	_rpmforce = (_rpm / (abs(_rpm * abs(_rpm)) / (EngineFriction / _clock_mult) + 1.0)) * 1.0
+	_rpmforce = (_rpm / (absf(_rpm * absf(_rpm)) / (EngineFriction / _clock_mult) + 1.0)) * 1.0
 	if _rpm < DeadRPM:
 		torque = 0.0
 		_rpmforce /= 5.0

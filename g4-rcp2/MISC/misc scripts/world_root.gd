@@ -45,7 +45,6 @@ static func get_singleton() -> ViVeEnvironment:
 	else:
 		return ViVeEnvironment.new()
 
-
 func switch_sky(procedural:bool) -> void:
 	if misc_graphics_settings.use_procedural_sky:
 		environment = current_sky

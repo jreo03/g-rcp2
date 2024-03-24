@@ -74,8 +74,8 @@ func _process(delta:float) -> void:
 	$tacho/speedk.text = "KM/PH: " +str(int(car_node.linear_velocity.length() * 1.10130592))
 	$tacho/speedm.text = "MPH: " +str(int((car_node.linear_velocity.length() * 1.10130592) / 1.609 ) )
 	
+	#begin unneeded value setting
 	var hpunit:String
-	
 	match power_graph.Power_Unit:
 		1:
 			hpunit = "bhp"
@@ -94,6 +94,7 @@ func _process(delta:float) -> void:
 	elif power_graph.Torque_Unit == 2:
 		tqunit = "kg/m"
 	$tq.text = "Torque: %s%s @ %s RPM" % [str(int(power_graph.peaktq[0] * 10.0) / 10.0 ), tqunit, str(int(power_graph.peaktq[1] * 10.0) / 10.0)]
+	#end unneeded value setting
 	
 	$power_graph/rpm.position.x = (car_node._rpm / power_graph.Generation_Range) * power_graph.size.x - 1.0
 	$power_graph/redline.position.x = (car_node.RPMLimit / power_graph.Generation_Range) * power_graph.size.x - 1.0

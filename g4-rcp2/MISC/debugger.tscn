@@ -399,6 +399,8 @@ grow_horizontal = 2
 grow_vertical = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
+clip_tabs = false
+tab_focus_mode = 0
 
 [node name="Information" type="HBoxContainer" parent="Window/TabContainer"]
 layout_mode = 2
@@ -1089,6 +1091,44 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 text = "0.0"
 vertical_alignment = 2
+
+[node name="Advanced Debug" type="ScrollContainer" parent="Window/TabContainer"]
+visible = false
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Window/TabContainer/Advanced Debug"]
+layout_mode = 2
+
+[node name="all" type="CheckBox" parent="Window/TabContainer/Advanced Debug/VBoxContainer"]
+layout_mode = 2
+text = "Enable/Disable All"
+
+[node name="OptionButton" type="OptionButton" parent="Window/TabContainer/Advanced Debug/VBoxContainer"]
+layout_mode = 2
+item_count = 2
+popup/item_0/text = "Smooth"
+popup/item_0/id = 0
+popup/item_1/text = "Precise"
+popup/item_1/id = 1
+
+[node name="fps" type="CheckBox" parent="Window/TabContainer/Advanced Debug/VBoxContainer"]
+layout_mode = 2
+
+[node name="tacho" type="CheckBox" parent="Window/TabContainer/Advanced Debug/VBoxContainer"]
+layout_mode = 2
+text = "Tachometer"
+
+[node name="wheel" type="CheckBox" parent="Window/TabContainer/Advanced Debug/VBoxContainer"]
+layout_mode = 2
+text = "Steering Wheel"
+
+[node name="vgs" type="CheckBox" parent="Window/TabContainer/Advanced Debug/VBoxContainer"]
+layout_mode = 2
+text = "Visual Gravity System"
+
+[node name="power_graph" type="CheckBox" parent="Window/TabContainer/Advanced Debug/VBoxContainer"]
+layout_mode = 2
+text = "Torque Graph"
 
 [connection signal="pressed" from="open controls" to="Window" method="_on_open_controls_pressed"]
 [connection signal="pressed" from="fix engine" to="." method="engine_restart"]
