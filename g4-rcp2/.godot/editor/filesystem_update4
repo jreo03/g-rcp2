@@ -1,0 +1,15 @@
+res://default_env.tres
+res://MISC/debugger.tscn
+res://world.tscn
+res://base car.tscn
+res://morning_env.scn
+res://MISC/car swapper/cars/Eclipse SRC/scene.tscn
+res://MAIN/wheel.gd
+res://default_bus_layout.tres
+res://MISC/mobile controls/mobile.tscn
+res://MISC/mobile controls/mobile_ctrls.gd
+res://MAIN/car.gd
+res://MISC/mobile controls/positioning.gd
+res://MAIN/controls.gd
+res://MISC/misc scripts/option_control.gd
+res://MISC/misc scripts/world_root.gd

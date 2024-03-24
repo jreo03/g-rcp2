@@ -1,0 +1,74 @@
+[gd_scene load_steps=11 format=3 uid="uid://cl5riv3giscom"]
+
+[ext_resource type="PackedScene" uid="uid://crtwme8ggggra" path="res://base car.tscn" id="1"]
+[ext_resource type="Script" path="res://MISC/misc scripts/world_root.gd" id="1_ki5xn"]
+[ext_resource type="Script" path="res://MAIN/misc/camera.gd" id="2"]
+[ext_resource type="PackedScene" uid="uid://b77dj0608nvq0" path="res://MISC/debugger.tscn" id="3"]
+[ext_resource type="PackedScene" uid="uid://diafjore21wn" path="res://MISC/scene swapper/scenes/Test Scene/scene.tscn" id="6"]
+[ext_resource type="PackedScene" uid="uid://b3exh7m2ddrcy" path="res://MISC/mobile controls/mobile.tscn" id="8"]
+[ext_resource type="Texture2D" uid="uid://b315i7ikjj32c" path="res://logo.png" id="13"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_22uh0"]
+sky_top_color = Color(0.827451, 0.811765, 1, 1)
+sky_horizon_color = Color(0.956863, 0.867647, 0.87549, 1)
+ground_bottom_color = Color(1, 0.658824, 0.501961, 1)
+ground_horizon_color = Color(0.956863, 0.867647, 0.87549, 1)
+
+[sub_resource type="Sky" id="Sky_2nt26"]
+sky_material = SubResource("ProceduralSkyMaterial_22uh0")
+
+[sub_resource type="Environment" id="Environment_nfa35"]
+background_mode = 2
+sky = SubResource("Sky_2nt26")
+
+[node name="root" type="WorldEnvironment"]
+environment = SubResource("Environment_nfa35")
+script = ExtResource("1_ki5xn")
+
+[node name="morning_sun" type="DirectionalLight3D" parent="."]
+transform = Transform3D(0.998027, -0.00797848, 0.0622818, 0, 0.991894, 0.127065, -0.0627907, -0.126814, 0.989937, 0, 0, 0)
+light_color = Color(1, 0.976471, 0.901961, 1)
+light_energy = 2.0
+directional_shadow_max_distance = 1000.0
+
+[node name="watermark" type="TextureRect" parent="."]
+anchors_preset = -1
+anchor_top = 0.816666
+anchor_right = 0.199219
+anchor_bottom = 0.983333
+texture = ExtResource("13")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="author" type="Label" parent="."]
+anchors_preset = -1
+anchor_top = 0.763333
+anchor_right = 0.214844
+anchor_bottom = 1.0
+text = "by Jreo"
+vertical_alignment = 2
+
+[node name="mobile_ctrls" parent="." instance=ExtResource("8")]
+visible = false
+
+[node name="debug" parent="." instance=ExtResource("3")]
+
+[node name="cam_chase" type="Marker3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -15)
+script = ExtResource("2")
+mobile_controls = NodePath("../mobile_ctrls")
+
+[node name="orbit" type="Marker3D" parent="cam_chase"]
+
+[node name="Camera" type="Camera3D" parent="cam_chase/orbit"]
+transform = Transform3D(1, 0, 0, 0, 0.984808, 0.173648, 0, -0.173648, 0.984808, 0, 4.5, 0)
+cull_mask = 524287
+doppler_tracking = 2
+current = true
+near = 0.1
+far = 10000.0
+
+[node name="test scene" parent="." instance=ExtResource("6")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.48569, -0.113658, 0.882391)
+
+[node name="car" parent="." instance=ExtResource("1")]

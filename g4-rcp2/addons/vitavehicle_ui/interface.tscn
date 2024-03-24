@@ -1,0 +1,134 @@
+[gd_scene load_steps=7 format=3 uid="uid://b4j8prwa2veg8"]
+
+[ext_resource type="Texture2D" uid="uid://b315i7ikjj32c" path="res://logo.png" id="2"]
+[ext_resource type="PackedScene" uid="uid://ds30nwmnponmw" path="res://addons/vitavehicle_ui/collision.tscn" id="3_04ea6"]
+[ext_resource type="Script" path="res://addons/vitavehicle_ui/handler.gd" id="4"]
+[ext_resource type="PackedScene" uid="uid://re2icjigeohf" path="res://addons/vitavehicle_ui/tutors.tscn" id="4_s8p6t"]
+[ext_resource type="FontFile" uid="uid://btyvoi7jkhec0" path="res://FONT/DroidSans.ttf" id="5_f53yw"]
+[ext_resource type="PackedScene" uid="uid://bvt17fohgb3ts" path="res://addons/vitavehicle_ui/inform.tscn" id="5_ue1go"]
+
+[node name="VBoxContainer" type="VBoxContainer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Control" type="TabContainer" parent="."]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+tabs_visible = false
+script = ExtResource("4")
+
+[node name="Collision" parent="Control" instance=ExtResource("3_04ea6")]
+layout_mode = 2
+
+[node name="tutors" parent="Control" instance=ExtResource("4_s8p6t")]
+layout_mode = 2
+
+[node name="inform" parent="Control" instance=ExtResource("5_ue1go")]
+layout_mode = 2
+
+[node name="menu" type="VBoxContainer" parent="Control"]
+visible = false
+layout_mode = 2
+
+[node name="watermark" type="TextureRect" parent="Control/menu"]
+layout_mode = 2
+size_flags_vertical = 3
+texture = ExtResource("2")
+expand_mode = 2
+stretch_mode = 5
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Control/menu"]
+layout_mode = 2
+
+[node name="Tools" type="VBoxContainer" parent="Control/menu/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="label" type="Label" parent="Control/menu/HBoxContainer/Tools"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("5_f53yw")
+theme_override_font_sizes/font_size = 20
+text = "Tools Menu"
+horizontal_alignment = 1
+vertical_alignment = 2
+
+[node name="dist" type="Button" parent="Control/menu/HBoxContainer/Tools"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_fonts/font = ExtResource("5_f53yw")
+text = "CollisionShape Editor"
+alignment = 0
+clip_text = true
+
+[node name="tune_engine" type="Button" parent="Control/menu/HBoxContainer/Tools"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_fonts/font = ExtResource("5_f53yw")
+text = "Torque Curve Editor"
+alignment = 0
+clip_text = true
+
+[node name="Misc" type="VBoxContainer" parent="Control/menu/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="label" type="Label" parent="Control/menu/HBoxContainer/Misc"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("5_f53yw")
+theme_override_font_sizes/font_size = 20
+text = "Misc"
+horizontal_alignment = 1
+vertical_alignment = 2
+
+[node name="api" type="Button" parent="Control/menu/HBoxContainer/Misc"]
+visible = false
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_fonts/font = ExtResource("5_f53yw")
+text = "API References"
+alignment = 0
+clip_text = true
+
+[node name="help" type="Button" parent="Control/menu/HBoxContainer/Misc"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_fonts/font = ExtResource("5_f53yw")
+text = "Help"
+alignment = 0
+clip_text = true
+
+[node name="history" type="Button" parent="Control/menu/HBoxContainer/Misc"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_fonts/font = ExtResource("5_f53yw")
+disabled = true
+text = "Unnecessary history (WIP)"
+alignment = 0
+clip_text = true
+
+[node name="info" type="Button" parent="Control/menu/HBoxContainer/Misc"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_fonts/font = ExtResource("5_f53yw")
+text = "Information"
+alignment = 0
+clip_text = true
+
+[node name="credits" type="Label" parent="Control/menu"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("5_f53yw")
+text = "Made by: Jreo"
+vertical_alignment = 2
+
+[connection signal="pressed" from="Control/menu/HBoxContainer/Tools/dist" to="Control" method="press"]
+[connection signal="pressed" from="Control/menu/HBoxContainer/Tools/tune_engine" to="Control" method="press"]
+[connection signal="pressed" from="Control/menu/HBoxContainer/Misc/api" to="Control" method="_on_api_pressed"]
+[connection signal="pressed" from="Control/menu/HBoxContainer/Misc/help" to="Control" method="_on_help_pressed"]
+[connection signal="pressed" from="Control/menu/HBoxContainer/Misc/history" to="Control" method="_on_history_pressed"]
+[connection signal="pressed" from="Control/menu/HBoxContainer/Misc/info" to="Control" method="_on_info_pressed"]

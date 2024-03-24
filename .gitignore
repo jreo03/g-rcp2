@@ -1,0 +1,9 @@
+
+README.md.backup
+# Godot 4+ specific ignores
+.godot/
+**/.godot/
+addons/
+android/
+g4-rcp2/.godot/
+g4-rcp2/.godot/**

@@ -1,0 +1,81 @@
+[gd_scene load_steps=3 format=3 uid="uid://bvt17fohgb3ts"]
+
+[ext_resource type="FontFile" uid="uid://btyvoi7jkhec0" path="res://FONT/DroidSans.ttf" id="1_rtkj7"]
+[ext_resource type="Texture2D" uid="uid://b315i7ikjj32c" path="res://logo.png" id="2_6djdl"]
+
+[node name="inform" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="background" type="ColorRect" parent="."]
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+color = Color(0, 0, 0, 0.5)
+
+[node name="scroll" type="ScrollContainer" parent="."]
+layout_mode = 0
+anchor_left = 0.41769
+anchor_top = 0.0525164
+anchor_right = 0.974202
+anchor_bottom = 0.947484
+
+[node name="container" type="VBoxContainer" parent="scroll"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="credlabel" type="Label" parent="scroll/container"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("1_rtkj7")
+text = "--------------------------------------------------
+Credits/Sources:
+--------------------------------------------------"
+horizontal_alignment = 1
+
+[node name="cred" type="Label" parent="scroll/container"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("1_rtkj7")
+text = "Contributors:
+devHrytsan
+r0401 (aka raghid) - Godot 4 Port
+c08oprkiua - Godot 4.2 rewrite and optimizations"
+
+[node name="watermark" type="TextureRect" parent="."]
+layout_mode = 0
+anchor_left = 0.02457
+anchor_top = 0.02407
+anchor_right = 0.398
+anchor_bottom = 0.319
+texture = ExtResource("2_6djdl")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="clabel" type="Label" parent="."]
+layout_mode = 0
+anchor_left = 0.0651106
+anchor_top = 0.319475
+anchor_right = 0.379607
+anchor_bottom = 0.363238
+mouse_filter = 1
+theme_override_fonts/font = ExtResource("1_rtkj7")
+text = "Powered by Godot"
+horizontal_alignment = 1
+
+[node name="back" type="Button" parent="."]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -122.0
+offset_top = -58.0
+grow_horizontal = 0
+grow_vertical = 0
+theme_override_fonts/font = ExtResource("1_rtkj7")
+theme_override_font_sizes/font_size = 20
+text = "Back"

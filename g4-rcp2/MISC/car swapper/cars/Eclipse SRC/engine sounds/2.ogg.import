@@ -1,0 +1,19 @@
+[remap]
+
+importer="oggvorbisstr"
+type="AudioStreamOggVorbis"
+uid="uid://cqdajib2yo6rv"
+path="res://.godot/imported/2.ogg-521180af2c6ffbee6468145b3d50d29b.oggvorbisstr"
+
+[deps]
+
+source_file="res://MISC/car swapper/cars/Eclipse SRC/engine sounds/2.ogg"
+dest_files=["res://.godot/imported/2.ogg-521180af2c6ffbee6468145b3d50d29b.oggvorbisstr"]
+
+[params]
+
+loop=true
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

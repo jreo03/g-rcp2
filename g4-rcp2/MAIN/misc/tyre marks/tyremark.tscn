@@ -1,0 +1,37 @@
+[gd_scene load_steps=6 format=3 uid="uid://bg3o1u5r81wfs"]
+
+[ext_resource type="Script" path="res://MAIN/misc/tyre marks/trail_clean.gd" id="1"]
+[ext_resource type="Script" path="res://MAIN/misc/tyre marks/trail_sm.gd" id="2"]
+
+[sub_resource type="Shader" id="Shader_0muvh"]
+code = "// NOTE: Shader automatically converted from Godot Engine 3.5.1.stable's SpatialMaterial.
+
+shader_type spatial;
+//render_mode async_visible,blend_mix,depth_draw_opaque,unshaded,cull_disabled;
+render_mode blend_mix,depth_draw_opaque,unshaded,cull_disabled;
+uniform vec4 albedo : source_color;
+
+void fragment() {
+	ALBEDO = vec3(0.0,0.0,0.0);
+	
+	ALPHA = 0.25;
+	
+}
+"
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_4qj4k"]
+render_priority = -128
+shader = SubResource("Shader_0muvh")
+shader_parameter/albedo = Color(0, 0, 0, 0.48)
+
+[sub_resource type="ImmediateMesh" id="ImmediateMesh_rm0os"]
+
+[node name="tyremark" type="Node3D"]
+script = ExtResource("2")
+
+[node name="trail" type="MeshInstance3D" parent="."]
+material_override = SubResource("ShaderMaterial_4qj4k")
+mesh = SubResource("ImmediateMesh_rm0os")
+script = ExtResource("1")
+
+[node name="point" type="Marker3D" parent="."]

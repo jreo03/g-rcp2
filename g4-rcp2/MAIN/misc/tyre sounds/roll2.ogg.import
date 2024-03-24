@@ -1,0 +1,19 @@
+[remap]
+
+importer="oggvorbisstr"
+type="AudioStreamOggVorbis"
+uid="uid://dyf7guf22o6t0"
+path="res://.godot/imported/roll2.ogg-c9b0cc7e9d8e4e6f12857613d090d96a.oggvorbisstr"
+
+[deps]
+
+source_file="res://MAIN/misc/tyre sounds/roll2.ogg"
+dest_files=["res://.godot/imported/roll2.ogg-c9b0cc7e9d8e4e6f12857613d090d96a.oggvorbisstr"]
+
+[params]
+
+loop=true
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

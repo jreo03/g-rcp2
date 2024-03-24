@@ -1,0 +1,51 @@
+[gd_scene load_steps=5 format=3 uid="uid://cnjbclsh2lklc"]
+
+[ext_resource type="Texture2D" uid="uid://bj0jt850o26wy" path="res://MISC/visual gravity system/circle.png" id="1"]
+[ext_resource type="Script" path="res://MISC/visual gravity system/vgs.gd" id="2"]
+[ext_resource type="Script" path="res://MISC/visual gravity system/wheel_variables.gd" id="3"]
+
+[sub_resource type="Gradient" id="1"]
+colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 0)
+
+[node name="Control" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("2")
+
+[node name="wheel" type="Polygon2D" parent="."]
+modulate = Color(1, 1, 1, 0.5)
+polygon = PackedVector2Array(-10, 10, 10, 10, 10, -10, -10, -10)
+script = ExtResource("3")
+
+[node name="background" type="Polygon2D" parent="wheel"]
+scale = Vector2(0.8, 0.8)
+color = Color(0, 0, 0, 1)
+polygon = PackedVector2Array(-10, 10, 10, 10, 10, -10, -10, -10)
+
+[node name="slippage" type="Polygon2D" parent="wheel"]
+scale = Vector2(0.8, 0.8)
+polygon = PackedVector2Array(-10, 10, 10, 10, 10, -10, -10, -10)
+
+[node name="field" type="Sprite2D" parent="."]
+modulate = Color(0, 0, 0, 0.5)
+texture = ExtResource("1")
+
+[node name="centre" type="CPUParticles2D" parent="."]
+z_index = 72
+amount = 32
+texture = ExtResource("1")
+gravity = Vector2(0, 0)
+scale_amount_min = 0.13
+scale_amount_max = 0.13
+color = Color(1, 0.74902, 0, 0.270588)
+color_ramp = SubResource("1")
+
+[node name="Circle" type="Sprite2D" parent="centre"]
+modulate = Color(1, 0.75, 0, 1)
+z_index = 71
+scale = Vector2(0.125, 0.125)
+texture = ExtResource("1")
